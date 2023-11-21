@@ -1,13 +1,13 @@
 {
   "expo": {
     "name": "GymMate",
-    "slug": "GymMate",
-    "version": "1.0.0",
+    "slug": "gymmate",
+    "version": "0.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "splash": {
-      "backgroundColor": "#376DEC"
+      "backgroundColor": "#212121"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -17,13 +17,13 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.f1shu.gymmate"
     },
     "web": {
-      "favicon": "./assets/icon.png"
+      "favicon": "./assets/transparent-icon.png"
     },
     "extra": {
       "eas": {
