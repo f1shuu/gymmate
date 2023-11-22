@@ -1,11 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 const Workout = (props) => {
     return (
-        <View style={ styles.item }>
-            <View style={ styles.itemLeft }>
-                <View style={ styles.square }></View>
-                <Text style={ styles.itemText }>{ props.text }</Text>
+        <View style={styles.item}>
+            <View style={styles.itemLeft}>
+                <Image
+                    source={require('../assets/transparent-icon.png')}
+                    style={{ resizeMode: 'center', width: 40, height: 40, marginRight: 15 }}
+                />
+                <Text style={styles.itemText}>{props.text}</Text>
             </View>
         </View>
     )
@@ -25,14 +28,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         flexWrap: 'wrap'
-    },
-    square: {
-        width: 24,
-        height: 24,
-        backgroundColor: 'white',
-        opacity: 0.4,
-        borderRadius: 5,
-        marginRight: 15
     },
     itemText: {
         maxWidth: '80%',

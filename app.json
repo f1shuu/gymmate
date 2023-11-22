@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "GymMate",
-    "slug": "gymmate",
+    "slug": "GymMate",
     "version": "0.2.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
