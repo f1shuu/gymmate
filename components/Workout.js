@@ -5,7 +5,7 @@ const Workout = (props) => {
         <View style={styles.item}>
             <View style={styles.itemLeft}>
                 <Image
-                    source={require('../assets/transparent-icon.png')}
+                    source={require('../assets/transparent.png')}
                     style={{ resizeMode: 'center', width: 40, height: 40, marginRight: 15 }}
                 />
                 <Text style={styles.itemText}>{props.text}</Text>
