@@ -1,0 +1,9 @@
+{
+    "files.exclude": {
+        "**/.expo": true,
+        "**/.git": true,
+        "**/.old": true,
+        "**/.vscode": true,
+        "**/node_modules": true
+    }
+}

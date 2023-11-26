@@ -2,11 +2,11 @@ import { Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import HomeScreen from '../screens/HomeScreen';
-import SettingsScreen from '../screens/SettingsScreen';
-import ExercisesScreen from '../screens/ExercisesScreen';
-import BodyMeasurementsScreen from '../screens/BodyMeasurementsScreen';
-import ToolsScreen from '../screens/ToolsScreen';
+import ExercisesScreen from '../../screens/navbar/ExercisesScreen';
+import BodyMeasurementsScreen from '../../screens/navbar/BodyMeasurementsScreen';
+import HomeScreen from '../../screens/navbar/HomeScreen';
+import ToolsNavigator from './ToolsNavigator';
+import SettingsScreen from '../../screens/navbar/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,19 +15,19 @@ const getIconName = (routeName, focused) => {
 
     switch (routeName) {
         case 'Ćwiczenia':
-            iconName = focused ? require('../assets/navbar/exercises-active.png') : require('../assets/navbar/exercises-inactive.png');
+            iconName = focused ? require('../../assets/navbar/exercises-active.png') : require('../../assets/navbar/exercises-inactive.png');
             break;
         case 'Metryczka':
-            iconName = focused ? require('../assets/navbar/body-measurements-active.png') : require('../assets/navbar/body-measurements-inactive.png');
+            iconName = focused ? require('../../assets/navbar/body-measurements-active.png') : require('../../assets/navbar/body-measurements-inactive.png');
             break;
         case 'Trening':
-            iconName = focused ? require('../assets/navbar/training-active.png') : require('../assets/navbar/training-inactive.png');
+            iconName = focused ? require('../../assets/navbar/training-active.png') : require('../../assets/navbar/training-inactive.png');
             break;
         case 'Narzędzia':
-            iconName = focused ? require('../assets/navbar/tools-active.png') : require('../assets/navbar/tools-inactive.png');
+            iconName = focused ? require('../../assets/navbar/tools-active.png') : require('../../assets/navbar/tools-inactive.png');
             break;
         case 'Ustawienia':
-            iconName = focused ? require('../assets/navbar/settings-active.png') : require('../assets/navbar/settings-inactive.png');
+            iconName = focused ? require('../../assets/navbar/settings-active.png') : require('../../assets/navbar/settings-inactive.png');
             break;
     }
 
@@ -37,7 +37,7 @@ const getIconName = (routeName, focused) => {
 export default function NavigationBar() {
     return (
         <NavigationContainer>
-            <Tab.Navigator>
+            <Tab.Navigator initialRouteName="Trening">
                 <Tab.Screen
                     name="Ćwiczenia"
                     component={ExercisesScreen}
@@ -101,7 +101,7 @@ export default function NavigationBar() {
                 />
                 <Tab.Screen
                     name="Narzędzia"
-                    component={ToolsScreen}
+                    component={ToolsNavigator}
                     options={({ route }) => ({
                         headerStyle: { backgroundColor: '#376DEC' },
                         tabBarStyle: {

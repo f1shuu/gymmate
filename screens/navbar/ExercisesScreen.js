@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, Keyboard, ScrollView } from 'react-native';
-import Workout from '../components/Workout';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, Keyboard, ScrollView } from 'react-native';
+import { useState } from 'react';
 
-function HomeScreen() {
-    const [workout, setWorkout] = useState();
-    const [workoutItems, setWorkoutItems] = useState([]);
+import Exercise from '../../components/widgets/Exercise';
 
-    const handleAddWorkout = () => {
+export default function ExercisesScreen() {
+    const [exercise, setExercise] = useState();
+    const [exerciseItems, setExerciseItems] = useState([]);
+
+    const handleAddExercise = () => {
         Keyboard.dismiss();
-        setWorkoutItems([...workoutItems, workout]);
-        setWorkout(null);
+        setExerciseItems([...exerciseItems, exercise]);
+        setExercise(null);
     }
 
-    const deleteWorkout = (index) => () => {
-        let itemsCopy = [...workoutItems];
+    const deleteExercise = (index) => () => {
+        let itemsCopy = [...exerciseItems];
         itemsCopy.splice(index, 1);
-        setWorkoutItems(itemsCopy);
+        setExerciseItems(itemsCopy);
     }
 
     return (
@@ -26,13 +27,13 @@ function HomeScreen() {
                 }}
                 keyboardShouldPersistTaps='handled'
             >
-                <View style={styles.workoutsWrapper}>
+                <View style={styles.exercisesWrapper}>
                     <View style={styles.items}>
                         {
-                            workoutItems.map((item, index) => {
+                            exerciseItems.map((item, index) => {
                                 return (
-                                    <TouchableOpacity key={index} onPress={deleteWorkout(index)}>
-                                        <Workout text={item} />
+                                    <TouchableOpacity key={index} onPress={deleteExercise(index)}>
+                                        <Exercise text={item} />
                                     </TouchableOpacity>
                                 )
                             })
@@ -42,10 +43,10 @@ function HomeScreen() {
             </ScrollView>
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={styles.writeWorkoutWrapper}
+                style={styles.writeExerciseWrapper}
             >
-                <TextInput style={styles.input} placeholder={'Dodaj trening...'} value={workout} onChangeText={text => setWorkout(text)} />
-                <TouchableOpacity onPress={() => handleAddWorkout()}>
+                <TextInput style={styles.input} placeholder={'Dodaj ćwiczenie...'} value={exercise} onChangeText={text => setExercise(text)} />
+                <TouchableOpacity onPress={() => handleAddExercise()}>
                     <View style={styles.addWrapper}>
                         <Text style={styles.addText}>+</Text>
                     </View>
@@ -57,16 +58,16 @@ function HomeScreen() {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#d9d9d',
+        backgroundColor: '#141414',
         flex: 1,
     },
-    workoutsWrapper: {
+    exercisesWrapper: {
         paddingHorizontal: 20
     },
     items: {
         marginTop: 20
     },
-    writeWorkoutWrapper: {
+    writeExerciseWrapper: {
         position: 'absolute',
         bottom: 20,
         width: '100%',
@@ -77,26 +78,20 @@ const styles = StyleSheet.create({
     input: {
         paddingVertical: 15,
         paddingHorizontal: 15,
-        width: 250,
-        backgroundColor: 'white',
-        borderRadius: 60,
-        borderWidth: 1,
-        borderColor: '#C0C0C0'
+        width: 275,
+        backgroundColor: '#D9D9D9',
+        borderRadius: 60
     },
     addWrapper: {
         width: 60,
         height: 60,
-        backgroundColor: 'white',
+        backgroundColor: '#386DEC',
         borderRadius: 60,
         justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#C0C0C0'
+        alignItems: 'center'
     },
     addText: {
-        color: '#376DEC',
+        color: 'white',
         fontSize: 24
     }
 })
-
-export default HomeScreen;

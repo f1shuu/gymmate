@@ -1,11 +1,11 @@
-import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-const Workout = (props) => {
+
+export default Exercise = (props) => {
     return (
         <View style={styles.item}>
             <View style={styles.itemLeft}>
                 <Image
-                    source={require('../assets/transparent.png')}
+                    source={require('../../assets/transparent.png')}
                     style={{ resizeMode: 'center', width: 40, height: 40, marginRight: 15 }}
                 />
                 <Text style={styles.itemText}>{props.text}</Text>
@@ -35,5 +35,3 @@ const styles = StyleSheet.create({
         fontSize: 20
     }
 });
-
-export default Workout;

@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { View, Image } from 'react-native';
+import { useEffect } from 'react';
 
 export default function Loader({ navigation }) {
     useEffect(() => {
