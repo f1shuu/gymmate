@@ -1,5 +1,5 @@
 import { Image } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import ExercisesScreen from '../../screens/navbar/ExercisesScreen';
@@ -9,6 +9,14 @@ import ToolsNavigator from './ToolsNavigator';
 import SettingsScreen from '../../screens/navbar/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
+
+const MyTheme = {
+    ...DarkTheme,
+    colors: {
+        ...DarkTheme.colors,
+        background: '#141414'
+    },
+};
 
 const getIconName = (routeName, focused) => {
     let iconName;
@@ -36,8 +44,8 @@ const getIconName = (routeName, focused) => {
 
 export default function NavigationBar() {
     return (
-        <NavigationContainer>
-            <Tab.Navigator initialRouteName="Trening">
+        <NavigationContainer theme={MyTheme}>
+            <Tab.Navigator initialRouteName="Trening" screenOptions={{ cardStyle: { backgroundColor: '#141414' } }}>
                 <Tab.Screen
                     name="Ćwiczenia"
                     component={ExercisesScreen}

@@ -20,13 +20,13 @@ export default function ToolsScreen() {
 
     return (
         <View style={{ backgroundColor: '#171717', flex: 1 }}>
-            <TouchableOpacity onPress={ navigateToBMICalculator }>
+            <TouchableOpacity onPress={navigateToBMICalculator}>
                 <Tool name='Kalkulator BMI' icon={require('../../assets/tools/bmi.png')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={ navigateToCalculator }>
+            <TouchableOpacity onPress={navigateToCalculator}>
                 <Tool name='Kalkulator matematyczny' icon={require('../../assets/tools/calculator.png')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={ navigateToUnitsConverter }>
+            <TouchableOpacity onPress={navigateToUnitsConverter}>
                 <Tool name='Konwerter jednostek' icon={require('../../assets/tools/units-converter.png')} />
             </TouchableOpacity>
         </View>
