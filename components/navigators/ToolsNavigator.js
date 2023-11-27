@@ -4,6 +4,7 @@ import ToolsScreen from '../../screens/navbar/ToolsScreen';
 import BMICalculator from '../../screens/tools/BMICalculator';
 import Calculator from '../../screens/tools/Calculator';
 import UnitsConverter from '../../screens/tools/UnitsConverter';
+import BMIHelp from '../../screens/tools/BMIHelp';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,17 @@ export default function ToolsNavigator() {
                 component={UnitsConverter}
                 options={{
                     headerTitle: 'Konwerter jednostek',
+                    headerTintColor: 'white',
+                    headerStyle: {
+                        backgroundColor: '#141414',
+                        elevation: 0
+                    }
+                }} />
+            <Stack.Screen
+                name='BMIHelp'
+                component={BMIHelp}
+                options={{
+                    headerTitle: 'Czym jest wskaźnik BMI?',
                     headerTintColor: 'white',
                     headerStyle: {
                         backgroundColor: '#141414',
