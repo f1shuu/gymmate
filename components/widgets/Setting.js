@@ -1,14 +1,14 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-export default Setting = (props) => {
-    const { name } = props;
-
+export default Setting = ({ onPress, name }) => {
     return (
-        <View style={styles.container}>
-            <View style={styles.item}>
-                <Text style={styles.name}>{name}</Text>
+        <TouchableOpacity onPress={onPress}>
+            <View style={styles.container}>
+                <View style={styles.item}>
+                    <Text style={styles.name}>{name}</Text>
+                </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 
