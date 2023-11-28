@@ -1,43 +1,35 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-export default Tool = (props) => {
-    const { name, icon } = props;
-
+export default Tool = ({ name, url, onPress }) => {
     return (
-        <View style={styles.container}>
-            <View style={styles.item}>
-                <Image
-                    source={icon}
-                    style={{ width: 128, height: 128, marginRight: 15 }}
-                />
-                <View style={styles.text}>
-                    <Text style={styles.name}>{name}</Text>
-                </View>
-            </View>
-        </View>
-    );
-}
+        <TouchableOpacity onPress={onPress} style={styles.widget}>
+            <Image source={url} style={styles.image} resizeMode='cover' />
+            <Text style={styles.text}>{name}</Text>
+        </TouchableOpacity>
+    )
+};
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#2a2a2a',
-        padding: 32,
+    widget: {
+        flex: 1,
+        flexDirection: 'row',
+        backgroundColor: '#2B2B2B',
         borderRadius: 30,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: 20,
-        marginHorizontal: 10
+        marginBottom: 10
     },
-    item: {
-        flexDirection: 'row',
-        alignItems: 'center',
+    image: {
+        flex: 1,
+        aspectRatio: 1,
+        alignSelf: 'center',
+        margin: 10,
+        borderRadius: 30,
     },
     text: {
-        maxWidth: '70%',
-    },
-    name: {
-        color: '#edf2fb',
+        color: 'white',
+        flex: 1,
+        textAlign: 'center',
+        alignSelf: 'center',
         fontSize: 24,
-    },
+        margin: 10
+    }
 });

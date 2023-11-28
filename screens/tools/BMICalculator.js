@@ -78,6 +78,9 @@ export default function BMICalculator() {
                 onChangeText={(text) => setWeight(text)}
                 value={weight} >
             </TextInput>
+            <TouchableOpacity onPress={navigateToHelp}>
+                <Text style={styles.help}>Czym jest wskaźnik BMI?</Text>
+            </TouchableOpacity>
             <View style={styles.row}>
                 <TouchableOpacity onPress={() => handleCalculateBMI()}>
                     <View style={styles.calculateButton}>
@@ -90,9 +93,7 @@ export default function BMICalculator() {
                     </View>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={navigateToHelp}>
-                <Text style={styles.help}>Czym jest wskaźnik BMI?</Text>
-            </TouchableOpacity>
+
         </View>
     );
 }
@@ -149,6 +150,6 @@ const styles = StyleSheet.create({
     help: {
         color: '#BBBBBB',
         textAlign: 'center',
-        paddingBottom: 250
+        marginTop: 15
     }
 })
