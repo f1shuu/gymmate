@@ -51,7 +51,7 @@ export default function BMICalculator() {
             <TextInput
                 style={styles.input}
                 placeholder={'Wiek'}
-                inputMode='decimal'
+                placeholderTextColor={'#BBBBBB'}
                 maxLength={3}
                 cursorColor='#386DEC'
                 fontSize={16}
@@ -61,7 +61,7 @@ export default function BMICalculator() {
             <TextInput
                 style={styles.input}
                 placeholder={'Wzrost [cm]'}
-                inputMode='decimal'
+                placeholderTextColor={'#BBBBBB'}
                 maxLength={3}
                 cursorColor='#386DEC'
                 fontSize={16}
@@ -71,7 +71,7 @@ export default function BMICalculator() {
             <TextInput
                 style={styles.input}
                 placeholder={'Masa ciała [kg]'}
-                inputMode='decimal'
+                placeholderTextColor={'#BBBBBB'}
                 maxLength={3}
                 cursorColor='#386DEC'
                 fontSize={16}
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         paddingHorizontal: 15,
         width: '95%',
-        backgroundColor: '#D9D9D9',
+        backgroundColor: '#2B2B2B',
         borderRadius: 10,
         marginTop: 10,
         marginHorizontal: 10
