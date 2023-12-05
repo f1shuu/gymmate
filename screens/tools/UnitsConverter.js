@@ -167,25 +167,7 @@ export default function UnitsConverter() {
         } else setGrams('');
     }
 
-    const swapHeightConverters = () => {
-        setHeightConverter((prev) => (!prev));
-    }
-
-    const swapWeightConverters = () => {
-        setWeightConverter((prev) => (!prev));
-    }
-
-    const swapCmCalConverters = () => {
-        setCmCalConverter((prev) => (!prev));
-    }
-
-    const swapMFtConverters = () => {
-        setMFtConverter((prev) => (!prev));
-    }
-
-    const swapGOzConverters = () => {
-        setGOzConverter((prev) => (!prev));
-    }
+    const swapConverter = (setter) => () => setter((prev) => !prev);
 
     return (
         <ScrollView overScrollMode="never" contentContainerStyle={{ flexGrow: 1 }}>
@@ -201,7 +183,7 @@ export default function UnitsConverter() {
                                 onChangeText={cmToFeetAndInches}
                                 keyboardType='numeric' />
                             <Text style={styles.customText}>cm</Text>
-                            <TouchableOpacity onPress={swapHeightConverters}>
+                            <TouchableOpacity onPress={swapConverter(setHeightConverter)}>
                                 <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
@@ -233,7 +215,7 @@ export default function UnitsConverter() {
                                 onChangeText={inchesInputChange}
                                 keyboardType='numeric' />
                             <Text style={styles.customText}>"</Text>
-                            <TouchableOpacity onPress={swapHeightConverters}>
+                            <TouchableOpacity onPress={swapConverter(setHeightConverter)}>
                                 <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
@@ -257,7 +239,7 @@ export default function UnitsConverter() {
                                 onChangeText={kilosToPounds}
                                 keyboardType='numeric' />
                             <Text style={styles.text}>kg </Text>
-                            <TouchableOpacity onPress={swapWeightConverters}>
+                            <TouchableOpacity onPress={swapConverter(setWeightConverter)}>
                                 <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
@@ -277,7 +259,7 @@ export default function UnitsConverter() {
                                 onChangeText={poundsToKilos}
                                 keyboardType='numeric' />
                             <Text style={styles.text}>lbs</Text>
-                            <TouchableOpacity onPress={swapWeightConverters}>
+                            <TouchableOpacity onPress={swapConverter(setWeightConverter)}>
                                 <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
@@ -302,7 +284,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric'
                             />
                             <Text style={styles.text}>cm </Text>
-                            <TouchableOpacity onPress={swapCmCalConverters}>
+                            <TouchableOpacity onPress={swapConverter(setCmCalConverter)}>
                                 <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
@@ -324,7 +306,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric'
                             />
                             <Text style={styles.text}>cal</Text>
-                            <TouchableOpacity onPress={swapCmCalConverters}>
+                            <TouchableOpacity onPress={swapConverter(setCmCalConverter)}>
                                 <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
@@ -348,7 +330,7 @@ export default function UnitsConverter() {
                                 onChangeText={metersToFeet}
                                 keyboardType='numeric' />
                             <Text style={styles.text}>m  </Text>
-                            <TouchableOpacity onPress={swapMFtConverters}>
+                            <TouchableOpacity onPress={swapConverter(setMFtConverter)}>
                                 <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
@@ -368,7 +350,7 @@ export default function UnitsConverter() {
                                 onChangeText={feetToMeters}
                                 keyboardType='numeric' />
                             <Text style={styles.text}>ft </Text>
-                            <TouchableOpacity onPress={swapMFtConverters}>
+                            <TouchableOpacity onPress={swapConverter(setMFtConverter)}>
                                 <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
@@ -391,7 +373,7 @@ export default function UnitsConverter() {
                                 onChangeText={gramsToOunces}
                                 keyboardType='numeric' />
                             <Text style={styles.text}>g  </Text>
-                            <TouchableOpacity onPress={swapGOzConverters}>
+                            <TouchableOpacity onPress={swapConverter(setGOzConverter)}>
                                 <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
@@ -411,7 +393,7 @@ export default function UnitsConverter() {
                                 onChangeText={ouncesToGrams}
                                 keyboardType='numeric' />
                             <Text style={styles.text}>oz </Text>
-                            <TouchableOpacity onPress={swapGOzConverters}>
+                            <TouchableOpacity onPress={swapConverter(setGOzConverter)}>
                                 <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
