@@ -3,7 +3,7 @@ import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import ExercisesScreen from '../../screens/navbar/ExercisesScreen';
-import BodyMeasurementsScreen from '../../screens/navbar/BodyMeasurementsScreen';
+import BodyMeasurementsNavigator from './BodyMeasurementsNavigator';
 import HomeScreen from '../../screens/navbar/HomeScreen';
 import ToolsNavigator from './ToolsNavigator';
 import SettingsScreen from '../../screens/navbar/SettingsScreen';
@@ -68,7 +68,7 @@ export default function NavigationBar() {
                 />
                 <Tab.Screen
                     name="Metryczka"
-                    component={BodyMeasurementsScreen}
+                    component={BodyMeasurementsNavigator}
                     options={({ route }) => ({
                         headerStyle: { backgroundColor: '#376DEC' },
                         tabBarStyle: {
