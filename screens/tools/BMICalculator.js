@@ -55,6 +55,7 @@ export default function BMICalculator() {
                 maxLength={3}
                 cursorColor='#386DEC'
                 fontSize={16}
+                color='white'
                 onChangeText={(text) => setAge(text)}
                 value={age} >
             </TextInput>
@@ -65,6 +66,7 @@ export default function BMICalculator() {
                 maxLength={3}
                 cursorColor='#386DEC'
                 fontSize={16}
+                color='white'
                 onChangeText={(text) => setHeight(text)}
                 value={height} >
             </TextInput>
@@ -75,6 +77,7 @@ export default function BMICalculator() {
                 maxLength={3}
                 cursorColor='#386DEC'
                 fontSize={16}
+                color='white'
                 onChangeText={(text) => setWeight(text)}
                 value={weight} >
             </TextInput>
@@ -84,12 +87,12 @@ export default function BMICalculator() {
             <View style={styles.row}>
                 <TouchableOpacity onPress={() => handleCalculateBMI()}>
                     <View style={styles.calculateButton}>
-                        <Text style={styles.text}>Oblicz</Text>
+                        <Text style={[styles.text, styles.calculateText]}>Oblicz</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => handleClear()}>
                     <View style={styles.clearButton}>
-                        <Text style={styles.text}>Wyczyść</Text>
+                        <Text style={[styles.text, styles.clearText]}>Wyczyść</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         width: '95%',
         backgroundColor: '#2B2B2B',
-        borderRadius: 10,
+        borderRadius: 15,
         marginTop: 10,
         marginHorizontal: 10
     },
@@ -126,8 +129,10 @@ const styles = StyleSheet.create({
     calculateButton: {
         width: 150,
         height: 60,
-        backgroundColor: '#5AFF98',
+        backgroundColor: '#2B2B2B',
         borderRadius: 60,
+        borderColor: '#5AFF98',
+        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 10,
@@ -136,16 +141,24 @@ const styles = StyleSheet.create({
     clearButton: {
         width: 150,
         height: 60,
-        backgroundColor: '#FD5056',
+        backgroundColor: '#2B2B2B',
         borderRadius: 60,
+        borderColor: '#FD5056',
+        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 10,
         marginHorizontal: 10
     },
+    calculateText: {
+        color: '#5AFF98'
+    },
+    clearText: {
+        color: '#FD5056'
+    },
     text: {
-        fontSize: 20,
-        fontWeight: 'bold'
+        fontSize: 16,
+        fontWeight: 'bold',
     },
     help: {
         color: '#BBBBBB',

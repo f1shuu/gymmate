@@ -168,6 +168,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 5,
         height: 85,
-        borderRadius: 50,
+        borderRadius: 50
     },
 })

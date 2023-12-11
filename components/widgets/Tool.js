@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         backgroundColor: '#2B2B2B',
-        borderRadius: 30,
+        borderRadius: 15,
         marginBottom: 10
     },
     image: {
