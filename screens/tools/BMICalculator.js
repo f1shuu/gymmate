@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function BMICalculator() {
     const navigation = useNavigation();
@@ -16,10 +17,10 @@ export default function BMICalculator() {
 
     const handleCalculateBMI = () => {
         if (isNaN(height) || isNaN(weight) || height === '' || weight === '') {
-            setBMIResult('Najpierw uzupełnij wszystkie pola');
+            setBMIResult('Najpierw uzupełnij wszystkie pola.');
             return;
         } else if (height <= 0 || weight <= 0) {
-            setBMIResult('Wprowadzono niepoprawne dane');
+            setBMIResult('Wprowadzono niepoprawne dane.');
             return;
         } else {
             let result;
@@ -50,34 +51,37 @@ export default function BMICalculator() {
             <Text style={styles.result}>{bmiResult}</Text>
             <TextInput
                 style={styles.input}
+                keyboardType='numeric'
                 placeholder={'Wiek'}
-                placeholderTextColor={'#BBBBBB'}
+                placeholderTextColor={'#AAA'}
                 maxLength={3}
                 cursorColor='#386DEC'
                 fontSize={16}
-                color='white'
+                color='#376DEC'
                 onChangeText={(text) => setAge(text)}
                 value={age} >
             </TextInput>
             <TextInput
                 style={styles.input}
+                keyboardType='numeric'
                 placeholder={'Wzrost [cm]'}
-                placeholderTextColor={'#BBBBBB'}
+                placeholderTextColor={'#AAA'}
                 maxLength={3}
                 cursorColor='#386DEC'
                 fontSize={16}
-                color='white'
+                color='#376DEC'
                 onChangeText={(text) => setHeight(text)}
                 value={height} >
             </TextInput>
             <TextInput
                 style={styles.input}
+                keyboardType='numeric'
                 placeholder={'Masa ciała [kg]'}
-                placeholderTextColor={'#BBBBBB'}
+                placeholderTextColor={'#AAA'}
                 maxLength={3}
                 cursorColor='#386DEC'
                 fontSize={16}
-                color='white'
+                color='#376DEC'
                 onChangeText={(text) => setWeight(text)}
                 value={weight} >
             </TextInput>
@@ -85,15 +89,15 @@ export default function BMICalculator() {
                 <Text style={styles.help}>Czym jest wskaźnik BMI?</Text>
             </TouchableOpacity>
             <View style={styles.row}>
-                <TouchableOpacity onPress={() => handleCalculateBMI()}>
-                    <View style={styles.calculateButton}>
-                        <Text style={[styles.text, styles.calculateText]}>Oblicz</Text>
-                    </View>
+                <TouchableOpacity onPress={() => handleCalculateBMI()} style={styles.calculateButton}>
+                    <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.calculateButton}>
+                        <Text style={styles.text}>Oblicz</Text>
+                    </LinearGradient>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleClear()}>
-                    <View style={styles.clearButton}>
-                        <Text style={[styles.text, styles.clearText]}>Wyczyść</Text>
-                    </View>
+                <TouchableOpacity onPress={() => handleClear()} style={styles.clearButton}>
+                    <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.clearButton}>
+                        <Text style={styles.text}>Wyczyść</Text>
+                    </LinearGradient>
                 </TouchableOpacity>
             </View>
 
@@ -103,22 +107,29 @@ export default function BMICalculator() {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#141414',
+        backgroundColor: '#ececec',
         flex: 1
     },
     result: {
-        color: 'white',
+        fontFamily: 'Mona-Sans Bold',
+        color: '#376DEC',
         fontSize: 20,
-        textAlign: 'center'
+        textAlign: 'center',
+        marginTop: 5
     },
     input: {
+        fontFamily: 'Mona-Sans Regular',
+        color: '#376DEC',
         paddingVertical: 15,
         paddingHorizontal: 15,
         width: '95%',
-        backgroundColor: '#2B2B2B',
+        backgroundColor: '#E1E1E1',
+        borderColor: '#376DEC',
+        borderWidth: 1.5,
         borderRadius: 15,
         marginTop: 10,
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        elevation: 10
     },
     row: {
         flex: 1,
@@ -129,39 +140,31 @@ const styles = StyleSheet.create({
     calculateButton: {
         width: 150,
         height: 60,
-        backgroundColor: '#2B2B2B',
         borderRadius: 60,
-        borderColor: '#5AFF98',
-        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10,
-        marginHorizontal: 10
+        marginTop: 5,
+        marginHorizontal: 10,
+        elevation: 10
     },
     clearButton: {
         width: 150,
         height: 60,
-        backgroundColor: '#2B2B2B',
         borderRadius: 60,
-        borderColor: '#FD5056',
-        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10,
-        marginHorizontal: 10
-    },
-    calculateText: {
-        color: '#5AFF98'
-    },
-    clearText: {
-        color: '#FD5056'
+        marginTop: 5,
+        marginHorizontal: 10,
+        elevation: 10
     },
     text: {
+        fontFamily: 'Mona-Sans Bold',
         fontSize: 16,
         fontWeight: 'bold',
     },
     help: {
-        color: '#BBBBBB',
+        fontFamily: 'Mona-Sans Regular',
+        color: '#BBB',
         textAlign: 'center',
         marginTop: 15
     }

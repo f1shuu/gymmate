@@ -413,7 +413,7 @@ export default function UnitsConverter() {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#141414',
+        backgroundColor: '#ECECEC',
         flex: 1,
     },
     converter: {
@@ -424,40 +424,50 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     text: {
-        color: 'white',
-        fontSize: 20,
+        fontFamily: 'Mona-Sans Bold',
+        color: '#376DEC',
+        fontSize: 18,
         textAlign: 'center',
         textAlignVertical: 'center',
         width: 32
     },
     titleText: {
-        color: 'white',
-        fontSize: 20,
+        fontFamily: 'Mona-Sans Bold',
+        color: '#376DEC',
+        fontSize: 18,
         textAlignVertical: 'center',
+        paddingTop: 10,
         paddingLeft: 10
     },
     customText: {
-        color: 'white',
-        fontSize: 20,
+        fontFamily: 'Mona-Sans Bold',
+        color: '#376DEC',
+        fontSize: 18,
         textAlignVertical: 'center',
     },
     input: {
-        color: 'white',
+        fontFamily: 'Mona-Sans Regular',
+        color: '#376DEC',
         fontSize: 16,
         textAlign: 'center',
         paddingVertical: 15,
         paddingHorizontal: 15,
-        backgroundColor: '#2B2B2B',
+        backgroundColor: '#E1E1E1',
+        borderColor: '#376DEC',
+        borderWidth: 1.5,
         borderRadius: 15,
         width: 60
     },
     wideInput: {
-        color: 'white',
+        fontFamily: 'Mona-Sans Regular',
+        color: '#376DEC',
         fontSize: 16,
         textAlign: 'center',
         paddingVertical: 15,
         paddingHorizontal: 15,
-        backgroundColor: '#2B2B2B',
+        backgroundColor: '#E1E1E1',
+        borderColor: '#376DEC',
+        borderWidth: 1.5,
         borderRadius: 15,
         width: 120
     },

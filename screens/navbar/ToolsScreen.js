@@ -29,6 +29,7 @@ export default function ToolsScreen() {
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#ececec',
         flex: 1,
         padding: 10,
         justifyContent: 'space-between'

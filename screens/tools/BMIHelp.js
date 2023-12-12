@@ -33,14 +33,16 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     mainText: {
+        fontFamily: 'Mona-Sans Bold',
         width: '90%',
-        color: 'white',
-        marginBottom: 20,
+        color: '#376DEC',
+        margin: 20,
         textAlign: 'justify'
     },
     minorText: {
+        fontFamily: 'Mona-Sans Regular',
         color: '#BBB',
-        fontSize: 8.5,
+        fontSize: 8,
         textAlign: 'center'
     }
 });

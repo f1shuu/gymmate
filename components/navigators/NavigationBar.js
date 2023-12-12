@@ -1,6 +1,7 @@
 import { Image } from 'react-native';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import ExercisesScreen from '../../screens/navbar/ExercisesScreen';
 import BodyMeasurementsNavigator from './BodyMeasurementsNavigator';
@@ -10,13 +11,27 @@ import SettingsScreen from '../../screens/navbar/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
 
-const MyTheme = {
-    ...DarkTheme,
-    colors: {
-        ...DarkTheme.colors,
-        background: '#141414'
+const customOptions = {
+    headerTitleStyle: {
+        fontFamily: 'Mona-Sans Bold',
+        color: 'white',
+        fontSize: 22
     },
-};
+    headerBackground: () => (
+        <LinearGradient
+            colors={['#6430D2', '#376DEC']}
+            style={{ flex: 1 }}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+        />
+    ),
+    tabBarStyle: {
+        backgroundColor: '#F6F6F6',
+        height: 60,
+        paddingTop: 20
+    },
+    tabBarLabel: '',
+}
 
 const getIconName = (routeName, focused) => {
     let iconName;
@@ -44,23 +59,18 @@ const getIconName = (routeName, focused) => {
 
 export default function NavigationBar() {
     return (
-        <NavigationContainer theme={MyTheme}>
+        <NavigationContainer>
             <Tab.Navigator initialRouteName="Trening" screenOptions={{ cardStyle: { backgroundColor: '#141414' } }}>
                 <Tab.Screen
                     name="Ćwiczenia"
                     component={ExercisesScreen}
                     options={({ route }) => ({
-                        headerStyle: { backgroundColor: '#376DEC' },
-                        tabBarStyle: {
-                            backgroundColor: '#212121',
-                            height: 60
-                        },
-                        tabBarLabel: 'Ćwiczenia',
-                        tabBarLabelStyle: { marginBottom: 5 },
+                        ...customOptions,
                         tabBarIcon: ({ focused }) => (
                             <Image source={getIconName(route.name, focused)} style={{
-                                width: 25,
-                                height: 25,
+                                width: 30,
+                                height: 30,
+                                marginBottom: 5
                             }} />
                         )
                     })
@@ -70,17 +80,12 @@ export default function NavigationBar() {
                     name="Metryczka"
                     component={BodyMeasurementsNavigator}
                     options={({ route }) => ({
-                        headerStyle: { backgroundColor: '#376DEC' },
-                        tabBarStyle: {
-                            backgroundColor: '#212121',
-                            height: 60
-                        },
-                        tabBarLabel: 'Metryczka',
-                        tabBarLabelStyle: { marginBottom: 5 },
+                        ...customOptions,
                         tabBarIcon: ({ focused }) => (
                             <Image source={getIconName(route.name, focused)} style={{
-                                width: 25,
-                                height: 25,
+                                width: 30,
+                                height: 30,
+                                marginBottom: 5
                             }} />
                         )
                     })
@@ -90,17 +95,11 @@ export default function NavigationBar() {
                     name="Trening"
                     component={HomeScreen}
                     options={({ route }) => ({
-                        headerStyle: { backgroundColor: '#376DEC' },
-                        tabBarStyle: {
-                            backgroundColor: '#212121',
-                            height: 60
-                        },
-                        tabBarLabel: 'Trening',
-                        tabBarLabelStyle: { marginBottom: 5 },
+                        ...customOptions,
                         tabBarIcon: ({ focused }) => (
                             <Image source={getIconName(route.name, focused)} style={{
-                                width: 45,
-                                height: 45,
+                                width: 55,
+                                height: 55,
                                 marginBottom: 15
                             }} />
                         )
@@ -111,17 +110,12 @@ export default function NavigationBar() {
                     name="Narzędzia"
                     component={ToolsNavigator}
                     options={({ route }) => ({
-                        headerStyle: { backgroundColor: '#376DEC' },
-                        tabBarStyle: {
-                            backgroundColor: '#212121',
-                            height: 60
-                        },
-                        tabBarLabel: 'Narzędzia',
-                        tabBarLabelStyle: { marginBottom: 5 },
+                        ...customOptions,
                         tabBarIcon: ({ focused }) => (
                             <Image source={getIconName(route.name, focused)} style={{
-                                width: 25,
-                                height: 25,
+                                width: 30,
+                                height: 30,
+                                marginBottom: 5
                             }} />
                         )
                     })
@@ -131,17 +125,12 @@ export default function NavigationBar() {
                     name="Ustawienia"
                     component={SettingsScreen}
                     options={({ route }) => ({
-                        headerStyle: { backgroundColor: '#376DEC' },
-                        tabBarStyle: {
-                            backgroundColor: '#212121',
-                            height: 60
-                        },
-                        tabBarLabel: 'Ustawienia',
-                        tabBarLabelStyle: { marginBottom: 5 },
+                        ...customOptions,
                         tabBarIcon: ({ focused }) => (
                             <Image source={getIconName(route.name, focused)} style={{
-                                width: 25,
-                                height: 25,
+                                width: 30,
+                                height: 30,
+                                marginBottom: 5
                             }} />
                         )
                     })

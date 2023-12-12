@@ -123,7 +123,7 @@ export default function Calculator() {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#141414',
+        backgroundColor: '#ECECEC',
         flex: 1
     },
     buttons: {
@@ -135,14 +135,14 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     input: {
-        color: 'white',
+        color: '#376DEC',
         fontSize: 28,
         textAlign: 'right',
         paddingRight: 20,
         paddingTop: 5
     },
     output: {
-        color: 'white',
+        color: '#376DEC',
         fontSize: 44,
         textAlign: 'right',
         paddingTop: 10,
@@ -150,24 +150,28 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     delete: {
+        fontFamily: 'Mona-Sans Bold',
         color: '#FD5056',
         fontSize: 36
     },
     symbols: {
-        color: '#5AFF98',
+        fontFamily: 'Mona-Sans Bold',
+        color: '#2ECC71',
         fontSize: 36
     },
     numbers: {
-        color: 'white',
+        fontFamily: 'Mona-Sans Bold',
+        color: '#376DEC',
         fontSize: 36
     },
     button: {
         flex: 1,
-        backgroundColor: '#2B2B2B',
+        backgroundColor: '#E1E1E1',
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 5,
         height: 85,
-        borderRadius: 50
+        borderRadius: 15,
+        elevation: 10
     },
 })

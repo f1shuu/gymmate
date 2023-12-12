@@ -1,10 +1,13 @@
 import { Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default Tool = ({ name, url, onPress }) => {
     return (
-        <TouchableOpacity onPress={onPress} style={styles.widget}>
-            <Image source={url} style={styles.image} resizeMode='cover' />
-            <Text style={styles.text}>{name}</Text>
+        <TouchableOpacity onPress={onPress} style={[styles.widget, {margin: 10}]}>
+            <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.widget}>
+                <Image source={url} style={styles.image} resizeMode='cover' />
+                <Text style={styles.text}>{name}</Text>
+            </LinearGradient>
         </TouchableOpacity>
     )
 };
@@ -15,21 +18,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: '#2B2B2B',
         borderRadius: 15,
-        marginBottom: 10
+        elevation: 10
     },
     image: {
         flex: 1,
         aspectRatio: 1,
         alignSelf: 'center',
-        margin: 10,
-        borderRadius: 30,
+        margin: 10
     },
     text: {
+        fontFamily: 'Mona-Sans Bold',
         color: 'white',
         flex: 1,
         textAlign: 'center',
         alignSelf: 'center',
-        fontSize: 24,
+        fontSize: 20,
         margin: 10
     }
 });

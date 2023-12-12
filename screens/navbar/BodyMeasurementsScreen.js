@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function BodyMeasurementsScreen() {
     const navigation = useNavigation();
@@ -50,18 +51,20 @@ export default function BodyMeasurementsScreen() {
     const renderHeader = (section, _, isActive) => {
         const url = imageMapping[section.title];
         return (
-            <View style={styles.header} >
-                <Image
-                    source={url}
-                    style={{ width: 60, height: 60, margin: 5 }}
-                />
+            <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.header}>
+                <View style={styles.imageBackground}>
+                    <Image
+                        source={url}
+                        style={{ width: 60, height: 60, margin: 5 }}
+                    />
+                </View>
                 <Text style={styles.headerText}>{section.title}</Text>
                 <Icon
                     name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
                     size={32}
                     color={'white'}
                 />
-            </View>
+            </LinearGradient>
         );
     };
 
@@ -87,36 +90,45 @@ export default function BodyMeasurementsScreen() {
     return (
         <View style={styles.container}>
             <Accordion
-                underlayColor='#141414'
+                underlayColor='#ececec'
                 sections={data}
                 activeSections={activeSections}
                 renderHeader={renderHeader}
                 renderContent={renderContent}
                 onChange={updateSections}
             />
-            <TouchableOpacity style={styles.add} onPress={navigateToAddBodyMeasurement}>
-                <Text style={styles.text}>+</Text>
-            </TouchableOpacity>
+            <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.add}>
+                <TouchableOpacity onPress={navigateToAddBodyMeasurement}>
+                    <Text style={styles.text}>+</Text>
+                </TouchableOpacity>
+            </LinearGradient>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#141414',
+        backgroundColor: '#ececec',
         padding: 16,
         flex: 1,
+    },
+    imageBackground: {
+        backgroundColor: '#ececec',
+        borderRadius: 15,
+        elevation: 10
     },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#2B2B2B',
         borderRadius: 15,
         paddingHorizontal: 8,
         paddingVertical: 10,
-        marginBottom: 10
+        marginTop: 10,
+        marginBottom: 5,
+        elevation: 10
     },
     headerText: {
+        fontFamily: 'Mona-Sans Bold',
         color: 'white',
         fontSize: 20,
         marginLeft: 10,
@@ -131,20 +143,21 @@ const styles = StyleSheet.create({
         borderRadius: 15
     },
     measurementText: {
+        fontFamily: 'Mona-Sans Regular',
         color: 'white',
         fontSize: 16,
     },
     add: {
-        backgroundColor: '#2B2B2B',
-        width: 70,
+        width: 80,
+        height: 80,
         borderRadius: 50,
         marginTop: 'auto',
         marginLeft: 'auto'
     },
     text: {
+        fontFamily: 'Mona-Sans Regular',
         color: '#5AFF98',
         textAlign: 'center',
-        paddingBottom: 3,
-        fontSize: 50
+        fontSize: 64
     }
 });
