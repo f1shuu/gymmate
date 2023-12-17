@@ -1,9 +1,10 @@
 import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useState, useCallback } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function BodyMeasurementsScreen() {
     const navigation = useNavigation();
@@ -13,32 +14,57 @@ export default function BodyMeasurementsScreen() {
     }
 
     const [activeSections, setActiveSections] = useState([]);
+    
+    const [data, setData] = useState([]);
 
-    const getFormattedDate = () => {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        return (`${day}.${month}.${year} r.`);
-    }
-
-    const [data, setData] = useState([
-        { title: 'Masa ciała', data: ['81 kg' + ' | ' + getFormattedDate(), '80 kg' + ' | ' + getFormattedDate(), '79 kg' + ' | ' + getFormattedDate()] },
-        { title: 'Obwód talii', data: ['50 cm' + ' | ' + getFormattedDate(), '51 cm' + ' | ' + getFormattedDate(), '52 cm' + ' | ' + getFormattedDate()] },
-        { title: 'Obwód klatki piersiowej', data: ['60 cm' + ' | ' + getFormattedDate(), '61 cm' + ' | ' + getFormattedDate(), '62 cm' + ' | ' + getFormattedDate()] },
-        { title: 'Obwód bicepsa', data: ['20 cm' + ' | ' + getFormattedDate(), '21 cm' + ' | ' + getFormattedDate(), '22 cm' + ' | ' + getFormattedDate()] },
-    ]);
-
-    const handleDeleteMeasurement = (measurementType, index) => {
-        setData((prevData) => {
-            const measurementTypeIndex = prevData.findIndex((item) => item.title === measurementType);
-            if (measurementTypeIndex !== -1) {
-                const newData = [...prevData];
-                newData[measurementTypeIndex].data.splice(index, 1);
-                return newData;
+    const retrieveData = async () => {
+        try {
+            const storedData = await AsyncStorage.getItem('data');
+            if (storedData) {
+                const parsedData = JSON.parse(storedData);
+                setData(parsedData);
+            } else {
+                setData([])
             }
-            return prevData;
-        });
+        } catch (error) {
+            console.error('Error retrieving data from AsyncStorage: ', error);
+        }
+    };
+
+    useFocusEffect(
+        useCallback(() => {
+            retrieveData();
+            renderHeader();
+            renderContent();
+        }, [])
+    );
+
+    const deleteMeasurement = async (category, index) => {
+        try {
+            const existingData = await AsyncStorage.getItem('data');
+            const parsedData = existingData ? JSON.parse(existingData) : [];
+            const categoryIndex = parsedData.findIndex(entry => entry.category === category);
+
+            if (categoryIndex !== -1) {
+                const elementIndex = index;
+                const updatedData = [
+                    ...parsedData.slice(0, categoryIndex),
+                    {
+                        ...parsedData[categoryIndex],
+                        data: [
+                            ...parsedData[categoryIndex].data.slice(0, elementIndex),
+                            ...parsedData[categoryIndex].data.slice(elementIndex + 1),
+                        ],
+                    },
+                    ...parsedData.slice(categoryIndex + 1),
+                ];
+                if (updatedData[categoryIndex].data.length === 0) updatedData.splice(categoryIndex, 1);
+                await AsyncStorage.setItem('data', JSON.stringify(updatedData, null, 2));
+                retrieveData();
+            }
+        } catch (error) {
+            console.error('Error deleting measurement from AsyncStorage:', error);
+        }
     };
 
     const imageMapping = {
@@ -49,38 +75,48 @@ export default function BodyMeasurementsScreen() {
     };
 
     const renderHeader = (section, _, isActive) => {
-        const url = imageMapping[section.title];
-        return (
-            <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.header}>
-                <View style={styles.imageBackground}>
-                    <Image
-                        source={url}
-                        style={{ width: 60, height: 60, margin: 5 }}
+        let url;
+        if (section) {
+            url = imageMapping[section.category];
+            return (
+                <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.header}>
+                    <View style={styles.imageBackground}>
+                        <Image source={url} style={{ width: 60, height: 60, margin: 5 }} />
+                    </View>
+                    <Text style={styles.headerText}>{section.category}</Text>
+                    <Icon
+                        name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+                        size={32}
+                        color={'white'}
                     />
-                </View>
-                <Text style={styles.headerText}>{section.title}</Text>
-                <Icon
-                    name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
-                    size={32}
-                    color={'white'}
-                />
-            </LinearGradient>
-        );
+                </LinearGradient>
+            );
+        } else {
+            url = '';
+            return null;
+        }
     };
 
     const renderContent = (section) => {
-        return (
-            <View>
-                {section.data.map((measurement, index) => (
-                    <View key={index} style={styles.measurementItem}>
-                        <Text style={styles.measurementText}>{measurement}</Text>
-                        <TouchableOpacity onPress={() => handleDeleteMeasurement(section.title, index)}>
-                            <Icon name="delete" size={30} color="white" />
-                        </TouchableOpacity>
-                    </View>
-                ))}
-            </View>
-        );
+        if (section) {
+            return (
+                <View>
+                    {section.data && section.data.map((measurement, index) => (
+                        <View key={index} style={styles.measurementItem}>
+                            <Text style={styles.measurementText}>
+                                {measurement.value} {measurement.unit}
+                            </Text>
+                            <Text style={styles.measurementText}>
+                                {measurement.date}
+                            </Text>
+                            <TouchableOpacity onPress={() => deleteMeasurement(section.category, index)}>
+                                <Icon name="delete" size={30} color="white" />
+                            </TouchableOpacity>
+                        </View>
+                    ))}
+                </View>
+            );
+        } else return null;
     };
 
     const updateSections = (activeSections) => {
@@ -90,7 +126,7 @@ export default function BodyMeasurementsScreen() {
     return (
         <View style={styles.container}>
             <Accordion
-                underlayColor='#ececec'
+                underlayColor='#ECECEC'
                 sections={data}
                 activeSections={activeSections}
                 renderHeader={renderHeader}
@@ -108,12 +144,12 @@ export default function BodyMeasurementsScreen() {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#ececec',
+        backgroundColor: '#ECECEC',
         padding: 16,
         flex: 1,
     },
     imageBackground: {
-        backgroundColor: '#ececec',
+        backgroundColor: '#ECECEC',
         borderRadius: 15,
         elevation: 10
     },
@@ -128,14 +164,14 @@ const styles = StyleSheet.create({
         elevation: 10
     },
     headerText: {
-        fontFamily: 'Mona-Sans Bold',
+        fontFamily: 'msb',
         color: 'white',
         fontSize: 20,
         marginLeft: 10,
     },
     measurementItem: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center',
         marginBottom: 5,
         backgroundColor: '#376DEC',
@@ -143,7 +179,7 @@ const styles = StyleSheet.create({
         borderRadius: 15
     },
     measurementText: {
-        fontFamily: 'Mona-Sans Regular',
+        fontFamily: 'msr',
         color: 'white',
         fontSize: 16,
     },
@@ -155,7 +191,7 @@ const styles = StyleSheet.create({
         marginLeft: 'auto'
     },
     text: {
-        fontFamily: 'Mona-Sans Regular',
+        fontFamily: 'msr',
         color: '#5AFF98',
         textAlign: 'center',
         fontSize: 64

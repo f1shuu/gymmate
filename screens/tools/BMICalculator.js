@@ -107,18 +107,18 @@ export default function BMICalculator() {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#ececec',
+        backgroundColor: '#ECECEC',
         flex: 1
     },
     result: {
-        fontFamily: 'Mona-Sans Bold',
+        fontFamily: 'msb',
         color: '#376DEC',
         fontSize: 20,
         textAlign: 'center',
         marginTop: 5
     },
     input: {
-        fontFamily: 'Mona-Sans Regular',
+        fontFamily: 'msr',
         color: '#376DEC',
         paddingVertical: 15,
         paddingHorizontal: 15,
@@ -158,12 +158,12 @@ const styles = StyleSheet.create({
         elevation: 10
     },
     text: {
-        fontFamily: 'Mona-Sans Bold',
+        fontFamily: 'msb',
         fontSize: 16,
         fontWeight: 'bold',
     },
     help: {
-        fontFamily: 'Mona-Sans Regular',
+        fontFamily: 'msr',
         color: '#BBB',
         textAlign: 'center',
         marginTop: 15

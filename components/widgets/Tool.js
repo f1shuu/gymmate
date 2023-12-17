@@ -3,8 +3,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default Tool = ({ name, url, onPress }) => {
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.widget, {margin: 10}]}>
-            <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.widget}>
+        <TouchableOpacity onPress={onPress} style={[styles.widget, { margin: 10 }]}>
+            <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.widget} onPress={onPress} >
                 <Image source={url} style={styles.image} resizeMode='cover' />
                 <Text style={styles.text}>{name}</Text>
             </LinearGradient>
@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
     widget: {
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: '#2B2B2B',
         borderRadius: 15,
         elevation: 10
     },
@@ -27,7 +26,7 @@ const styles = StyleSheet.create({
         margin: 10
     },
     text: {
-        fontFamily: 'Mona-Sans Bold',
+        fontFamily: 'msb',
         color: 'white',
         flex: 1,
         textAlign: 'center',

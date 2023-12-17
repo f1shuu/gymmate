@@ -150,17 +150,17 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     delete: {
-        fontFamily: 'Mona-Sans Bold',
+        fontFamily: 'msb',
         color: '#FD5056',
         fontSize: 36
     },
     symbols: {
-        fontFamily: 'Mona-Sans Bold',
+        fontFamily: 'msb',
         color: '#2ECC71',
         fontSize: 36
     },
     numbers: {
-        fontFamily: 'Mona-Sans Bold',
+        fontFamily: 'msb',
         color: '#376DEC',
         fontSize: 36
     },

@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 const customOptions = {
     headerTintColor: 'white',
     headerTitleStyle: {
-        fontFamily: 'Mona-Sans Bold',
+        fontFamily: 'msb',
         color: 'white',
         fontSize: 18
     },

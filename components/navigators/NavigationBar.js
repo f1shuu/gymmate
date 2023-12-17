@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator();
 
 const customOptions = {
     headerTitleStyle: {
-        fontFamily: 'Mona-Sans Bold',
+        fontFamily: 'msb',
         color: 'white',
         fontSize: 22
     },

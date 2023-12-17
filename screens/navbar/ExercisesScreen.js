@@ -8,7 +8,7 @@ export default function ExercisesScreen() {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#ececec',
+        backgroundColor: '#ECECEC',
         flex: 1
     }
 })

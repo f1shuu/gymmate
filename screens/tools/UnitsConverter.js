@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     text: {
-        fontFamily: 'Mona-Sans Bold',
+        fontFamily: 'msb',
         color: '#376DEC',
         fontSize: 18,
         textAlign: 'center',
@@ -432,7 +432,7 @@ const styles = StyleSheet.create({
         width: 32
     },
     titleText: {
-        fontFamily: 'Mona-Sans Bold',
+        fontFamily: 'msb',
         color: '#376DEC',
         fontSize: 18,
         textAlignVertical: 'center',
@@ -440,13 +440,13 @@ const styles = StyleSheet.create({
         paddingLeft: 10
     },
     customText: {
-        fontFamily: 'Mona-Sans Bold',
+        fontFamily: 'msb',
         color: '#376DEC',
         fontSize: 18,
         textAlignVertical: 'center',
     },
     input: {
-        fontFamily: 'Mona-Sans Regular',
+        fontFamily: 'msr',
         color: '#376DEC',
         fontSize: 16,
         textAlign: 'center',
@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
         width: 60
     },
     wideInput: {
-        fontFamily: 'Mona-Sans Regular',
+        fontFamily: 'msr',
         color: '#376DEC',
         fontSize: 16,
         textAlign: 'center',

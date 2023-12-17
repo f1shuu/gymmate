@@ -33,14 +33,14 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     mainText: {
-        fontFamily: 'Mona-Sans Bold',
+        fontFamily: 'msb',
         width: '90%',
         color: '#376DEC',
         margin: 20,
         textAlign: 'justify'
     },
     minorText: {
-        fontFamily: 'Mona-Sans Regular',
+        fontFamily: 'msr',
         color: '#BBB',
         fontSize: 8,
         textAlign: 'center'
