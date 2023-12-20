@@ -1,22 +1,31 @@
-import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import * as SplashScreen from 'expo-splash-screen';
-
+import { useEffect, useState } from 'react';
 import useFonts from './hooks/useFonts';
+
 import NavigationBar from './components/navigators/NavigationBar';
 
-SplashScreen.preventAutoHideAsync();
-
 export default function App() {
-  const [isReady, setIsReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const loadFonts = async () => {
-      await useFonts();
-      await SplashScreen.hideAsync();
-      setIsReady(true);
+      await useFonts({
+        'msb': require('./assets/fonts/Mona-Sans-Bold.ttf'),
+        'msr': require('./assets/fonts/Mona-Sans-Regular.ttf'),
+      });
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setIsLoading(false);
     };
     loadFonts();
   }, []);
-  if (!isReady) return <View />;
-  return <NavigationBar />;
+
+  return (
+    <>
+      {isLoading ? (
+        <View />
+      ) : (
+        <NavigationBar />
+      )}
+    </>
+  );
 }

@@ -89,13 +89,23 @@ export default function BMICalculator() {
                 <Text style={styles.help}>Czym jest wskaźnik BMI?</Text>
             </TouchableOpacity>
             <View style={styles.row}>
-                <TouchableOpacity onPress={() => handleCalculateBMI()} style={styles.calculateButton}>
-                    <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.calculateButton}>
+                <TouchableOpacity onPress={() => handleCalculateBMI()} style={styles.button}>
+                    <LinearGradient
+                        colors={['#6430D2', '#376DEC']}
+                        start={{ x: 0, y: 0.5 }}
+                        end={{ x: 1, y: 0.5 }}
+                        style={styles.button}
+                    >
                         <Text style={styles.text}>Oblicz</Text>
                     </LinearGradient>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleClear()} style={styles.clearButton}>
-                    <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.clearButton}>
+                <TouchableOpacity onPress={() => handleClear()} style={styles.button}>
+                    <LinearGradient
+                        colors={['#6430D2', '#376DEC']}
+                        start={{ x: 0, y: 0.5 }}
+                        end={{ x: 1, y: 0.5 }}
+                        style={styles.button}
+                    >
                         <Text style={styles.text}>Wyczyść</Text>
                     </LinearGradient>
                 </TouchableOpacity>
@@ -137,17 +147,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         marginTop: 10
     },
-    calculateButton: {
-        width: 150,
-        height: 60,
-        borderRadius: 60,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 5,
-        marginHorizontal: 10,
-        elevation: 10
-    },
-    clearButton: {
+    button: {
         width: 150,
         height: 60,
         borderRadius: 60,
@@ -158,9 +158,9 @@ const styles = StyleSheet.create({
         elevation: 10
     },
     text: {
+        color: 'white',
         fontFamily: 'msb',
         fontSize: 16,
-        fontWeight: 'bold',
     },
     help: {
         fontFamily: 'msr',

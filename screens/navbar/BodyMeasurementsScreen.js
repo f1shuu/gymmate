@@ -5,6 +5,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Modal from "react-native-modal";
 
 export default function BodyMeasurementsScreen() {
     const navigation = useNavigation();
@@ -14,8 +15,16 @@ export default function BodyMeasurementsScreen() {
     }
 
     const [activeSections, setActiveSections] = useState([]);
-    
+
     const [data, setData] = useState([]);
+    const [isData, setIsData] = useState(false);
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [modalData, setModalData] = useState({});
+    const handleModal = (category, index) => {
+        setModalData({ category, index });
+        setIsModalVisible(!isModalVisible);
+    }
 
     const retrieveData = async () => {
         try {
@@ -23,8 +32,11 @@ export default function BodyMeasurementsScreen() {
             if (storedData) {
                 const parsedData = JSON.parse(storedData);
                 setData(parsedData);
+                if (parsedData.length === 0) setIsData(false);
+                else setIsData(true);
             } else {
-                setData([])
+                setData([]);
+                setIsData(false);
             }
         } catch (error) {
             console.error('Error retrieving data from AsyncStorage: ', error);
@@ -61,6 +73,7 @@ export default function BodyMeasurementsScreen() {
                 if (updatedData[categoryIndex].data.length === 0) updatedData.splice(categoryIndex, 1);
                 await AsyncStorage.setItem('data', JSON.stringify(updatedData, null, 2));
                 retrieveData();
+                setIsModalVisible(!isModalVisible);
             }
         } catch (error) {
             console.error('Error deleting measurement from AsyncStorage:', error);
@@ -79,7 +92,11 @@ export default function BodyMeasurementsScreen() {
         if (section) {
             url = imageMapping[section.category];
             return (
-                <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.header}>
+                <LinearGradient
+                    colors={['#6430D2', '#376DEC']}
+                    start={{ x: 0, y: 0.5 }}
+                    end={{ x: 1, y: 0.5 }}
+                    style={styles.header}>
                     <View style={styles.imageBackground}>
                         <Image source={url} style={{ width: 60, height: 60, margin: 5 }} />
                     </View>
@@ -109,7 +126,7 @@ export default function BodyMeasurementsScreen() {
                             <Text style={styles.measurementText}>
                                 {measurement.date}
                             </Text>
-                            <TouchableOpacity onPress={() => deleteMeasurement(section.category, index)}>
+                            <TouchableOpacity onPress={() => handleModal(section.category, index)}>
                                 <Icon name="delete" size={30} color="white" />
                             </TouchableOpacity>
                         </View>
@@ -125,19 +142,54 @@ export default function BodyMeasurementsScreen() {
 
     return (
         <View style={styles.container}>
-            <Accordion
-                underlayColor='#ECECEC'
-                sections={data}
-                activeSections={activeSections}
-                renderHeader={renderHeader}
-                renderContent={renderContent}
-                onChange={updateSections}
-            />
-            <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.add}>
+            {isData ? (
+                <Accordion
+                    underlayColor='#ECECEC'
+                    sections={data}
+                    activeSections={activeSections}
+                    renderHeader={renderHeader}
+                    renderContent={renderContent}
+                    onChange={updateSections}
+                />
+            ) : (
+                <Text style={styles.emptyText}>Nie masz jeszcze żadnych pomiarów. Użyj przycisku w prawym dolnym rogu ekranu, aby dodać swój pierwszy.</Text>
+            )}
+
+            <LinearGradient
+                colors={['#6430D2', '#376DEC']}
+                start={{ x: 0, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+                style={styles.add}
+            >
                 <TouchableOpacity onPress={navigateToAddBodyMeasurement}>
                     <Text style={styles.text}>+</Text>
                 </TouchableOpacity>
             </LinearGradient>
+            <Image source={require('../../assets/background.png')} style={styles.image} />
+            <Modal isVisible={isModalVisible}>
+                <View>
+                    <Text style={[styles.buttonText, { fontSize: 22, paddingBottom: 10 }]}>Czy na pewno chcesz usunąć ten pomiar?</Text>
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <TouchableOpacity onPress={() => deleteMeasurement(modalData.category, modalData.index)} style={styles.button}>
+                            <LinearGradient
+                                colors={['#6430D2', '#376DEC']}
+                                start={{ x: 0, y: 0.5 }}
+                                end={{ x: 1, y: 0.5 }}
+                                style={styles.button}>
+                                <Text style={styles.buttonText}>Tak</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => handleModal()} style={styles.button}>
+                            <LinearGradient colors={['#6430D2', '#376DEC']}
+                                start={{ x: 0, y: 0.5 }}
+                                end={{ x: 1, y: 0.5 }}
+                                style={styles.button}>
+                                <Text style={styles.buttonText}>Anuluj</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -146,7 +198,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#ECECEC',
         padding: 16,
-        flex: 1,
+        flex: 1
     },
     imageBackground: {
         backgroundColor: '#ECECEC',
@@ -188,12 +240,46 @@ const styles = StyleSheet.create({
         height: 80,
         borderRadius: 50,
         marginTop: 'auto',
-        marginLeft: 'auto'
+        marginLeft: 'auto',
+        elevation: 10,
     },
     text: {
         fontFamily: 'msr',
         color: '#5AFF98',
         textAlign: 'center',
         fontSize: 64
+    },
+    emptyText: {
+        fontFamily: 'msb',
+        color: '#D9D9D9',
+        fontSize: 32,
+        textAlign: 'center',
+        paddingTop: 40,
+        paddingHorizontal: 25
+    },
+    image: {
+        zIndex: -1,
+        width: 400,
+        height: 400,
+        resizeMode: 'contain',
+        position: 'absolute',
+        bottom: -90,
+        right: -90,
+    },
+    button: {
+        width: 150,
+        height: 60,
+        borderRadius: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 5,
+        marginHorizontal: 10,
+        elevation: 10
+    },
+    buttonText: {
+        fontFamily: 'msb',
+        color: 'white',
+        fontSize: 20,
+        textAlign: 'center'
     }
 });

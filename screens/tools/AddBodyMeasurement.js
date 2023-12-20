@@ -4,6 +4,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Modal from "react-native-modal";
 
 export default function AddBodyMeasurement() {
     const [category, setCategory] = useState('Wybierz kategorię...');
@@ -12,6 +13,9 @@ export default function AddBodyMeasurement() {
     const [isFocus, setIsFocus] = useState(false);
 
     const navigation = useNavigation();
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const handleModal = () => setIsModalVisible(() => !isModalVisible);
 
     const categories = [
         { value: 'Masa ciała' },
@@ -29,42 +33,32 @@ export default function AddBodyMeasurement() {
         const year = today.getFullYear();
         const month = String(today.getMonth() + 1).padStart(2, '0');
         const day = String(today.getDate()).padStart(2, '0');
-        
+
         return (`${day}.${month}.${year} r.`);
     }
 
     const saveMeasurement = async (category, value, unit) => {
-        try {
-            const existingData = await AsyncStorage.getItem('data');
-            const measurements = existingData ? JSON.parse(existingData) : [];
-            const date = getFormattedDate();
-            const categoryIndex = measurements.findIndex(entry => entry.category === category);
+        if (category === 'Wybierz kategorię...' || !value) {
+            handleModal()
+        } else {
+            try {
+                const existingData = await AsyncStorage.getItem('data');
+                const measurements = existingData ? JSON.parse(existingData) : [];
+                const date = getFormattedDate();
+                const categoryIndex = measurements.findIndex(entry => entry.category === category);
 
-            if (categoryIndex !== -1) measurements[categoryIndex].data.push({ value, unit, date });
-            else measurements.push({ category, data: [{ value, unit, date }] });
-            await AsyncStorage.setItem('data', JSON.stringify(measurements, null, 2));
-            navigation.navigate('BodyMeasurementsScreen');
-        } catch (error) {
-            console.error('Error saving measurement: ', error);
+                if (categoryIndex !== -1) measurements[categoryIndex].data.push({ value, unit, date });
+                else measurements.push({ category, data: [{ value, unit, date }] });
+                await AsyncStorage.setItem('data', JSON.stringify(measurements, null, 2));
+                navigation.navigate('BodyMeasurementsScreen');
+            } catch (error) {
+                console.error('Error saving measurement: ', error);
+            }
         }
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Wartość pomiaru</Text>
-            <View style={styles.row}>
-                <TextInput
-                    style={styles.input}
-                    maxLength={3}
-                    keyboardType='numeric'
-                    onChangeText={handleTextChange}
-                />
-                <TextInput
-                    style={[styles.input, { width: '20%' }]}
-                    value={unit}
-                    editable={false}
-                />
-            </View>
             <Text style={styles.text}>Kategoria pomiaru</Text>
             <View style={styles.row}>
                 <Dropdown
@@ -87,14 +81,49 @@ export default function AddBodyMeasurement() {
                     }}
                 />
             </View>
+            <Text style={styles.text}>Wartość pomiaru</Text>
+            <View style={styles.row}>
+                <TextInput
+                    style={styles.input}
+                    maxLength={3}
+                    keyboardType='numeric'
+                    onChangeText={handleTextChange}
+                />
+                <TextInput
+                    style={[styles.input, { width: '20%' }]}
+                    value={unit}
+                    editable={false}
+                />
+            </View>
             <Text style={styles.reminder}>Data dodania pomiaru zostanie zapisana automatycznie.</Text>
-            <View style={styles.button}>
-                <TouchableOpacity onPress={() => saveMeasurement(category, value, unit)} style={styles.saveButton}>
-                    <LinearGradient colors={['#6430D2', '#376DEC']} style={styles.saveButton}>
+            <View style={{ alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => saveMeasurement(category, value, unit)} style={styles.button}>
+                    <LinearGradient
+                        colors={['#6430D2', '#376DEC']}
+                        start={{ x: 0, y: 0.5 }}
+                        end={{ x: 1, y: 0.5 }}
+                        style={styles.button}
+                    >
                         <Text style={styles.buttonText}>Zapisz</Text>
                     </LinearGradient>
                 </TouchableOpacity>
             </View>
+            <Modal isVisible={isModalVisible}>
+                <View style={{ paddingTop: 300 }}>
+                    <Text style={[styles.buttonText, { paddingBottom: 10 }]}>Najpierw dodaj odpowiednią wartość pomiaru i wybierz kategorię.</Text>
+                    <View style={{ flex: 1, alignItems: 'center' }}>
+                        <TouchableOpacity onPress={() => handleModal()} style={styles.button}>
+                            <LinearGradient
+                                colors={['#6430D2', '#376DEC']}
+                                start={{ x: 0, y: 0.5 }}
+                                end={{ x: 1, y: 0.5 }}
+                                style={styles.button}>
+                                <Text style={styles.buttonText}>OK</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -150,9 +179,6 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     button: {
-        alignItems: 'center',
-    },
-    saveButton: {
         width: 150,
         height: 60,
         borderRadius: 60,

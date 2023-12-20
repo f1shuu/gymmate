@@ -2,13 +2,13 @@
   "expo": {
     "name": "GymMate",
     "slug": "GymMate",
-    "version": "0.6.4",
+    "version": "0.6.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/transparent.png",
-      "resizeMode": "contain",
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
       "backgroundColor": "#000000"
     },
     "assetBundlePatterns": [
@@ -25,7 +25,7 @@
       "package": "com.f1shu.gymmate"
     },
     "web": {
-      "favicon": "./assets/transparent-icon.png"
+      "favicon": "./assets/icon.png"
     },
     "extra": {
       "eas": {
