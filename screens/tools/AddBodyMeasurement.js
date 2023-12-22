@@ -38,6 +38,7 @@ export default function AddBodyMeasurement() {
     }
 
     const saveMeasurement = async (category, value, unit) => {
+        if (value.includes(',')) value = value.replace(',', '.');  
         if (category === 'Wybierz kategorię...' || !value) {
             handleModal()
         } else {
@@ -85,7 +86,7 @@ export default function AddBodyMeasurement() {
             <View style={styles.row}>
                 <TextInput
                     style={styles.input}
-                    maxLength={3}
+                    maxLength={6}
                     keyboardType='numeric'
                     onChangeText={handleTextChange}
                 />

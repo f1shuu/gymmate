@@ -16,15 +16,17 @@ export default function BMICalculator() {
     const [bmiResult, setBMIResult] = useState();
 
     const handleCalculateBMI = () => {
-        if (isNaN(height) || isNaN(weight) || height === '' || weight === '') {
+        let formattedHeight = height.replace(',', '.'), formattedWeight = weight.replace(',', '.');
+        if (isNaN(formattedHeight) || isNaN(formattedWeight) || formattedHeight === '' || formattedWeight === '') {
+            console.log('wzrost: ' + formattedHeight + ' masa: ' + formattedWeight)
             setBMIResult('Najpierw uzupełnij wszystkie pola.');
             return;
-        } else if (height <= 0 || weight <= 0) {
+        } else if (formattedHeight <= 0 || formattedWeight <= 0) {
             setBMIResult('Wprowadzono niepoprawne dane.');
             return;
         } else {
             let result;
-            const bmi = weight / ((height / 100) ** 2);
+            const bmi = formattedWeight / ((formattedHeight / 100) ** 2);
             if (bmi < 18.5) {
                 result = 'niedowagę'
             } else if (bmi >= 18.5 && bmi <= 25) {
@@ -34,7 +36,6 @@ export default function BMICalculator() {
             } else if (bmi > 30 && bmi <= 35) {
                 result = 'otyłość'
             } else result = 'otyłość kliniczną'
-
             setBMIResult(`Twoje BMI wynosi ${bmi.toFixed(2)} i oznacza ${result}.`);
         }
     }
@@ -66,7 +67,7 @@ export default function BMICalculator() {
                 keyboardType='numeric'
                 placeholder={'Wzrost [cm]'}
                 placeholderTextColor={'#AAA'}
-                maxLength={3}
+                maxLength={6}
                 cursorColor='#386DEC'
                 fontSize={16}
                 color='#376DEC'
@@ -78,7 +79,7 @@ export default function BMICalculator() {
                 keyboardType='numeric'
                 placeholder={'Masa ciała [kg]'}
                 placeholderTextColor={'#AAA'}
-                maxLength={3}
+                maxLength={6}
                 cursorColor='#386DEC'
                 fontSize={16}
                 color='#376DEC'
