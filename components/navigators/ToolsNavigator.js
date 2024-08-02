@@ -2,10 +2,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import ToolsScreen from '../../screens/navbar/ToolsScreen';
+import Timer from '../../screens/tools/Timer';
 import BMICalculator from '../../screens/tools/BMICalculator';
+import BMIHelp from '../../screens/tools/BMIHelp';
 import Calculator from '../../screens/tools/Calculator';
 import UnitsConverter from '../../screens/tools/UnitsConverter';
-import BMIHelp from '../../screens/tools/BMIHelp';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,13 @@ export default function ToolsNavigator() {
                 name='ToolsScreen'
                 component={ToolsScreen}
                 options={{ headerShown: false }} />
+            <Stack.Screen
+                name='Timer'
+                component={Timer}
+                options={{
+                    headerTitle: 'Timer',
+                    ...customOptions
+                }} />
             <Stack.Screen
                 name='BMICalculator'
                 component={BMICalculator}

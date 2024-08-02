@@ -10,7 +10,7 @@ export default Tool = ({ name, url, onPress }) => {
                 end={{ x: 1, y: 0.5 }}
                 style={styles.widget}
             >
-                <Image source={url} style={styles.image} resizeMode='cover' />
+                <Image source={url} style={styles.image} resizeMode='cover'/>
                 <Text style={styles.text}>{name}</Text>
             </LinearGradient>
         </TouchableOpacity>
@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
         elevation: 10
     },
     image: {
-        flex: 1,
-        aspectRatio: 1,
         alignSelf: 'center',
+        width: 125,
+        height: 125,
         margin: 10
     },
     text: {
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
         alignSelf: 'center',
-        fontSize: 20,
+        fontSize: 24,
         margin: 10
     }
 });

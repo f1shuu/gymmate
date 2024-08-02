@@ -6,6 +6,10 @@ import Tool from '../../components/widgets/Tool';
 export default function ToolsScreen() {
     const navigation = useNavigation();
 
+    const navigateToTimer = () => {
+        navigation.navigate('Timer');
+    }
+
     const navigateToBMICalculator = () => {
         navigation.navigate('BMICalculator');
     }
@@ -20,6 +24,7 @@ export default function ToolsScreen() {
 
     return (
         <View style={styles.container}>
+            <Tool name='Timer' url={require('../../assets/tools/timer.png')} onPress={navigateToTimer} />
             <Tool name='Kalkulator BMI' url={require('../../assets/tools/bmi.png')} onPress={navigateToBMICalculator} />
             <Tool name='Kalkulator matematyczny' url={require('../../assets/tools/calculator.png')} onPress={navigateToCalculator} />
             <Tool name='Konwerter jednostek' url={require('../../assets/tools/units-converter.png')} onPress={navigateToUnitsConverter} />
