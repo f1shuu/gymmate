@@ -41,7 +41,7 @@ export default function ToolsNavigator() {
                 name='Timer'
                 component={Timer}
                 options={{
-                    headerTitle: 'Timer',
+                    headerTitle: 'Minutnik',
                     ...customOptions
                 }} />
             <Stack.Screen

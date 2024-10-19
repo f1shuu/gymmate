@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import Setting from '../../components/widgets/Setting';
+import { version as appVersion } from '../../package.json';
 
 export default function SettingsScreen() {
     return (
         <View style={styles.container}>
             <Setting />
-            <Text style={styles.text}>Wersja beta 0.6.4</Text>
+            <Text style={styles.text}>Wersja beta {appVersion}</Text>
             <Image source={require('../../assets/background.png')} style={styles.image} />
         </View>
     );
