@@ -1,10 +1,10 @@
-import { Text, View, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
+import { useState } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TimerPicker } from 'react-native-timer-picker';
 import { Audio } from 'expo-av';
 import * as Haptics from 'expo-haptics';
-import { useState } from 'react';
 
 export default Timer = () => {
     const [showPicker, setShowPicker] = useState(true);
@@ -29,7 +29,7 @@ export default Timer = () => {
     };
 
     const startTimer = (minutes, seconds) => {
-        if (minutes === 0 && seconds === 0) { }
+        if (minutes === 0 && seconds === 0) { return; }
         else {
             setShowPicker(false);
             setIsPlaying(true);
@@ -40,57 +40,58 @@ export default Timer = () => {
         <View style={styles.container}>
             {showPicker ? (
                 <>
-                    <View style={styles.labels}>
-                        <Text style={styles.label}>Minuty</Text>
-                        <Text style={styles.label}>Sekundy</Text>
+                    <View style={{ alignItems: 'center' }}>
+                        <View style={styles.labels}>
+                            <Text style={styles.label}>Minuty</Text>
+                            <Text style={styles.label}>Sekundy</Text>
+                        </View>
+                        <TimerPicker
+                            key={key}
+                            initialValue={{ minutes, seconds }}
+                            hideHours={true}
+                            minuteLabel={':'}
+                            secondLabel={''}
+                            minutes={minutes}
+                            seconds={seconds}
+                            onDurationChange={(duration) => {
+                                const { minutes, seconds } = duration;
+                                if (!(minutes === 1 && seconds === 0) && !(minutes === 5 && seconds === 0) && !(minutes === 10 && seconds === 0)) {
+                                    setIsActive(null);
+                                }
+                                setMinutes(minutes);
+                                setSeconds(seconds);
+                            }}
+                            clickSoundAsset={require("../../assets/sounds/click.wav")}
+                            Audio={Audio}
+                            LinearGradient={LinearGradient}
+                            Haptics={Haptics}
+                            styles={{
+                                pickerItem: {
+                                    fontFamily: 'msb',
+                                    fontSize: 80,
+                                    color: '#376DEC',
+                                },
+                                pickerLabel: {
+                                    fontFamily: 'msb',
+                                    fontSize: 80,
+                                    color: '#376DEC',
+                                },
+                                pickerContainer: {
+                                    marginRight: 6,
+                                },
+                                pickerItemContainer: {
+                                    width: 150,
+                                    height: 100,
+                                },
+                                pickerLabelContainer: {
+                                    top: -20,
+                                    right: -26,
+                                    width: 40,
+                                    alignItems: "center",
+                                },
+                            }}
+                        />
                     </View>
-                    <TimerPicker
-                        key={key}
-                        initialValue={{ minutes, seconds }}
-                        hideHours={true}
-                        pickerItem={60}
-                        minuteLabel={':'}
-                        secondLabel={''}
-                        minutes={minutes}
-                        seconds={seconds}
-                        visible={showPicker}
-                        setIsVisible={setShowPicker}
-                        onDurationChange={(duration) => {
-                            const { minutes, seconds } = duration;
-                            setMinutes(minutes);
-                            setSeconds(seconds);
-                            setIsActive(null);
-                        }}
-                        clickSoundAsset={require("../../assets/sounds/click.wav")}
-                        Audio={Audio}
-                        LinearGradient={LinearGradient}
-                        Haptics={Haptics}
-                        styles={{
-                            pickerItem: {
-                                fontFamily: 'msb',
-                                fontSize: 80,
-                                color: '#376DEC',
-                            },
-                            pickerLabel: {
-                                fontFamily: 'msb',
-                                fontSize: 80,
-                                color: '#376DEC',
-                            },
-                            pickerContainer: {
-                                marginRight: 6,
-                            },
-                            pickerItemContainer: {
-                                width: 150,
-                                height: 100,
-                            },
-                            pickerLabelContainer: {
-                                top: -20,
-                                right: -26,
-                                width: 40,
-                                alignItems: "center",
-                            },
-                        }}
-                    />
                 </>
             ) : <View>
                 <CountdownCircleTimer
@@ -100,9 +101,6 @@ export default Timer = () => {
                     colorsTime={[minutes * 60 + seconds, 0]}
                     size={300}
                     strokeWidth={40}
-                    onComplete={() => {
-                        return { shouldRepeat: false, delay: 0 };
-                    }}
                 >
                     {({ remainingTime }) => {
                         if (remainingTime === 0) {
@@ -172,7 +170,7 @@ export default Timer = () => {
                 </>
             ) : (
                 <View style={styles.row}>
-                    <TouchableOpacity onPress={showPicker => setShowPicker(true)} style={styles.button}>
+                    <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.button}>
                         <LinearGradient
                             colors={['#6430D2', '#376DEC']}
                             start={{ x: 0, y: 0.5 }}
@@ -202,7 +200,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        marginTop: 75
+        justifyContent: 'space-around',
     },
     labels: {
         flexDirection: 'row',
@@ -218,7 +216,7 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 25
+        marginBottom: 10
     },
     presetInactive: {
         width: 90,

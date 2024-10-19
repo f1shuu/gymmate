@@ -2,7 +2,7 @@
   "expo": {
     "name": "GymMate",
     "slug": "GymMate",
-    "version": "0.7.0",
+    "version": "0.7.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -31,6 +31,9 @@
       "eas": {
         "projectId": "e5304711-7af6-4e07-9af3-2c40c094c484"
       }
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }
