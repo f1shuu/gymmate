@@ -12,7 +12,7 @@ export default function HomeScreen() {
                 ) : (
                     <Text style={styles.text}>Dobry wieczór, Filip</Text>
                 )}
-                <Image source={require('../../assets/logo.png')} style={styles.logo} />
+                <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
             </View>
             <View style={styles.summary}>
                 <Text style={styles.title}>W tym miesiącu trenowałeś:</Text>
@@ -21,10 +21,10 @@ export default function HomeScreen() {
                         <Text style={styles.numberText}>0</Text>
                         <Text style={styles.timesText}>razy</Text>
                     </View>
-                    <Image source={require('../../assets/navbar/body-measurements-active.png')} style={styles.smallImage} />
+                    <Image source={require('../../assets/images/navbar/body-measurements-active.png')} style={styles.smallImage} />
                 </View>
             </View>
-            <Image source={require('../../assets/background.png')} style={styles.image} />
+            <Image source={require('../../assets/images/background.png')} style={styles.image} />
         </View>
     );
 }

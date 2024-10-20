@@ -10,7 +10,7 @@ export default function Calculator() {
                 nie uwzględnia ona bowiem rozkładu tkanki tłuszczowej i mięśniowej oraz kilku innych kluczowych czynników.
             </Text>
             <Image
-                source={require('../../assets/tools/bmi/graph.png')}
+                source={require('../../assets/images/tools/bmi/graph.png')}
                 style={styles.image}
             />
             <Text style={styles.minorText}>Wykres BMI dla zakresu masy ciała od 45 do 135 kg oraz zakresu wzrostu od 1,4 m do 2 m

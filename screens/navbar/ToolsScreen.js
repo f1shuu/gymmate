@@ -24,11 +24,11 @@ export default function ToolsScreen() {
 
     return (
         <View style={styles.container}>
-            <Tool name='Minutnik' url={require('../../assets/tools/timer.png')} onPress={navigateToTimer} />
-            <Tool name='Kalkulator BMI' url={require('../../assets/tools/bmi.png')} onPress={navigateToBMICalculator} />
-            <Tool name='Kalkulator matematyczny' url={require('../../assets/tools/calculator.png')} onPress={navigateToCalculator} />
-            <Tool name='Konwerter jednostek' url={require('../../assets/tools/units-converter.png')} onPress={navigateToUnitsConverter} />
-            <Image source={require('../../assets/background.png')} style={styles.image} />
+            <Tool name='Minutnik' url={require('../../assets/images/tools/timer.png')} onPress={navigateToTimer} />
+            <Tool name='Kalkulator BMI' url={require('../../assets/images/tools/bmi.png')} onPress={navigateToBMICalculator} />
+            <Tool name='Kalkulator matematyczny' url={require('../../assets/images/tools/calculator.png')} onPress={navigateToCalculator} />
+            <Tool name='Konwerter jednostek' url={require('../../assets/images/tools/units-converter.png')} onPress={navigateToUnitsConverter} />
+            <Image source={require('../../assets/images/background.png')} style={styles.image} />
         </View>
     );
 }

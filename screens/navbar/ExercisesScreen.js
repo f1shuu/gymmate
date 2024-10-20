@@ -4,7 +4,7 @@ export default function ExercisesScreen() {
     return (
         <View style={styles.container}>
             <Text style={styles.emptyText}>Nie masz jeszcze żadnych ćwiczeń. Użyj przycisku w prawym dolnym rogu ekranu, aby dodać swoje pierwsze.</Text>
-            <Image source={require('../../assets/background.png')} style={styles.image} />
+            <Image source={require('../../assets/images/background.png')} style={styles.image} />
         </View>
     );
 }

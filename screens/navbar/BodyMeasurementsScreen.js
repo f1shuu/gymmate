@@ -81,10 +81,10 @@ export default function BodyMeasurementsScreen() {
     };
 
     const imageMapping = {
-        'Masa ciała': require('../../assets/measures/body-mass.png'),
-        'Obwód talii': require('../../assets/measures/waist-circumference.png'),
-        'Obwód klatki piersiowej': require('../../assets/measures/chest-circumference.png'),
-        'Obwód bicepsa': require('../../assets/measures/biceps-circumference.png'),
+        'Masa ciała': require('../../assets/images/measures/body-mass.png'),
+        'Obwód talii': require('../../assets/images/measures/waist-circumference.png'),
+        'Obwód klatki piersiowej': require('../../assets/images/measures/chest-circumference.png'),
+        'Obwód bicepsa': require('../../assets/images/measures/biceps-circumference.png'),
     };
 
     const renderHeader = (section, _, isActive) => {
@@ -165,7 +165,7 @@ export default function BodyMeasurementsScreen() {
                     <Text style={styles.text}>+</Text>
                 </TouchableOpacity>
             </LinearGradient>
-            <Image source={require('../../assets/background.png')} style={styles.image} />
+            <Image source={require('../../assets/images/background.png')} style={styles.image} />
             <Modal isVisible={isModalVisible}>
                 <View>
                     <Text style={[styles.buttonText, { fontSize: 22, paddingBottom: 10 }]}>Czy na pewno chcesz usunąć ten pomiar?</Text>

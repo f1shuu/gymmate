@@ -108,7 +108,7 @@ export default function Calculator() {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={() => calculate('backspace')}>
                         <Image
-                            source={require('../../assets/tools/calculator/backspace.png')}
+                            source={require('../../assets/images/tools/calculator/backspace.png')}
                             style={{ width: 40, height: 40 }}
                         />
                     </TouchableOpacity>
@@ -124,7 +124,8 @@ export default function Calculator() {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#ECECEC',
-        flex: 1
+        flex: 1,
+        marginHorizontal: 10
     },
     buttons: {
         marginBottom: 5

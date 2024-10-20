@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -14,6 +14,8 @@ export default Timer = () => {
     const [seconds, setSeconds] = useState(0);
     const [initialValue, setInitialValue] = useState({ minutes: 0, seconds: 0 });
     const [key, setKey] = useState(0);
+    const [completed, setCompleted] = useState(false);
+    const [sound, setSound] = useState();
 
     const pauseOrResume = () => {
         if (!isPlaying) setIsPlaying(true);
@@ -31,8 +33,34 @@ export default Timer = () => {
     const startTimer = (minutes, seconds) => {
         if (minutes === 0 && seconds === 0) { return; }
         else {
+            setCompleted(false);
+            stopSound();
+            setInitialValue({ minutes, seconds });
+            setKey(prevKey => prevKey + 1);
             setShowPicker(false);
             setIsPlaying(true);
+        }
+    }
+
+    const timesUp = () => {
+        setCompleted(true);
+        playSound();
+    }
+
+    async function playSound() {
+        const { sound } = await Audio.Sound.createAsync(
+            require('../../assets/sounds/timesup.wav'),
+            { isLooping: true }
+        );
+        setSound(sound);
+        await sound.playAsync();
+    }
+
+    const stopSound = async () => {
+        if (sound) {
+            await sound.stopAsync();
+            await sound.unloadAsync();
+            setSound(null);
         }
     }
 
@@ -95,12 +123,14 @@ export default Timer = () => {
                 </>
             ) : <View>
                 <CountdownCircleTimer
+                    key={key}
                     isPlaying={isPlaying}
                     duration={minutes * 60 + seconds}
                     colors={['#6430D2', '#376DEC']}
                     colorsTime={[minutes * 60 + seconds, 0]}
                     size={300}
                     strokeWidth={40}
+                    onComplete={() => { timesUp(); }}
                 >
                     {({ remainingTime }) => {
                         if (remainingTime === 0) {
@@ -170,24 +200,24 @@ export default Timer = () => {
                 </>
             ) : (
                 <View style={styles.row}>
-                    <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.button}>
+                    <TouchableOpacity onPress={() => { setShowPicker(true); stopSound(); }} style={styles.button}>
                         <LinearGradient
                             colors={['#6430D2', '#376DEC']}
                             start={{ x: 0, y: 0.5 }}
                             end={{ x: 1, y: 0.5 }}
                             style={styles.button}
                         >
-                            <Text style={styles.text}>Usuń</Text>
+                            <Text style={styles.text}>{completed ? 'Odrzuć' : 'Usuń'}</Text>
                         </LinearGradient>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => pauseOrResume()} style={styles.button}>
+                    <TouchableOpacity onPress={completed ? () => startTimer(minutes, seconds) : () => pauseOrResume()} style={styles.button}>
                         <LinearGradient
                             colors={['#6430D2', '#376DEC']}
                             start={{ x: 0, y: 0.5 }}
                             end={{ x: 1, y: 0.5 }}
                             style={styles.button}
                         >
-                            <Text style={styles.text}>{isPlaying ? 'Wstrzymaj' : 'Wznów'}</Text>
+                            <Text style={styles.text}>{completed ? 'Uruchom ponownie' : (isPlaying ? 'Wstrzymaj' : 'Wznów')}</Text>
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>

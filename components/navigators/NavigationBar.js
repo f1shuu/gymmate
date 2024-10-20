@@ -38,19 +38,19 @@ const getIconName = (routeName, focused) => {
 
     switch (routeName) {
         case 'Ćwiczenia':
-            iconName = focused ? require('../../assets/navbar/exercises-active.png') : require('../../assets/navbar/exercises-inactive.png');
+            iconName = focused ? require('../../assets/images/navbar/exercises-active.png') : require('../../assets/images/navbar/exercises-inactive.png');
             break;
         case 'Metryczka':
-            iconName = focused ? require('../../assets/navbar/body-measurements-active.png') : require('../../assets/navbar/body-measurements-inactive.png');
+            iconName = focused ? require('../../assets/images/navbar/body-measurements-active.png') : require('../../assets/images/navbar/body-measurements-inactive.png');
             break;
         case 'Trening':
-            iconName = focused ? require('../../assets/navbar/training-active.png') : require('../../assets/navbar/training-inactive.png');
+            iconName = focused ? require('../../assets/images/navbar/training-active.png') : require('../../assets/images/navbar/training-inactive.png');
             break;
         case 'Narzędzia':
-            iconName = focused ? require('../../assets/navbar/tools-active.png') : require('../../assets/navbar/tools-inactive.png');
+            iconName = focused ? require('../../assets/images/navbar/tools-active.png') : require('../../assets/images/navbar/tools-inactive.png');
             break;
         case 'Ustawienia':
-            iconName = focused ? require('../../assets/navbar/settings-active.png') : require('../../assets/navbar/settings-inactive.png');
+            iconName = focused ? require('../../assets/images/navbar/settings-active.png') : require('../../assets/images/navbar/settings-inactive.png');
             break;
     }
 

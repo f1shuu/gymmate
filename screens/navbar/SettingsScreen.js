@@ -8,7 +8,7 @@ export default function SettingsScreen() {
         <View style={styles.container}>
             <Setting />
             <Text style={styles.text}>Wersja beta {appVersion}</Text>
-            <Image source={require('../../assets/background.png')} style={styles.image} />
+            <Image source={require('../../assets/images/background.png')} style={styles.image} />
         </View>
     );
 }

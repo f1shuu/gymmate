@@ -184,7 +184,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.customText}>cm</Text>
                             <TouchableOpacity onPress={swapConverter(setHeightConverter)}>
-                                <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.input}
@@ -216,7 +216,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.customText}>"</Text>
                             <TouchableOpacity onPress={swapConverter(setHeightConverter)}>
-                                <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -240,7 +240,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>kg </Text>
                             <TouchableOpacity onPress={swapConverter(setWeightConverter)}>
-                                <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -260,7 +260,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>lbs</Text>
                             <TouchableOpacity onPress={swapConverter(setWeightConverter)}>
-                                <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -285,7 +285,7 @@ export default function UnitsConverter() {
                             />
                             <Text style={styles.text}>cm </Text>
                             <TouchableOpacity onPress={swapConverter(setCmCalConverter)}>
-                                <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -307,7 +307,7 @@ export default function UnitsConverter() {
                             />
                             <Text style={styles.text}>cal</Text>
                             <TouchableOpacity onPress={swapConverter(setCmCalConverter)}>
-                                <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -331,7 +331,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>m  </Text>
                             <TouchableOpacity onPress={swapConverter(setMFtConverter)}>
-                                <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -351,7 +351,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>ft </Text>
                             <TouchableOpacity onPress={swapConverter(setMFtConverter)}>
-                                <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -374,7 +374,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>g  </Text>
                             <TouchableOpacity onPress={swapConverter(setGOzConverter)}>
-                                <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -394,7 +394,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>oz </Text>
                             <TouchableOpacity onPress={swapConverter(setGOzConverter)}>
-                                <Image source={require('../../assets/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
