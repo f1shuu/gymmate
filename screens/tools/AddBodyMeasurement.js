@@ -38,7 +38,7 @@ export default function AddBodyMeasurement() {
 
     const saveMeasurement = async (category, value, unit) => {
         if (category === 'Wybierz kategorię...' || !value) {
-            handleModal()
+            handleModal();
         } else {
             try {
                 const existingData = await AsyncStorage.getItem('data');
@@ -61,8 +61,8 @@ export default function AddBodyMeasurement() {
             <Text style={styles.text}>Kategoria pomiaru</Text>
             <Dropdown
                 style={[styles.dropdown, { borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }]}
-                containerStyle={{ marginTop: -15, marginLeft: 1, backgroundColor: Colors.primary, borderBottomLeftRadius: 15, borderBottomRightRadius: 15, borderWidth: 0 }}
-                itemTextStyle={{ paddingVertical: 10, fontFamily: 'Nexa', color: Colors.white }}
+                containerStyle={{ marginLeft: 1, backgroundColor: Colors.primary, borderBottomLeftRadius: 15, borderBottomRightRadius: 15, borderWidth: 0 }}
+                itemTextStyle={{ fontFamily: 'Nexa', color: Colors.white }}
                 placeholderStyle={{ fontFamily: 'Nexa', color: Colors.secondary }}
                 selectedTextStyle={{ fontFamily: 'Nexa', color: Colors.white }}
                 activeColor={Colors.button}

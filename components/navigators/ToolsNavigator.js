@@ -11,7 +11,6 @@ import BMIHelp from '../../screens/tools/BMIHelp';
 const Stack = createStackNavigator();
 
 const customOptions = {
-    animationEnabled: false,
     headerTintColor: Colors.white,
     headerTitleStyle: {
         fontFamily: 'Nexa',
@@ -30,7 +29,7 @@ export default function ToolsNavigator() {
             <Stack.Screen
                 name='ToolsScreen'
                 component={ToolsScreen}
-                options={{ headerShown: false, animationEnabled: false }} />
+                options={{ headerShown: false }} />
             <Stack.Screen
                 name='Timer'
                 component={Timer}

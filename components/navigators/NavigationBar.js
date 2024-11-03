@@ -1,5 +1,5 @@
 import { Image } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Colors from '../../Colors';
@@ -11,6 +11,14 @@ import SettingsScreen from '../../screens/navbar/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
 
+const MyDarkTheme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        background: Colors.background
+    }
+}
+
 const customOptions = {
     headerTitleStyle: {
         fontFamily: 'Nexa',
@@ -19,7 +27,6 @@ const customOptions = {
     },
     headerStyle: {
         backgroundColor: Colors.primary,
-        height: 80,
         elevation: 0
     },
     tabBarStyle: {
@@ -57,7 +64,7 @@ const getIconName = (routeName, focused) => {
 
 export default function NavigationBar() {
     return (
-        <NavigationContainer>
+        <NavigationContainer theme={MyDarkTheme}>
             <Tab.Navigator initialRouteName='Rozpocznij trening' screenOptions={{ cardStyle: { backgroundColor: Colors.background } }}>
                 <Tab.Screen
                     name='Ćwiczenia'

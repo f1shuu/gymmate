@@ -113,7 +113,7 @@ export default function BodyMeasurementsScreen() {
     const renderContent = (section) => {
         if (section) {
             return (
-                <Container>
+                <View>
                     {section.data && section.data.map((measurement, index) => (
                         <View key={index} style={styles.measurementItem}>
                             <Text style={styles.measurementText}>
@@ -127,7 +127,7 @@ export default function BodyMeasurementsScreen() {
                             </TouchableOpacity>
                         </View>
                     ))}
-                </Container>
+                </View>
             )
         } else return null;
     }

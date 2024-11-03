@@ -12,12 +12,11 @@ export default function BodyMeasurementsNavigator() {
             <Stack.Screen
                 name='BodyMeasurementsScreen'
                 component={BodyMeasurementsScreen}
-                options={{ headerShown: false, animationEnabled: false }} />
+                options={{ headerShown: false }} />
             <Stack.Screen
                 name='AddBodyMeasurement'
                 component={AddBodyMeasurement}
                 options={{
-                    animationEnabled: false,
                     headerTintColor: Colors.white,
                     headerTitle: 'Dodaj nowy pomiar',
                     headerStyle: {
