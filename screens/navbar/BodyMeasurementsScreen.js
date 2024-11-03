@@ -147,9 +147,9 @@ export default function BodyMeasurementsScreen() {
                     />
                 </>
             ) : (
-                <Background text={true} content={'pomiarów'} type={'masculine'} />
+                <Background text={true} content='pomiarów' type='masculine' />
             )}
-            <AddButton onPress={'AddBodyMeasurement'} />
+            <AddButton onPress='AddBodyMeasurement' />
             <Modal
                 isVisible={isModalVisible}
                 text='Czy na pewno chcesz usunąć ten pomiar?'

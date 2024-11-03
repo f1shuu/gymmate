@@ -5,8 +5,8 @@ import AddButton from '../../components/buttons/AddButton';
 export default function ExercisesScreen() {
     return (
         <Container>
-            <Background text={true} content={'ćwiczeń'} type={'feminine'} />
-            <AddButton onPress={'AddExercise'} />
+            <Background text={true} content='ćwiczeń' type='feminine' />
+            <AddButton onPress='ExerciseNameScreen' />
         </Container>
     )
 }

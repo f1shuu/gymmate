@@ -55,7 +55,7 @@ export default function BMICalculator() {
             <TextInput
                 style={styles.input}
                 keyboardType='numeric'
-                placeholder={'Wzrost [cm]'}
+                placeholder='Wzrost [cm]'
                 placeholderTextColor={Colors.secondary}
                 maxLength={6}
                 fontSize={16}
@@ -66,7 +66,7 @@ export default function BMICalculator() {
             <TextInput
                 style={styles.input}
                 keyboardType='numeric'
-                placeholder={'Masa ciała [kg]'}
+                placeholder='Masa ciała [kg]'
                 placeholderTextColor={Colors.secondary}
                 maxLength={6}
                 fontSize={16}

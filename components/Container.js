@@ -10,6 +10,6 @@ const styles = ({
     container: {
         flex: 1,
         backgroundColor: Colors.background,
-        padding: 10
+        padding: 15
     }
 })

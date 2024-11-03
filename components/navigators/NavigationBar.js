@@ -3,7 +3,7 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Colors from '../../Colors';
-import ExercisesScreen from '../../screens/navbar/ExercisesScreen';
+import ExercisesNavigator from './ExercisesNavigator';
 import BodyMeasurementsNavigator from './BodyMeasurementsNavigator';
 import HomeScreen from '../../screens/navbar/HomeScreen';
 import ToolsNavigator from './ToolsNavigator';
@@ -68,7 +68,7 @@ export default function NavigationBar() {
             <Tab.Navigator initialRouteName='Rozpocznij trening' screenOptions={{ cardStyle: { backgroundColor: Colors.background } }}>
                 <Tab.Screen
                     name='Ćwiczenia'
-                    component={ExercisesScreen}
+                    component={ExercisesNavigator}
                     options={({ route }) => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (

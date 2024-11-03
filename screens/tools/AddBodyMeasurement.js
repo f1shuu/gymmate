@@ -1,11 +1,12 @@
 import { Text, TextInput } from 'react-native';
 import { useState } from 'react';
-import { Dropdown } from 'react-native-element-dropdown';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Colors from '../../Colors';
 import Container from '../../components/Container';
+import Background from '../../components/Background';
+import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
 import Button from '../../components/buttons/Button';
 
@@ -58,18 +59,11 @@ export default function AddBodyMeasurement() {
 
     return (
         <Container>
+            <Background text={false} />
             <Text style={styles.text}>Kategoria pomiaru</Text>
             <Dropdown
-                style={[styles.dropdown, { borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }]}
-                containerStyle={{ marginTop: -2, marginLeft: 1, backgroundColor: Colors.primary, borderBottomLeftRadius: 15, borderBottomRightRadius: 15, borderWidth: 0 }}
-                itemTextStyle={{ fontFamily: 'Nexa', color: Colors.white }}
-                placeholderStyle={{ fontFamily: 'Nexa', color: Colors.secondary }}
-                selectedTextStyle={{ fontFamily: 'Nexa', color: Colors.white }}
-                activeColor={Colors.button}
+                passedStyle={{ borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                 data={categories}
-                maxHeight={300}
-                labelField='value'
-                valueField='value'
                 placeholder={isFocus ? '...' : category}
                 value={category}
                 onFocus={() => setIsFocus(true)}
@@ -102,14 +96,6 @@ const styles = ({
         fontFamily: 'Nexa',
         fontSize: 18,
         color: Colors.white,
-        paddingVertical: 10
-    },
-    dropdown: {
-        width: '100%',
-        backgroundColor: Colors.primary,
-        height: 60,
-        borderRadius: 15,
-        padding: 15,
         marginVertical: 10
     },
     input: {

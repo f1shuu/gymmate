@@ -22,11 +22,6 @@ export default Timer = () => {
     const [completed, setCompleted] = useState(false);
     const [sound, setSound] = useState();
 
-    const pauseOrResume = () => {
-        if (!isPlaying) setIsPlaying(true);
-        else setIsPlaying(false);
-    }
-
     const setTime = (minutes, seconds, id) => {
         setIsActive(prevIndex => prevIndex === id ? null : id);
         setInitialValue({ minutes, seconds });
@@ -45,16 +40,6 @@ export default Timer = () => {
             setShowPicker(false);
             setIsPlaying(true);
         }
-    }
-
-    const dismissTimer = () => {
-        setShowPicker(true);
-        stopSound();
-    }
-
-    const timesUp = () => {
-        setCompleted(true);
-        playSound();
     }
 
     async function playSound() {
@@ -87,8 +72,8 @@ export default Timer = () => {
                             key={key}
                             initialValue={{ minutes, seconds }}
                             hideHours={true}
-                            minuteLabel={':'}
-                            secondLabel={''}
+                            minuteLabel=':'
+                            secondLabel=''
                             minutes={minutes}
                             seconds={seconds}
                             onDurationChange={(duration) => {
@@ -144,7 +129,7 @@ export default Timer = () => {
                     size={300}
                     strokeWidth={15}
                     trailColor={Colors.primary}
-                    onComplete={() => { timesUp(); }}
+                    onComplete={() => { setCompleted(true); playSound(); }}
                 >
                     {({ remainingTime }) => {
                         if (remainingTime === 0) {
@@ -167,8 +152,8 @@ export default Timer = () => {
                 </>
             ) : (
                 <View style={styles.row}>
-                    <Button text={completed ? 'Odrzuć' : 'Usuń'} onPress={() => dismissTimer()} />
-                    <Button text={completed ? 'Uruchom ponownie' : (isPlaying ? 'Wstrzymaj' : 'Wznów')} onPress={completed ? () => startTimer(minutes, seconds) : () => pauseOrResume()} />
+                    <Button text={completed ? 'Odrzuć' : 'Usuń'} onPress={() => { setShowPicker(true); stopSound(); }} />
+                    <Button text={completed ? 'Uruchom ponownie' : (isPlaying ? 'Wstrzymaj' : 'Wznów')} onPress={completed ? () => startTimer(minutes, seconds) : () => { if (!isPlaying) setIsPlaying(true); else setIsPlaying(false); }} />
                 </View>
             )}
         </Container>

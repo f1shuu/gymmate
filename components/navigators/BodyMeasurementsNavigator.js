@@ -18,7 +18,7 @@ export default function BodyMeasurementsNavigator() {
                 component={AddBodyMeasurement}
                 options={{
                     headerTintColor: Colors.white,
-                    headerTitle: 'Dodaj nowy pomiar',
+                    headerTitle: 'Dodawanie nowego pomiaru',
                     headerStyle: {
                         backgroundColor: Colors.primary,
                         elevation: 0

@@ -14,7 +14,6 @@ const styles = {
     button: {
         width: 150,
         height: 60,
-        backgroundColor: Colors.button,
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
