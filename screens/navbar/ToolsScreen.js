@@ -1,52 +1,14 @@
-import { View, Image, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-
 import Tool from '../../components/widgets/Tool';
+import Container from '../../components/Container';
+import Background from '../../components/Background';
 
 export default function ToolsScreen() {
-    const navigation = useNavigation();
-
-    const navigateToTimer = () => {
-        navigation.navigate('Timer');
-    }
-
-    const navigateToBMICalculator = () => {
-        navigation.navigate('BMICalculator');
-    }
-
-    const navigateToCalculator = () => {
-        navigation.navigate('Calculator');
-    }
-
-    const navigateToUnitsConverter = () => {
-        navigation.navigate('UnitsConverter');
-    }
-
     return (
-        <View style={styles.container}>
-            <Tool name='Minutnik' url={require('../../assets/images/tools/timer.png')} onPress={navigateToTimer} />
-            <Tool name='Kalkulator BMI' url={require('../../assets/images/tools/bmi.png')} onPress={navigateToBMICalculator} />
-            <Tool name='Kalkulator matematyczny' url={require('../../assets/images/tools/calculator.png')} onPress={navigateToCalculator} />
-            <Tool name='Konwerter jednostek' url={require('../../assets/images/tools/units-converter.png')} onPress={navigateToUnitsConverter} />
-            <Image source={require('../../assets/images/background.png')} style={styles.image} />
-        </View>
-    );
+        <Container>
+            <Background text={false} />
+            <Tool name='Minutnik' url={require('../../assets/images/tools/timer.png')} onPress={'Timer'} />
+            <Tool name='Kalkulator BMI' url={require('../../assets/images/tools/bmi.png')} onPress={'BMICalculator'} />
+            <Tool name='Kalkulator matematyczny' url={require('../../assets/images/tools/calculator.png')} onPress={'Calculator'} />
+        </Container>
+    )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#ECECEC',
-        flex: 1,
-        padding: 10,
-        justifyContent: 'space-between'
-    },
-    image: {
-        zIndex: -1,
-        width: 400,
-        height: 400,
-        resizeMode: 'contain',
-        position: 'absolute',
-        bottom: -90,
-        right: -90,
-    }
-});

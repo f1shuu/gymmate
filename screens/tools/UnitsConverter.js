@@ -1,5 +1,10 @@
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+// this code will be enitirely refactored in the future
+
+import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+
+import Container from '../../components/Container';
+import Colors from '../../Colors';
 
 export default function UnitsConverter() {
     const [centimeters1, setCentimeters1] = useState('');
@@ -170,7 +175,7 @@ export default function UnitsConverter() {
     const swapConverter = (setter) => () => setter((prev) => !prev);
 
     return (
-        <ScrollView overScrollMode="never" contentContainerStyle={{ flexGrow: 1 }}>
+        <Container>
             <View style={styles.container}>
                 <Text style={styles.titleText}>Konwerter wzrostu</Text>
                 <View style={styles.converter}>
@@ -407,15 +412,11 @@ export default function UnitsConverter() {
                     )}
                 </View>
             </View>
-        </ScrollView>
+        </Container>
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#ECECEC',
-        flex: 1,
-    },
+const styles = ({
     converter: {
         flexDirection: 'row',
         justifyContent: 'space-around',
@@ -424,50 +425,46 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     text: {
-        fontFamily: 'msb',
-        color: '#376DEC',
+        fontFamily: 'Nexa',
+        color: Colors.white,
         fontSize: 18,
         textAlign: 'center',
         textAlignVertical: 'center',
         width: 32
     },
     titleText: {
-        fontFamily: 'msb',
-        color: '#376DEC',
+        fontFamily: 'Nexa',
+        color: Colors.white,
         fontSize: 18,
         textAlignVertical: 'center',
         paddingTop: 10,
         paddingLeft: 10
     },
     customText: {
-        fontFamily: 'msb',
-        color: '#376DEC',
+        fontFamily: 'Nexa',
+        color: Colors.white,
         fontSize: 18,
         textAlignVertical: 'center',
     },
     input: {
-        fontFamily: 'msr',
-        color: '#376DEC',
+        fontFamily: 'Nexa',
+        color: Colors.white,
         fontSize: 16,
         textAlign: 'center',
         paddingVertical: 15,
         paddingHorizontal: 15,
-        backgroundColor: '#E1E1E1',
-        borderColor: '#376DEC',
-        borderWidth: 1.5,
+        backgroundColor: Colors.primary,
         borderRadius: 15,
         width: 60
     },
     wideInput: {
-        fontFamily: 'msr',
-        color: '#376DEC',
+        fontFamily: 'Nexa',
+        color: Colors.white,
         fontSize: 16,
         textAlign: 'center',
         paddingVertical: 15,
         paddingHorizontal: 15,
-        backgroundColor: '#E1E1E1',
-        borderColor: '#376DEC',
-        borderWidth: 1.5,
+        backgroundColor: Colors.primary,
         borderRadius: 15,
         width: 120
     },

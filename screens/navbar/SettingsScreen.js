@@ -1,36 +1,17 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import Setting from '../../components/widgets/Setting';
+import { Text } from 'react-native';
 import { version as appVersion } from '../../package.json';
+
+import Colors from '../../Colors';
+import Setting from '../../components/widgets/Setting';
+import Container from '../../components/Container';
+import Background from '../../components/Background';
 
 export default function SettingsScreen() {
     return (
-        <View style={styles.container}>
+        <Container>
+            <Background text={false} />
             <Setting />
-            <Text style={styles.text}>Wersja beta {appVersion}</Text>
-            <Image source={require('../../assets/images/background.png')} style={styles.image} />
-        </View>
-    );
+            <Text style={{ color: Colors.secondary, position: 'absolute', bottom: 10, alignSelf: 'center' }}>Wersja {appVersion}</Text>
+        </Container>
+    )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#ECECEC',
-        flex: 1,
-        padding: 10,
-        justifyContent: 'space-between',
-    },
-    image: {
-        zIndex: -1,
-        width: 400,
-        height: 400,
-        resizeMode: 'contain',
-        position: 'absolute',
-        bottom: -90,
-        right: -90,
-    },
-    text: {
-        color: 'white',
-        textAlign: 'center',
-    }
-});

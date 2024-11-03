@@ -1,10 +1,13 @@
-import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { Text, TextInput } from 'react-native';
 import { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Modal from "react-native-modal";
+
+import Colors from '../../Colors';
+import Container from '../../components/Container';
+import Modal from '../../components/Modal';
+import Button from '../../components/buttons/Button';
 
 export default function AddBodyMeasurement() {
     const [category, setCategory] = useState('Wybierz kategorię...');
@@ -21,12 +24,8 @@ export default function AddBodyMeasurement() {
         { value: 'Masa ciała' },
         { value: 'Obwód talii' },
         { value: 'Obwód klatki piersiowej' },
-        { value: 'Obwód bicepsa' },
-    ];
-
-    const handleTextChange = (text) => {
-        setValue(text);
-    };
+        { value: 'Obwód bicepsa' }
+    ]
 
     const getFormattedDate = () => {
         const today = new Date();
@@ -38,7 +37,6 @@ export default function AddBodyMeasurement() {
     }
 
     const saveMeasurement = async (category, value, unit) => {
-        if (value.includes(',')) value = value.replace(',', '.');  
         if (category === 'Wybierz kategorię...' || !value) {
             handleModal()
         } else {
@@ -56,144 +54,81 @@ export default function AddBodyMeasurement() {
                 console.error('Error saving measurement: ', error);
             }
         }
-    };
+    }
 
     return (
-        <View style={styles.container}>
+        <Container>
             <Text style={styles.text}>Kategoria pomiaru</Text>
-            <View style={styles.row}>
-                <Dropdown
-                    style={[styles.dropdown, { width: '95%' }]}
-                    placeholderStyle={{ color: '#376DEC' }}
-                    selectedTextStyle={{ color: '#376DEC' }}
-                    data={categories}
-                    maxHeight={300}
-                    labelField="value"
-                    valueField="value"
-                    placeholder={!isFocus ? category : '...'}
-                    value={category}
-                    onFocus={() => setIsFocus(true)}
-                    onBlur={() => setIsFocus(false)}
-                    onChange={item => {
-                        if (item.value === 'Masa ciała') setUnit('kg')
-                        else setUnit('cm')
-                        setCategory(item.value);
-                        setIsFocus(false);
-                    }}
-                />
-            </View>
-            <Text style={styles.text}>Wartość pomiaru</Text>
-            <View style={styles.row}>
-                <TextInput
-                    style={styles.input}
-                    maxLength={6}
-                    keyboardType='numeric'
-                    onChangeText={handleTextChange}
-                />
-                <TextInput
-                    style={[styles.input, { width: '20%' }]}
-                    value={unit}
-                    editable={false}
-                />
-            </View>
+            <Dropdown
+                style={[styles.dropdown, { borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }]}
+                containerStyle={{ marginTop: -15, marginLeft: 1, backgroundColor: Colors.primary, borderBottomLeftRadius: 15, borderBottomRightRadius: 15, borderWidth: 0 }}
+                itemTextStyle={{ paddingVertical: 10, fontFamily: 'Nexa', color: Colors.white }}
+                placeholderStyle={{ fontFamily: 'Nexa', color: Colors.secondary }}
+                selectedTextStyle={{ fontFamily: 'Nexa', color: Colors.white }}
+                activeColor={Colors.button}
+                data={categories}
+                maxHeight={300}
+                labelField='value'
+                valueField='value'
+                placeholder={isFocus ? '...' : category}
+                value={category}
+                onFocus={() => setIsFocus(true)}
+                onBlur={() => setIsFocus(false)}
+                onChange={item => {
+                    if (item.value === 'Masa ciała') setUnit('kg');
+                    else setUnit('cm');
+                    setCategory(item.value);
+                    setIsFocus(false);
+                }}
+            />
+            <Text style={styles.text}>Wartość pomiaru w centymetrach</Text>
+            <TextInput
+                style={styles.input}
+                placeholderTextColor={Colors.secondary}
+                maxLength={3}
+                placeholder='Wpisz wartość...'
+                keyboardType='numeric'
+                onChangeText={(text) => setValue(text)}
+            />
             <Text style={styles.reminder}>Data dodania pomiaru zostanie zapisana automatycznie.</Text>
-            <View style={{ alignItems: 'center' }}>
-                <TouchableOpacity onPress={() => saveMeasurement(category, value, unit)} style={styles.button}>
-                    <LinearGradient
-                        colors={['#6430D2', '#376DEC']}
-                        start={{ x: 0, y: 0.5 }}
-                        end={{ x: 1, y: 0.5 }}
-                        style={styles.button}
-                    >
-                        <Text style={styles.buttonText}>Zapisz</Text>
-                    </LinearGradient>
-                </TouchableOpacity>
-            </View>
-            <Modal isVisible={isModalVisible}>
-                <View style={{ paddingTop: 300 }}>
-                    <Text style={[styles.buttonText, { paddingBottom: 10 }]}>Najpierw dodaj odpowiednią wartość pomiaru i wybierz kategorię.</Text>
-                    <View style={{ flex: 1, alignItems: 'center' }}>
-                        <TouchableOpacity onPress={() => handleModal()} style={styles.button}>
-                            <LinearGradient
-                                colors={['#6430D2', '#376DEC']}
-                                start={{ x: 0, y: 0.5 }}
-                                end={{ x: 1, y: 0.5 }}
-                                style={styles.button}>
-                                <Text style={styles.buttonText}>OK</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
-        </View>
-    );
-};
+            <Button onPress={() => saveMeasurement(category, value, unit)} text='Zapisz' />
+            <Modal isVisible={isModalVisible} text='Najpierw uzupełnij wszystkie pola.' twoButtons={false} buttonOneText='OK' buttonOneOnPress={() => handleModal()} />
+        </Container>
+    )
+}
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#ECECEC',
-        flex: 1
-    },
-    row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        padding: 10
-    },
+const styles = ({
     text: {
-        fontFamily: 'msb',
-        color: '#376DEC',
+        fontFamily: 'Nexa',
         fontSize: 18,
-        textAlign: 'center',
-        textAlignVertical: 'center',
-        paddingTop: 10
-    },
-    input: {
-        fontFamily: 'msr',
-        color: '#376DEC',
-        width: '70%',
-        fontSize: 16,
-        textAlign: 'center',
-        paddingVertical: 15,
-        paddingHorizontal: 15,
-        backgroundColor: '#E1E1E1',
-        borderColor: '#376DEC',
-        borderWidth: 1.5,
-        borderRadius: 15
+        color: Colors.white,
+        paddingVertical: 10
     },
     dropdown: {
-        backgroundColor: '#E1E1E1',
-        width: '20%',
+        width: '100%',
+        backgroundColor: Colors.primary,
         height: 60,
-        borderColor: '#376DEC',
-        paddingHorizontal: 10,
-        borderColor: '#376DEC',
-        borderWidth: 1.5,
-        borderRadius: 15
+        borderRadius: 15,
+        padding: 15,
+        marginVertical: 10
+    },
+    input: {
+        width: '100%',
+        backgroundColor: Colors.primary,
+        height: 60,
+        fontFamily: 'Nexa',
+        fontSize: 16,
+        color: Colors.white,
+        borderRadius: 15,
+        padding: 15,
+        marginVertical: 10
     },
     reminder: {
-        fontFamily: 'msr',
+        fontFamily: 'Nexa',
         fontSize: 12,
-        color: '#BBB',
+        color: Colors.secondary,
         textAlign: 'center',
         marginTop: 5,
         marginBottom: 10
-    },
-    button: {
-        width: 150,
-        height: 60,
-        borderRadius: 60,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 5,
-        marginHorizontal: 10,
-        elevation: 10
-    },
-    buttonText: {
-        fontFamily: 'msb',
-        color: 'white',
-        fontSize: 18,
-        textAlign: 'center',
-        textAlignVertical: 'center'
     }
-});
+})

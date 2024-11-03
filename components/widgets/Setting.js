@@ -1,94 +1,72 @@
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LinearGradient } from 'expo-linear-gradient';
+// this code needs to be refactored since it's not a reusable component
+
+import { Text, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import Modal from "react-native-modal";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import Colors from '../../Colors';
+import Modal from '../Modal';
 
 export default Setting = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
     const handleModal = () => setIsModalVisible(() => !isModalVisible);
+    const handleConfirmationModal = () => setIsConfirmationModalVisible(() => !isConfirmationModalVisible);
 
     const clearAsyncStorage = async () => {
         try {
             await AsyncStorage.clear();
             setIsModalVisible(!isModalVisible);
+            setIsConfirmationModalVisible(!isConfirmationModalVisible);
+            handleConfirmationModal();
         } catch (error) {
             console.error('Error clearing AsyncStorage:', error);
         }
-    };
+    }
+
     return (
-        <View style={{ flex: 1 }}>
+        <>
             <TouchableOpacity onPress={() => handleModal()} style={styles.container}>
                 <Text style={styles.text}>Usuń dane metryczne</Text>
             </TouchableOpacity>
-            <Modal isVisible={isModalVisible}>
-                <View style={styles.modalContent}>
-                    <Text style={styles.modalText}>Czy na pewno chcesz usunąć wszystkie pomiary?</Text>
-                    <Text style={[styles.modalText, { color: '#FD5056', textDecorationLine: 'underline', paddingBottom: 10 }]}>
-                        Tej operacji nie można cofnąć.
-                    </Text>
-                    <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <TouchableOpacity onPress={() => clearAsyncStorage()} style={styles.button}>
-                            <LinearGradient
-                                colors={['#6430D2', '#376DEC']}
-                                start={{ x: 0, y: 0.5 }}
-                                end={{ x: 1, y: 0.5 }}
-                                style={styles.button}>
-                                <Text style={styles.modalText}>Tak</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => handleModal()} style={styles.button}>
-                            <LinearGradient
-                                colors={['#6430D2', '#376DEC']}
-                                start={{ x: 0, y: 0.5 }}
-                                end={{ x: 1, y: 0.5 }}
-                                style={styles.button}>
-                                <Text style={styles.modalText}>Anuluj</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
-        </View>
+            <Modal
+                isVisible={isModalVisible}
+                text='Czy na pewno chcesz usunąć wszystkie pomiary? Tej operacji nie można cofnąć.'
+                twoButtons={true}
+                buttonOneText='Tak'
+                buttonOneOnPress={() => clearAsyncStorage()}
+                buttonTwoText='Anuluj'
+                buttonTwoOnPress={() => handleModal()}
+            />
+            <Modal
+                isVisible={isConfirmationModalVisible}
+                text='Pomiary zostały pomyślnie usunięte.'
+                twoButtons={false}
+                buttonOneText='OK'
+                buttonOneOnPress={() => handleConfirmationModal()}
+            />
+        </>
     )
-};
+}
 
-const styles = StyleSheet.create({
+const styles = ({
     container: {
-        backgroundColor: '#E1E1E1',
+        backgroundColor: Colors.primary,
         padding: 15,
         borderRadius: 15,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginTop: 10,
-        marginHorizontal: 5,
-        elevation: 10
+        marginHorizontal: 5
     },
     text: {
         flex: 1,
-        fontFamily: 'msb',
-        color: '#FD5056',
+        fontFamily: 'Nexa',
+        fontSize: 20,
+        color: Colors.delete,
         textAlign: 'center',
         alignSelf: 'center',
-        fontSize: 20,
         margin: 10
-    },
-    modalText: {
-        fontFamily: 'msb',
-        color: 'white',
-        fontSize: 22,
-        textAlign: 'center',
-        textAlignVertical: 'center'
-    },
-    button: {
-        width: 150,
-        height: 60,
-        borderRadius: 60,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 5,
-        marginHorizontal: 10,
-        elevation: 10
-    },
-});
+    }
+})

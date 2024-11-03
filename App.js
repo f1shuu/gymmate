@@ -1,7 +1,8 @@
+import * as Font from 'expo-font';
 import { View } from 'react-native';
 import { useEffect, useState } from 'react';
-import useFonts from './hooks/useFonts';
 
+import Colors from './Colors';
 import NavigationBar from './components/navigators/NavigationBar';
 
 export default function App() {
@@ -9,23 +10,24 @@ export default function App() {
 
   useEffect(() => {
     const loadFonts = async () => {
-      await useFonts({
-        'msb': require('./assets/fonts/Mona-Sans-Bold.ttf'),
-        'msr': require('./assets/fonts/Mona-Sans-Regular.ttf'),
-      });
+      await Font.loadAsync({
+        'Nexa': require('./assets/fonts/Nexa-Heavy.ttf')
+      })
       await new Promise(resolve => setTimeout(resolve, 2000));
       setIsLoading(false);
-    };
+    }
     loadFonts();
-  }, []);
+  }, [])
 
   return (
     <>
       {isLoading ? (
         <View />
       ) : (
-        <NavigationBar />
+        <View style={{ flex: 1, backgroundColor: Colors.background }}>
+          <NavigationBar />
+        </View>
       )}
     </>
-  );
+  )
 }

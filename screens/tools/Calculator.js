@@ -1,9 +1,17 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+
+import Colors from '../../Colors';
+import Container from '../../components/Container';
+import CalculatorButton from '../../components/buttons/CalculatorButton';
 
 export default function Calculator() {
     const [input, setInput] = useState('');
     const [output, setOutput] = useState('');
+
+    const navigation = useNavigation();
+
     const calculate = (value) => {
         const replaceSymbols = (expr) => expr.replace(/x/g, '*').replace(/÷/g, '/').replace(/\^/g, '**');
         if (value === '=') {
@@ -36,143 +44,87 @@ export default function Calculator() {
                 else setInput((prevInput) => prevInput + value);
             } else setInput((prevInput) => prevInput + value);
         }
-    };
+    }
 
     return (
-        <View style={styles.container}>
+        <Container>
             <Text style={styles.input}>{input}</Text>
             <Text style={styles.output}>{output}</Text>
-            <View style={styles.buttons}>
+            <TouchableOpacity style={styles.tools} onPress={() => navigation.navigate('UnitsConverter')}>
+                <Image source={require('../../assets/images/tools/calculator/units-converter.png')} style={{ width: 48, height: 18 }} />
+            </TouchableOpacity>
+            <View style={styles.container}>
                 <View style={styles.row}>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('C')}>
-                        <Text style={styles.delete}>C</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('sqrt')}>
-                        <Text style={styles.symbols}>√</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('^')}>
-                        <Text style={styles.symbols}>^</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('÷')}>
-                        <Text style={styles.symbols}>÷</Text>
-                    </TouchableOpacity>
+                    <CalculatorButton type='delete' value='C' onPress={() => calculate('C')} />
+                    <CalculatorButton type='symbols' value='√' onPress={() => calculate('sqrt')} />
+                    <CalculatorButton type='symbols' value='^' onPress={() => calculate('^')} />
+                    <CalculatorButton type='symbols' value='÷' onPress={() => calculate('÷')} />
                 </View>
                 <View style={styles.row}>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('7')}>
-                        <Text style={styles.numbers}>7</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('8')}>
-                        <Text style={styles.numbers}>8</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('9')}>
-                        <Text style={styles.numbers}>9</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('x')}>
-                        <Text style={styles.symbols}>x</Text>
-                    </TouchableOpacity>
+                    <CalculatorButton type='numbers' value='7' onPress={() => calculate('7')} />
+                    <CalculatorButton type='numbers' value='8' onPress={() => calculate('8')} />
+                    <CalculatorButton type='numbers' value='9' onPress={() => calculate('9')} />
+                    <CalculatorButton type='symbols' value='x' onPress={() => calculate('x')} />
                 </View>
                 <View style={styles.row}>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('4')}>
-                        <Text style={styles.numbers}>4</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('5')}>
-                        <Text style={styles.numbers}>5</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('6')}>
-                        <Text style={styles.numbers}>6</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('-')}>
-                        <Text style={styles.symbols}>-</Text>
-                    </TouchableOpacity>
+                    <CalculatorButton type='numbers' value='4' onPress={() => calculate('4')} />
+                    <CalculatorButton type='numbers' value='5' onPress={() => calculate('5')} />
+                    <CalculatorButton type='numbers' value='6' onPress={() => calculate('6')} />
+                    <CalculatorButton type='symbols' value='-' onPress={() => calculate('-')} />
                 </View>
                 <View style={styles.row}>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('1')}>
-                        <Text style={styles.numbers}>1</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('2')}>
-                        <Text style={styles.numbers}>2</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('3')}>
-                        <Text style={styles.numbers}>3</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('+')}>
-                        <Text style={styles.symbols}>+</Text>
-                    </TouchableOpacity>
+                    <CalculatorButton type='numbers' value='1' onPress={() => calculate('1')} />
+                    <CalculatorButton type='numbers' value='2' onPress={() => calculate('2')} />
+                    <CalculatorButton type='numbers' value='3' onPress={() => calculate('3')} />
+                    <CalculatorButton type='symbols' value='+' onPress={() => calculate('+')} />
                 </View>
                 <View style={styles.row}>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('0')}>
-                        <Text style={styles.numbers}>0</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('.')}>
-                        <Text style={styles.numbers}>.</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('backspace')}>
-                        <Image
-                            source={require('../../assets/images/tools/calculator/backspace.png')}
-                            style={{ width: 40, height: 40 }}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => calculate('=')}>
-                        <Text style={styles.symbols}>=</Text>
-                    </TouchableOpacity>
+                    <CalculatorButton type='numbers' value='0' onPress={() => calculate('0')} />
+                    <CalculatorButton type='numbers' value='.' onPress={() => calculate('.')} />
+                    <CalculatorButton type='backspace' onPress={() => calculate('backspace')} />
+                    <CalculatorButton type='symbols' value='=' onPress={() => calculate('=')} />
                 </View>
             </View>
-        </View>
-    );
+        </Container>
+    )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#ECECEC',
-        flex: 1,
-        marginHorizontal: 10
-    },
-    buttons: {
-        marginBottom: 5
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 10
-    },
+const styles = ({
     input: {
-        color: '#376DEC',
+        backgroundColor: Colors.primary,
+        color: Colors.white,
         fontSize: 28,
         textAlign: 'right',
+        paddingVertical: 5,
         paddingRight: 20,
-        paddingTop: 5
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15
     },
     output: {
-        color: '#376DEC',
+        backgroundColor: Colors.primary,
+        color: Colors.white,
         fontSize: 44,
         textAlign: 'right',
-        paddingTop: 10,
+        paddingVertical: 5,
         paddingRight: 20,
-        paddingBottom: 20
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15,
+        borderColor: Colors.primary
     },
-    delete: {
-        fontFamily: 'msb',
-        color: '#FD5056',
-        fontSize: 36
-    },
-    symbols: {
-        fontFamily: 'msb',
-        color: '#2ECC71',
-        fontSize: 36
-    },
-    numbers: {
-        fontFamily: 'msb',
-        color: '#376DEC',
-        fontSize: 36
-    },
-    button: {
-        flex: 1,
-        backgroundColor: '#E1E1E1',
+    tools: {
+        height: 60,
         justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: 5,
-        height: 85,
-        borderRadius: 15,
-        elevation: 10
+        marginLeft: 5
     },
+    container: {
+        flex: 1,
+        justifyContent: 'space-between',
+        marginTop: -10
+    },
+    row: {
+        flex: 1,
+        flexDirection: 'row',
+        marginTop: 10,
+        marginHorizontal: -5
+    }
 })

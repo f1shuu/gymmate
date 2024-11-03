@@ -1,34 +1,12 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import Container from '../../components/Container';
+import Background from '../../components/Background';
+import AddButton from '../../components/buttons/AddButton';
 
 export default function ExercisesScreen() {
     return (
-        <View style={styles.container}>
-            <Text style={styles.emptyText}>Nie masz jeszcze żadnych ćwiczeń. Użyj przycisku w prawym dolnym rogu ekranu, aby dodać swoje pierwsze.</Text>
-            <Image source={require('../../assets/images/background.png')} style={styles.image} />
-        </View>
-    );
+        <Container>
+            <Background text={true} content={'ćwiczeń'} type={'feminine'} />
+            <AddButton onPress={'AddExercise'} />
+        </Container>
+    )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#ECECEC',
-        flex: 1
-    },
-    emptyText: {
-        fontFamily: 'msb',
-        color: '#D9D9D9',
-        fontSize: 32,
-        textAlign: 'center',
-        paddingTop: 50,
-        paddingHorizontal: 25
-    },
-    image: {
-        zIndex: -1,
-        width: 400,
-        height: 400,
-        resizeMode: 'contain',
-        position: 'absolute',
-        bottom: -90,
-        right: -90,
-    }
-})

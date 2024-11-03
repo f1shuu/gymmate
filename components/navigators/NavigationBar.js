@@ -1,8 +1,8 @@
 import { Image } from 'react-native';
-import { NavigationContainer, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { LinearGradient } from 'expo-linear-gradient';
 
+import Colors from '../../Colors';
 import ExercisesScreen from '../../screens/navbar/ExercisesScreen';
 import BodyMeasurementsNavigator from './BodyMeasurementsNavigator';
 import HomeScreen from '../../screens/navbar/HomeScreen';
@@ -13,24 +13,22 @@ const Tab = createBottomTabNavigator();
 
 const customOptions = {
     headerTitleStyle: {
-        fontFamily: 'msb',
-        color: 'white',
-        fontSize: 22
+        fontFamily: 'Nexa',
+        fontSize: 22,
+        color: Colors.white
     },
-    headerBackground: () => (
-        <LinearGradient
-            colors={['#6430D2', '#376DEC']}
-            style={{ flex: 1 }}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-        />
-    ),
+    headerStyle: {
+        backgroundColor: Colors.primary,
+        height: 80,
+        elevation: 0
+    },
     tabBarStyle: {
-        backgroundColor: '#F6F6F6',
+        backgroundColor: Colors.primary,
         height: 60,
-        paddingTop: 20
+        paddingTop: 20,
+        borderTopWidth: 0
     },
-    tabBarLabel: '',
+    tabBarLabel: ''
 }
 
 const getIconName = (routeName, focused) => {
@@ -43,8 +41,8 @@ const getIconName = (routeName, focused) => {
         case 'Metryczka':
             iconName = focused ? require('../../assets/images/navbar/body-measurements-active.png') : require('../../assets/images/navbar/body-measurements-inactive.png');
             break;
-        case 'Trening':
-            iconName = focused ? require('../../assets/images/navbar/training-active.png') : require('../../assets/images/navbar/training-inactive.png');
+        case 'Rozpocznij trening':
+            iconName = focused ? require('../../assets/images/navbar/home-active.png') : require('../../assets/images/navbar/home-inactive.png');
             break;
         case 'Narzędzia':
             iconName = focused ? require('../../assets/images/navbar/tools-active.png') : require('../../assets/images/navbar/tools-inactive.png');
@@ -60,9 +58,9 @@ const getIconName = (routeName, focused) => {
 export default function NavigationBar() {
     return (
         <NavigationContainer>
-            <Tab.Navigator initialRouteName="Trening" screenOptions={{ cardStyle: { backgroundColor: '#141414' } }}>
+            <Tab.Navigator initialRouteName='Rozpocznij trening' screenOptions={{ cardStyle: { backgroundColor: Colors.background } }}>
                 <Tab.Screen
-                    name="Ćwiczenia"
+                    name='Ćwiczenia'
                     component={ExercisesScreen}
                     options={({ route }) => ({
                         ...customOptions,
@@ -77,7 +75,7 @@ export default function NavigationBar() {
                     }
                 />
                 <Tab.Screen
-                    name="Metryczka"
+                    name='Metryczka'
                     component={BodyMeasurementsNavigator}
                     options={({ route }) => ({
                         ...customOptions,
@@ -92,22 +90,22 @@ export default function NavigationBar() {
                     }
                 />
                 <Tab.Screen
-                    name="Trening"
+                    name='Rozpocznij trening'
                     component={HomeScreen}
                     options={({ route }) => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
                             <Image source={getIconName(route.name, focused)} style={{
-                                width: 55,
-                                height: 55,
-                                marginBottom: 15
+                                width: 35,
+                                height: 35,
+                                marginBottom: 5
                             }} />
                         )
                     })
                     }
                 />
                 <Tab.Screen
-                    name="Narzędzia"
+                    name='Narzędzia'
                     component={ToolsNavigator}
                     options={({ route }) => ({
                         ...customOptions,
@@ -122,7 +120,7 @@ export default function NavigationBar() {
                     }
                 />
                 <Tab.Screen
-                    name="Ustawienia"
+                    name='Ustawienia'
                     component={SettingsScreen}
                     options={({ route }) => ({
                         ...customOptions,
@@ -138,5 +136,5 @@ export default function NavigationBar() {
                 />
             </Tab.Navigator>
         </NavigationContainer>
-    );
+    )
 }

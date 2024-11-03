@@ -1,32 +1,26 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { LinearGradient } from 'expo-linear-gradient';
 
+import Colors from '../../Colors';
 import ToolsScreen from '../../screens/navbar/ToolsScreen';
 import Timer from '../../screens/tools/Timer';
 import BMICalculator from '../../screens/tools/BMICalculator';
-import BMIHelp from '../../screens/tools/BMIHelp';
 import Calculator from '../../screens/tools/Calculator';
 import UnitsConverter from '../../screens/tools/UnitsConverter';
+import BMIHelp from '../../screens/tools/BMIHelp';
 
 const Stack = createStackNavigator();
 
 const customOptions = {
-    headerTintColor: 'white',
+    animationEnabled: false,
+    headerTintColor: Colors.white,
     headerTitleStyle: {
-        fontFamily: 'msb',
-        color: 'white',
-        fontSize: 18
+        fontFamily: 'Nexa',
+        fontSize: 18,
+        color: Colors.white
     },
-    headerBackground: () => (
-        <LinearGradient
-            colors={['#6430D2', '#376DEC']}
-            style={{ flex: 1 }}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-        />
-    ),
     headerStyle: {
-        elevation: 10
+        backgroundColor: Colors.primary,
+        elevation: 0
     }
 }
 
@@ -36,7 +30,7 @@ export default function ToolsNavigator() {
             <Stack.Screen
                 name='ToolsScreen'
                 component={ToolsScreen}
-                options={{ headerShown: false }} />
+                options={{ headerShown: false, animationEnabled: false }} />
             <Stack.Screen
                 name='Timer'
                 component={Timer}
@@ -73,5 +67,5 @@ export default function ToolsNavigator() {
                     ...customOptions
                 }} />
         </Stack.Navigator>
-    );
+    )
 }

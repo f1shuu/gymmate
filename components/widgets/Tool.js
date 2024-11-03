@@ -1,42 +1,40 @@
-import { Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Text, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+import Colors from '../../Colors';
 
 export default Tool = ({ name, url, onPress }) => {
+    const navigation = useNavigation();
+
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.widget, { margin: 10 }]} activeOpacity={0.8}>
-            <LinearGradient
-                colors={['#6430D2', '#376DEC']}
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                style={styles.widget}
-            >
-                <Image source={url} style={styles.image} resizeMode='cover'/>
-                <Text style={styles.text}>{name}</Text>
-            </LinearGradient>
+        <TouchableOpacity onPress={() => { navigation.navigate(onPress) }} style={styles.widget} activeOpacity={0.8}>
+            <Image source={url} style={styles.image} resizeMode='cover' />
+            <Text style={styles.text}>{name}</Text>
         </TouchableOpacity>
     )
-};
+}
 
-const styles = StyleSheet.create({
+const styles = ({
     widget: {
         flex: 1,
         flexDirection: 'row',
         borderRadius: 15,
-        elevation: 10
+        backgroundColor: Colors.primary,
+        margin: 10
     },
     image: {
         alignSelf: 'center',
-        width: 125,
-        height: 125,
+        width: 100,
+        height: 100,
         margin: 10
     },
     text: {
-        fontFamily: 'msb',
-        color: 'white',
         flex: 1,
+        fontFamily: 'Nexa',
+        fontSize: 24,
+        color: Colors.white,
         textAlign: 'center',
         alignSelf: 'center',
-        fontSize: 24,
         margin: 10
     }
-});
+})

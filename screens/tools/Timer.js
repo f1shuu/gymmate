@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View } from 'react-native';
+import { useState } from 'react';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
-import { LinearGradient } from 'expo-linear-gradient';
 import { TimerPicker } from 'react-native-timer-picker';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Audio } from 'expo-av';
 import * as Haptics from 'expo-haptics';
+
+import Colors from '../../Colors';
+import Container from '../../components/Container';
+import Button from '../../components/buttons/Button';
+import SetTimerButton from '../../components/buttons/SetTimerButton';
 
 export default Timer = () => {
     const [showPicker, setShowPicker] = useState(true);
@@ -28,7 +33,7 @@ export default Timer = () => {
         setKey(prevKey => prevKey + 1);
         setMinutes(minutes);
         setSeconds(seconds);
-    };
+    }
 
     const startTimer = (minutes, seconds) => {
         if (minutes === 0 && seconds === 0) { return; }
@@ -42,6 +47,11 @@ export default Timer = () => {
         }
     }
 
+    const dismissTimer = () => {
+        setShowPicker(true);
+        stopSound();
+    }
+
     const timesUp = () => {
         setCompleted(true);
         playSound();
@@ -51,7 +61,7 @@ export default Timer = () => {
         const { sound } = await Audio.Sound.createAsync(
             require('../../assets/sounds/timesup.wav'),
             { isLooping: true }
-        );
+        )
         setSound(sound);
         await sound.playAsync();
     }
@@ -65,7 +75,7 @@ export default Timer = () => {
     }
 
     return (
-        <View style={styles.container}>
+        <Container>
             {showPicker ? (
                 <>
                     <View style={{ alignItems: 'center' }}>
@@ -89,212 +99,111 @@ export default Timer = () => {
                                 setMinutes(minutes);
                                 setSeconds(seconds);
                             }}
-                            clickSoundAsset={require("../../assets/sounds/click.wav")}
-                            Audio={Audio}
+                            clickSoundAsset={require('../../assets/sounds/click.wav')}
                             LinearGradient={LinearGradient}
+                            Audio={Audio}
                             Haptics={Haptics}
                             styles={{
+                                pickerContainer: {
+                                    backgroundColor: Colors.background
+                                },
                                 pickerItem: {
-                                    fontFamily: 'msb',
-                                    fontSize: 80,
-                                    color: '#376DEC',
+                                    fontFamily: 'Nexa',
+                                    fontSize: 64,
+                                    color: Colors.button
                                 },
                                 pickerLabel: {
-                                    fontFamily: 'msb',
-                                    fontSize: 80,
-                                    color: '#376DEC',
-                                },
-                                pickerContainer: {
-                                    marginRight: 6,
+                                    backgroundColor: Colors.background,
+                                    fontFamily: 'Nexa',
+                                    fontSize: 64,
+                                    color: Colors.button
                                 },
                                 pickerItemContainer: {
-                                    width: 150,
-                                    height: 100,
+                                    width: 100,
+                                    height: 80,
+                                    marginHorizontal: 10,
+                                    backgroundColor: Colors.background,
+                                    right: -15
                                 },
                                 pickerLabelContainer: {
                                     top: -20,
-                                    right: -26,
-                                    width: 40,
-                                    alignItems: "center",
-                                },
+                                    right: -35,
+                                    alignItems: 'center'
+                                }
                             }}
                         />
                     </View>
                 </>
-            ) : <View>
+            ) : <View style={styles.timer}>
                 <CountdownCircleTimer
                     key={key}
                     isPlaying={isPlaying}
                     duration={minutes * 60 + seconds}
-                    colors={['#6430D2', '#376DEC']}
+                    colors={Colors.button}
                     colorsTime={[minutes * 60 + seconds, 0]}
                     size={300}
-                    strokeWidth={40}
+                    strokeWidth={15}
+                    trailColor={Colors.primary}
                     onComplete={() => { timesUp(); }}
                 >
                     {({ remainingTime }) => {
                         if (remainingTime === 0) {
-                            return <Text style={styles.timesUpText}>Czas minął</Text>;
+                            return <Text style={styles.timesUpText}>Czas minął</Text>
                         }
                         const mins = Math.floor(remainingTime / 60);
                         const secs = remainingTime % 60;
-                        return <Text style={styles.timerText}>{`${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`}</Text>;
+                        return <Text style={styles.timerText}>{`${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`}</Text>
                     }}
                 </CountdownCircleTimer>
             </View>}
             {showPicker ? (
                 <>
                     <View style={styles.row}>
-                        <TouchableOpacity style={[styles.presetInactive, isActive === 1 && styles.presetActive]} onPress={() => setTime(1, 0, 1)}>
-                            {isActive === 1 ? (
-                                <LinearGradient
-                                    colors={['#6430D2', '#376DEC']}
-                                    start={{ x: 0, y: 0.5 }}
-                                    end={{ x: 1, y: 0.5 }}
-                                    style={[styles.presetInactive, isActive === 1 && styles.presetActive]}
-                                >
-                                    <Text style={[styles.presetTextInactive, isActive === 1 && styles.presetTextActive]}>01:00</Text>
-                                </LinearGradient>) : (
-                                <Text style={[styles.presetTextInactive, isActive === 1 && styles.presetTextActive]}>01:00</Text>
-                            )}
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.presetInactive, isActive === 2 && styles.presetActive]} onPress={() => setTime(5, 0, 2)}>
-                            {isActive === 2 ? (
-                                <LinearGradient
-                                    colors={['#6430D2', '#376DEC']}
-                                    start={{ x: 0, y: 0.5 }}
-                                    end={{ x: 1, y: 0.5 }}
-                                    style={[styles.presetInactive, isActive === 2 && styles.presetActive]}
-                                >
-                                    <Text style={[styles.presetTextInactive, isActive === 2 && styles.presetTextActive]}>05:00</Text>
-                                </LinearGradient>) : (
-                                <Text style={[styles.presetTextInactive, isActive === 2 && styles.presetTextActive]}>05:00</Text>
-                            )}
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.presetInactive, isActive === 3 && styles.presetActive]} onPress={() => setTime(10, 0, 3)}>
-                            {isActive === 3 ? (
-                                <LinearGradient
-                                    colors={['#6430D2', '#376DEC']}
-                                    start={{ x: 0, y: 0.5 }}
-                                    end={{ x: 1, y: 0.5 }}
-                                    style={[styles.presetInactive, isActive === 3 && styles.presetActive]}
-                                >
-                                    <Text style={[styles.presetTextInactive, isActive === 3 && styles.presetTextActive]}>10:00</Text>
-                                </LinearGradient>) : (
-                                <Text style={[styles.presetTextInactive, isActive === 3 && styles.presetTextActive]}>10:00</Text>
-                            )}
-                        </TouchableOpacity>
+                        <SetTimerButton active={isActive === 1} time='01:00' onPress={() => setTime(1, 0, 1)} />
+                        <SetTimerButton active={isActive === 2} time='05:00' onPress={() => setTime(5, 0, 2)} />
+                        <SetTimerButton active={isActive === 3} time='10:00' onPress={() => setTime(10, 0, 3)} />
                     </View>
-                    <View style={styles.row}>
-                        <TouchableOpacity style={styles.button} onPress={() => startTimer(minutes, seconds)}>
-                            <LinearGradient
-                                colors={['#6430D2', '#376DEC']}
-                                start={{ x: 0, y: 0.5 }}
-                                end={{ x: 1, y: 0.5 }}
-                                style={styles.button}
-                            >
-                                <Text style={styles.text}>Start</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
-                    </View>
+                    <Button text='Start' onPress={() => startTimer(minutes, seconds)} />
                 </>
             ) : (
                 <View style={styles.row}>
-                    <TouchableOpacity onPress={() => { setShowPicker(true); stopSound(); }} style={styles.button}>
-                        <LinearGradient
-                            colors={['#6430D2', '#376DEC']}
-                            start={{ x: 0, y: 0.5 }}
-                            end={{ x: 1, y: 0.5 }}
-                            style={styles.button}
-                        >
-                            <Text style={styles.text}>{completed ? 'Odrzuć' : 'Usuń'}</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={completed ? () => startTimer(minutes, seconds) : () => pauseOrResume()} style={styles.button}>
-                        <LinearGradient
-                            colors={['#6430D2', '#376DEC']}
-                            start={{ x: 0, y: 0.5 }}
-                            end={{ x: 1, y: 0.5 }}
-                            style={styles.button}
-                        >
-                            <Text style={styles.text}>{completed ? 'Uruchom ponownie' : (isPlaying ? 'Wstrzymaj' : 'Wznów')}</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
+                    <Button text={completed ? 'Odrzuć' : 'Usuń'} onPress={() => dismissTimer()} />
+                    <Button text={completed ? 'Uruchom ponownie' : (isPlaying ? 'Wstrzymaj' : 'Wznów')} onPress={completed ? () => startTimer(minutes, seconds) : () => pauseOrResume()} />
                 </View>
             )}
-        </View>
-    );
-};
+        </Container>
+    )
+}
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-    },
+const styles = ({
     labels: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: 240,
-        marginBottom: 10
+        flexDirection: 'row'
     },
     label: {
-        color: '#376DEC',
-        fontFamily: 'msb',
-        fontSize: 20
+        fontFamily: 'Nexa',
+        fontSize: 20,
+        color: Colors.white,
+        marginHorizontal: 25,
+        marginVertical: 10
+    },
+    timer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 50
+    },
+    timesUpText: {
+        fontFamily: 'Nexa',
+        fontSize: 36,
+        color: Colors.delete
+    },
+    timerText: {
+        fontFamily: 'Nexa',
+        fontSize: 56,
+        color: Colors.button
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 10
-    },
-    presetInactive: {
-        width: 90,
-        height: 90,
-        backgroundColor: 'white',
-        borderRadius: 50,
-        borderWidth: 2,
-        borderColor: '#376DEC',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: 10,
-        elevation: 10
-    },
-    presetActive: {
-        backgroundColor: '#376DEC',
-        borderWidth: 0
-    },
-    presetTextInactive: {
-        fontFamily: 'msb',
-        fontSize: 20,
-        color: '#376DEC'
-    },
-    presetTextActive: {
-        color: 'white'
-    },
-    button: {
-        width: 150,
-        height: 60,
-        borderRadius: 60,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 5,
-        marginHorizontal: 10,
-        elevation: 10
-    },
-    text: {
-        color: 'white',
-        fontFamily: 'msb',
-        fontSize: 16,
-    },
-    timerText: {
-        color: '#376DEC',
-        fontFamily: 'msb',
-        fontSize: 75
-    },
-    timesUpText: {
-        color: 'red',
-        fontFamily: 'msb',
-        fontSize: 36
+        marginVertical: 20
     }
-});
+})

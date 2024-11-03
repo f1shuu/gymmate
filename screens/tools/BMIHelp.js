@@ -1,10 +1,13 @@
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
+import { Text, Image, Dimensions } from 'react-native';
+
+import Colors from '../../Colors';
+import Container from '../../components/Container';
 
 const { width } = Dimensions.get('window');
 
 export default function Calculator() {
     return (
-        <View style={styles.container} >
+        <Container>
             <Text style={styles.mainText}>BMI (Body Mass Index - indeks masy ciała) to miara używana do oceny stosunku masy ciała (w kg) do wzrostu (w m).
                 Pozwala na przybliżoną ocenę zdrowia, lecz nie należy jej traktować jako precyzyjnej danej, a jedynie jako przybliżenie -
                 nie uwzględnia ona bowiem rozkładu tkanki tłuszczowej i mięśniowej oraz kilku innych kluczowych czynników.
@@ -13,36 +16,34 @@ export default function Calculator() {
                 source={require('../../assets/images/tools/bmi/graph.png')}
                 style={styles.image}
             />
-            <Text style={styles.minorText}>Wykres BMI dla zakresu masy ciała od 45 do 135 kg oraz zakresu wzrostu od 1,4 m do 2 m
+            <Text style={styles.text}>Wykres BMI dla zakresu masy ciała od 45 do 135 kg oraz zakresu wzrostu od 1,4 m do 2 m
             </Text>
-        </View>
-    );
+        </Container>
+    )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'flex-start'
+const styles = ({
+    mainText: {
+        fontFamily: 'Nexa',
+        fontSize: 16,
+        color: Colors.white,
+        width: '90%',
+        margin: 20,
+        textAlign: 'justify'
     },
     image: {
+        alignSelf: 'center',
         width: width * 0.9,
         height: (width * (814 / 1130)) * 0.9,
         resizeMode: 'contain',
         borderRadius: 10,
         marginBottom: 10
     },
-    mainText: {
-        fontFamily: 'msb',
-        width: '90%',
-        color: '#376DEC',
-        margin: 20,
-        textAlign: 'justify'
-    },
-    minorText: {
-        fontFamily: 'msr',
-        color: '#BBB',
-        fontSize: 8,
-        textAlign: 'center'
+    text: {
+        fontFamily: 'Nexa',
+        fontSize: 14,
+        color: Colors.secondary,
+        textAlign: 'center',
+        marginHorizontal: 5
     }
-});
+})

@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { LinearGradient } from 'expo-linear-gradient';
 
+import Colors from '../../Colors';
 import BodyMeasurementsScreen from '../../screens/navbar/BodyMeasurementsScreen';
 import AddBodyMeasurement from '../../screens/tools/AddBodyMeasurement';
 
@@ -12,32 +12,24 @@ export default function BodyMeasurementsNavigator() {
             <Stack.Screen
                 name='BodyMeasurementsScreen'
                 component={BodyMeasurementsScreen}
-                options={{ headerShown: false }} />
+                options={{ headerShown: false, animationEnabled: false }} />
             <Stack.Screen
                 name='AddBodyMeasurement'
                 component={AddBodyMeasurement}
                 options={{
-                    headerTintColor: 'white',
+                    animationEnabled: false,
+                    headerTintColor: Colors.white,
                     headerTitle: 'Dodaj nowy pomiar',
-                    headerTitleStyle: {
-                        fontFamily: 'msb',
-                        color: 'white',
-                        fontSize: 18
+                    headerStyle: {
+                        backgroundColor: Colors.primary,
+                        elevation: 0
                     },
-                    headerBackground: () => (
-                        <LinearGradient
-                            colors={['#6430D2', '#376DEC']}
-                            style={{ flex: 1 }}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 0 }}
-                        />
-                    ),
-                    tabBarStyle: {
-                        backgroundColor: '#F6F6F6',
-                        height: 60,
-                        paddingTop: 20
+                    headerTitleStyle: {
+                        fontFamily: 'Nexa',
+                        fontSize: 18,
+                        color: Colors.white
                     }
                 }} />
         </Stack.Navigator>
-    );
+    )
 }
