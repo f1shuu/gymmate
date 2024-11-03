@@ -61,7 +61,7 @@ export default function AddBodyMeasurement() {
             <Text style={styles.text}>Kategoria pomiaru</Text>
             <Dropdown
                 style={[styles.dropdown, { borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }]}
-                containerStyle={{ marginLeft: 1, backgroundColor: Colors.primary, borderBottomLeftRadius: 15, borderBottomRightRadius: 15, borderWidth: 0 }}
+                containerStyle={{ marginTop: -2, marginLeft: 1, backgroundColor: Colors.primary, borderBottomLeftRadius: 15, borderBottomRightRadius: 15, borderWidth: 0 }}
                 itemTextStyle={{ fontFamily: 'Nexa', color: Colors.white }}
                 placeholderStyle={{ fontFamily: 'Nexa', color: Colors.secondary }}
                 selectedTextStyle={{ fontFamily: 'Nexa', color: Colors.white }}
