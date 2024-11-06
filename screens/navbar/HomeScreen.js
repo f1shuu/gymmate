@@ -48,7 +48,7 @@ const styles = {
     },
     text: {
         fontFamily: 'Nexa',
-        fontSize: 24,
+        fontSize: 20,
         color: Colors.white
     }
 }
