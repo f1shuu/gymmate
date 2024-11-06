@@ -164,7 +164,7 @@ export default function BodyMeasurementsScreen() {
     )
 }
 
-const styles = ({
+const styles = {
     header: {
         backgroundColor: Colors.primary,
         flexDirection: 'row',
@@ -199,4 +199,4 @@ const styles = ({
         fontSize: 16,
         color: Colors.white
     }
-})
+}

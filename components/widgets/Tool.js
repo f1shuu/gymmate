@@ -14,7 +14,7 @@ export default Tool = ({ name, url, onPress }) => {
     )
 }
 
-const styles = ({
+const styles = {
     widget: {
         flex: 1,
         flexDirection: 'row',
@@ -37,4 +37,4 @@ const styles = ({
         alignSelf: 'center',
         margin: 10
     }
-})
+}

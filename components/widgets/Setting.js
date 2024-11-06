@@ -49,7 +49,7 @@ export default Setting = () => {
     )
 }
 
-const styles = ({
+const styles = {
     container: {
         backgroundColor: Colors.primary,
         padding: 15,
@@ -69,4 +69,4 @@ const styles = ({
         alignSelf: 'center',
         margin: 10
     }
-})
+}

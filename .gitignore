@@ -33,4 +33,4 @@ yarn-error.*
 *.tsbuildinfo
 
 # my stuff
-.old
+.vscode

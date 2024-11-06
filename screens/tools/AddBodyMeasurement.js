@@ -91,7 +91,7 @@ export default function AddBodyMeasurement() {
     )
 }
 
-const styles = ({
+const styles = {
     text: {
         fontFamily: 'Nexa',
         fontSize: 18,
@@ -117,4 +117,4 @@ const styles = ({
         marginTop: 5,
         marginBottom: 10
     }
-})
+}

@@ -22,7 +22,7 @@ export default function Calculator() {
     )
 }
 
-const styles = ({
+const styles = {
     mainText: {
         fontFamily: 'Nexa',
         fontSize: 16,
@@ -36,7 +36,7 @@ const styles = ({
         width: width * 0.9,
         height: (width * (814 / 1130)) * 0.9,
         resizeMode: 'contain',
-        borderRadius: 10,
+        borderRadius: 15,
         marginBottom: 10
     },
     text: {
@@ -46,4 +46,4 @@ const styles = ({
         textAlign: 'center',
         marginHorizontal: 5
     }
-})
+}

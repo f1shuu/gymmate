@@ -23,6 +23,9 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.f1shu.gymmate",
+      "permissions": [
+        "ACCESS_FINE_LOCATION"
+      ],
       "softwareKeyboardLayoutMode": "pan"
     },
     "web": {

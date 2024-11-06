@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Colors from '../../Colors';
 import ExercisesNavigator from './ExercisesNavigator';
 import BodyMeasurementsNavigator from './BodyMeasurementsNavigator';
-import HomeScreen from '../../screens/navbar/HomeScreen';
+import HomeNavigator from './HomeNavigator';
 import ToolsNavigator from './ToolsNavigator';
 import SettingsScreen from '../../screens/navbar/SettingsScreen';
 
@@ -98,7 +98,7 @@ export default function NavigationBar() {
                 />
                 <Tab.Screen
                     name='Rozpocznij trening'
-                    component={HomeScreen}
+                    component={HomeNavigator}
                     options={({ route }) => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (

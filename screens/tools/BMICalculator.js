@@ -85,7 +85,7 @@ export default function BMICalculator() {
     )
 }
 
-const styles = ({
+const styles = {
     resultArea: {
         height: 60,
         justifyContent: 'center',
@@ -120,4 +120,4 @@ const styles = ({
         justifyContent: 'space-around',
         marginTop: 10
     }
-})
+}
