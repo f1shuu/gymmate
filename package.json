@@ -25,6 +25,7 @@
     "react-native": "0.74.5",
     "react-native-collapsible": "^1.6.1",
     "react-native-countdown-circle-timer": "^3.2.1",
+    "react-native-dotenv": "^3.4.11",
     "react-native-element-dropdown": "^2.10.1",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-maps": "1.14.0",

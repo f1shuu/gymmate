@@ -8,9 +8,12 @@ import Container from '../../components/Container';
 import Background from '../../components/Background';
 import Button from '../../components/buttons/Button';
 
+import { GOOGLE_MAPS_API_KEY } from '@env';
+
 export default function Map() {
   const [location, setLocation] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [gyms, setGyms] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -22,6 +25,9 @@ export default function Map() {
 
       let userLocation = await Location.getCurrentPositionAsync({});
       setLocation(userLocation.coords);
+
+      let gymsNearby = await fetchNearbyGyms(userLocation.coords.latitude, userLocation.coords.longitude);
+      setGyms(gymsNearby);
     })()
   }, [])
 
@@ -38,15 +44,31 @@ export default function Map() {
     })
   }
 
+  async function fetchNearbyGyms(latitude, longitude) {
+    const searchRadius = 5000;
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${searchRadius}&type=gym&key=${GOOGLE_MAPS_API_KEY}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.results) return data.results;
+      else return [];
+    } catch (error) {
+      console.error('Error fetching gyms:', error);
+      return [];
+    }
+  }
+
   if (!location) {
     return (
       <Container>
         <Background />
         <View style={styles.textArea}>
-          <Text style={[styles.text, { color: Colors.delete }]}>{errorMessage}</Text>
           {errorMessage ? (
-            <Button onPress={() => retry()} text='Odśwież' />
+            <Text style={[styles.text, { color: Colors.delete }]}>{errorMessage}</Text>
           ) : <Text style={styles.text}>Ładowanie mapy...</Text>}
+          <Button onPress={() => retry()} text='Odśwież' />
         </View>
       </Container>
     )
@@ -58,17 +80,40 @@ export default function Map() {
       initialRegion={{
         latitude: location.latitude,
         longitude: location.longitude,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01
+        latitudeDelta: 0.092,
+        longitudeDelta: 0.042
       }}
     >
-      <Marker coordinate={{ latitude: location.latitude, longitude: location.longitude }} title='Twoja lokalizacja' >
-        <View style={styles.markerContainer}>
-          <Image source={require('../../assets/images/marker.png')} style={styles.marker} />
-
+      <Marker
+        coordinate={{
+          latitude: location.latitude,
+          longitude: location.longitude
+        }}
+        title='Twoja lokalizacja'
+        tracksViewChanges={false}
+        draggable
+      >
+        <View style={[styles.markerContainer, { width: 75, height: 75 }]}>
+          <Image source={require('../../assets/images/marker.png')} style={[styles.marker, { width: 75, height: 75 }]} />
           <Image source={require('../../assets/images/avatars/default/male-avatar.png')} style={styles.avatar} />
         </View>
       </Marker>
+      {gyms.map((gym, index) => (
+        <Marker
+          key={index}
+          coordinate={{
+            latitude: gym.geometry.location.lat,
+            longitude: gym.geometry.location.lng,
+          }}
+          title={gym.name}
+          description={gym.vicinity}
+          tracksViewChanges={false}
+        >
+          <View style={[styles.markerContainer, { width: 50, height: 50 }]}>
+            <Image source={require('../../assets/images/marker.png')} style={[styles.marker, { width: 50, height: 50 }]} />
+          </View>
+        </Marker>
+      ))}
     </MapView>
   )
 }
@@ -88,21 +133,17 @@ const styles = {
   },
   markerContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
-    width: 100,
-    height: 100
+    justifyContent: 'center'
   },
   marker: {
     position: 'absolute',
-    width: 100,
-    height: 100,
     resizeMode: 'contain'
   },
   avatar: {
-    marginBottom: 14,
-    marginRight: 2.5,
-    width: 80,
-    height: 80,
+    marginBottom: 11,
+    marginRight: 2,
+    width: 60,
+    height: 60,
     borderRadius: 40
   }
 }
