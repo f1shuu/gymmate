@@ -8,8 +8,6 @@ import Container from '../../components/Container';
 import Background from '../../components/Background';
 import Button from '../../components/buttons/Button';
 
-import { GOOGLE_MAPS_API_KEY } from '@env';
-
 export default function Map() {
   const [location, setLocation] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -46,7 +44,8 @@ export default function Map() {
 
   async function fetchNearbyGyms(latitude, longitude) {
     const searchRadius = 5000;
-    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${searchRadius}&type=gym&key=${GOOGLE_MAPS_API_KEY}`;
+    const key = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY;
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${searchRadius}&type=gym&key=${key}`;
 
     try {
       const response = await fetch(url);

@@ -1,6 +1,3 @@
-import { config } from 'dotenv';
-config();
-
 export default {
     expo: {
         name: 'GymMate',
@@ -23,11 +20,6 @@ export default {
                 foregroundImage: './assets/images/icon.png',
                 backgroundColor: '#ffffff'
             },
-            config: {
-                googleMaps: {
-                    apiKey: process.env.GOOGLE_MAPS_API_KEY
-                }
-            },
             package: 'com.f1shu.gymmate',
             permissions: ['ACCESS_FINE_LOCATION'],
             softwareKeyboardLayoutMode: 'pan'
@@ -37,7 +29,7 @@ export default {
         },
         extra: {
             eas: {
-                projectId: process.env.PROJECT_ID
+                projectId: 'e5304711-7af6-4e07-9af3-2c40c094c484'
             }
         },
         plugins: ['expo-font']
