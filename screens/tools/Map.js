@@ -1,4 +1,4 @@
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, Linking, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -6,41 +6,38 @@ import * as Location from 'expo-location';
 import Colors from '../../Colors';
 import Container from '../../components/Container';
 import Background from '../../components/Background';
+import Modal from '../../components/Modal';
 import Button from '../../components/buttons/Button';
 
 export default function Map() {
+  const [message, setMessage] = useState(null);
+  const [locationAccessGranted, setLocationAccessGranted] = useState(false);
   const [location, setLocation] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
   const [gyms, setGyms] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const checkForLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    let isLocationEnabled = await Location.hasServicesEnabledAsync();
+
+    if (status === 'granted') {
+      setLocationAccessGranted(true);
+      if (isLocationEnabled) {
+        let userLocation = await Location.getCurrentPositionAsync({});
+        setLocation(userLocation.coords);
+
+        let gymsNearby = await fetchNearbyGyms(userLocation.coords.latitude, userLocation.coords.longitude);
+        setGyms(gymsNearby);
+      } else setMessage('Usługa lokalizacji urządzenia jest wyłączona');
+    } else {
+      setLocationAccessGranted(false);
+      setMessage('Aby korzystać z tej funkcji, musisz zezwolić na dostęp do lokalizacji urządzenia.');
+    }
+  }
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMessage('Aby korzystać z tej funkcji, musisz zezwolić aplikacji na dostęp do lokalizacji urządzenia.');
-        return;
-      }
-
-      let userLocation = await Location.getCurrentPositionAsync({});
-      setLocation(userLocation.coords);
-
-      let gymsNearby = await fetchNearbyGyms(userLocation.coords.latitude, userLocation.coords.longitude);
-      setGyms(gymsNearby);
-    })()
+    checkForLocation();
   }, [])
-
-  const retry = () => {
-    setErrorMessage(null);
-    Location.requestForegroundPermissionsAsync().then(({ status }) => {
-      if (status === 'granted') {
-        Location.getCurrentPositionAsync({}).then(location => {
-          setLocation(location.coords);
-        })
-      } else {
-        setErrorMessage('Uprawnienia nadal odrzucone, spróbuj ponownie.');
-      }
-    })
-  }
 
   async function fetchNearbyGyms(latitude, longitude) {
     const searchRadius = 5000;
@@ -54,9 +51,14 @@ export default function Map() {
       if (data.results) return data.results;
       else return [];
     } catch (error) {
-      console.error('Error fetching gyms:', error);
+      console.error('Error fetching gyms: ', error);
       return [];
     }
+  }
+
+  const goToSettings = async () => {
+    Linking.openSettings();
+    checkForLocation();
   }
 
   if (!location) {
@@ -64,10 +66,22 @@ export default function Map() {
       <Container>
         <Background />
         <View style={styles.textArea}>
-          {errorMessage ? (
-            <Text style={[styles.text, { color: Colors.delete }]}>{errorMessage}</Text>
-          ) : <Text style={styles.text}>Ładowanie mapy...</Text>}
-          <Button onPress={() => retry()} text='Odśwież' />
+          <Text style={[styles.text, { color: Colors.delete }]}>{message}</Text>
+          {!locationAccessGranted ?
+            <>
+              <TouchableOpacity onPress={() => setIsModalVisible(() => !isModalVisible)}>
+                <Text style={styles.help}>Gdzie mogę to zrobić?</Text>
+              </TouchableOpacity>
+              <Button onPress={() => goToSettings()} text='Ustawienia' />
+              <Modal
+                isVisible={isModalVisible}
+                text='Uprawnienia > Lokalizacja > "Zawsze zezwalaj"'
+                twoButtons={false}
+                buttonOneText='OK'
+                buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)}
+              />
+            </> :
+            <Button onPress={() => checkForLocation()} text='Odśwież' />}
         </View>
       </Container>
     )
@@ -129,6 +143,11 @@ const styles = {
     color: Colors.white,
     textAlign: 'center',
     margin: 20
+  },
+  help: {
+    fontFamily: 'Nexa',
+    color: Colors.secondary,
+    marginBottom: 10
   },
   markerContainer: {
     alignItems: 'center',

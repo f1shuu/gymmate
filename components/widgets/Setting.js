@@ -10,15 +10,13 @@ import Modal from '../Modal';
 export default Setting = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
-    const handleModal = () => setIsModalVisible(() => !isModalVisible);
-    const handleConfirmationModal = () => setIsConfirmationModalVisible(() => !isConfirmationModalVisible);
 
     const clearAsyncStorage = async () => {
         try {
             await AsyncStorage.clear();
             setIsModalVisible(!isModalVisible);
             setIsConfirmationModalVisible(!isConfirmationModalVisible);
-            handleConfirmationModal();
+            () => setIsConfirmationModalVisible(() => !isConfirmationModalVisible)
         } catch (error) {
             console.error('Error clearing AsyncStorage:', error);
         }
@@ -26,7 +24,7 @@ export default Setting = () => {
 
     return (
         <>
-            <TouchableOpacity onPress={() => handleModal()} style={styles.container}>
+            <TouchableOpacity onPress={() => setIsModalVisible(() => !isModalVisible)} style={styles.container}>
                 <Text style={styles.text}>Usuń dane metryczne</Text>
             </TouchableOpacity>
             <Modal
@@ -36,14 +34,14 @@ export default Setting = () => {
                 buttonOneText='Tak'
                 buttonOneOnPress={() => clearAsyncStorage()}
                 buttonTwoText='Anuluj'
-                buttonTwoOnPress={() => handleModal()}
+                buttonTwoOnPress={() => setIsModalVisible(() => !isModalVisible)}
             />
             <Modal
                 isVisible={isConfirmationModalVisible}
                 text='Pomiary zostały pomyślnie usunięte.'
                 twoButtons={false}
                 buttonOneText='OK'
-                buttonOneOnPress={() => handleConfirmationModal()}
+                buttonOneOnPress={() => setIsConfirmationModalVisible(() => !isConfirmationModalVisible)}
             />
         </>
     )

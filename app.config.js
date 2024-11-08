@@ -20,6 +20,11 @@ export default {
                 foregroundImage: './assets/images/icon.png',
                 backgroundColor: '#ffffff'
             },
+            config: {
+                googleMaps: {
+                    apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY
+                }
+            },
             package: 'com.f1shu.gymmate',
             permissions: ['ACCESS_FINE_LOCATION'],
             softwareKeyboardLayoutMode: 'pan'
