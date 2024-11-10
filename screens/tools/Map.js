@@ -10,7 +10,7 @@ import Modal from '../../components/Modal';
 import Button from '../../components/buttons/Button';
 
 export default function Map() {
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState('Ładowanie...');
   const [locationAccessGranted, setLocationAccessGranted] = useState(false);
   const [location, setLocation] = useState(null);
   const [gyms, setGyms] = useState([]);
@@ -66,7 +66,7 @@ export default function Map() {
       <Container>
         <Background />
         <View style={styles.textArea}>
-          <Text style={[styles.text, { color: Colors.delete }]}>{message}</Text>
+          <Text style={[styles.text, { color: message === 'Ładowanie...' ? Colors.white : Colors.delete }]}>{message}</Text>
           {!locationAccessGranted ?
             <>
               <TouchableOpacity onPress={() => setIsModalVisible(() => !isModalVisible)}>
