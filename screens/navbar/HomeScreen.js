@@ -13,7 +13,7 @@ export default function HomeScreen() {
             <Background home={true} />
             <TouchableOpacity onPress={() => { navigation.navigate('Map') }} style={styles.widget} activeOpacity={0.8}>
                 <Image source={require('../../assets/images/map.png')} style={styles.map} resizeMode='cover' />
-                <Image source={require('../../assets/images/marker.png')} style={styles.marker} />
+                <Image source={require('../../assets/images/gymMarker.png')} style={styles.marker} />
                 <View style={styles.textbox}>
                     <Text style={styles.text}>Znajdź siłownie w pobliżu</Text>
                 </View>

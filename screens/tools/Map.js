@@ -9,6 +9,26 @@ import Background from '../../components/Background';
 import Modal from '../../components/Modal';
 import Button from '../../components/buttons/Button';
 
+const GymMarker = ({ coordinate }) => {
+  const [tracksViewChanges, setTracksViewChanges] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTracksViewChanges(false);
+    }, 500)
+
+    return () => clearTimeout(timer);
+  }, [])
+
+  return (
+    <Marker coordinate={coordinate} tracksViewChanges={tracksViewChanges}>
+      <View style={styles.markerContainer}>
+        <Image source={require('../../assets/images/gymMarker.png')} style={styles.marker} />
+      </View>
+    </Marker>
+  )
+}
+
 export default function Map() {
   const [message, setMessage] = useState('Ładowanie...');
   const [locationAccessGranted, setLocationAccessGranted] = useState(false);
@@ -103,16 +123,13 @@ export default function Map() {
           longitude: location.longitude
         }}
         title='Twoja lokalizacja'
-        tracksViewChanges={false}
-        draggable
       >
-        <View style={[styles.markerContainer, { width: 75, height: 75 }]}>
-          <Image source={require('../../assets/images/marker.png')} style={[styles.marker, { width: 75, height: 75 }]} />
-          <Image source={require('../../assets/images/avatars/default/male-avatar.png')} style={styles.avatar} />
+        <View style={styles.markerContainer}>
+          <Image source={require('../../assets/images/userMarker.png')} style={styles.marker} />
         </View>
       </Marker>
       {gyms.map((gym, index) => (
-        <Marker
+        <GymMarker
           key={index}
           coordinate={{
             latitude: gym.geometry.location.lat,
@@ -120,12 +137,7 @@ export default function Map() {
           }}
           title={gym.name}
           description={gym.vicinity}
-          tracksViewChanges={false}
-        >
-          <View style={[styles.markerContainer, { width: 50, height: 50 }]}>
-            <Image source={require('../../assets/images/marker.png')} style={[styles.marker, { width: 50, height: 50 }]} />
-          </View>
-        </Marker>
+        />
       ))}
     </MapView>
   )
@@ -154,14 +166,7 @@ const styles = {
     justifyContent: 'center'
   },
   marker: {
-    position: 'absolute',
-    resizeMode: 'contain'
-  },
-  avatar: {
-    marginBottom: 11,
-    marginRight: 2,
-    width: 60,
-    height: 60,
-    borderRadius: 40
+    width: 32,
+    height: 32
   }
 }
