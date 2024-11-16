@@ -9,7 +9,7 @@ import Background from '../../components/Background';
 import Modal from '../../components/Modal';
 import Button from '../../components/buttons/Button';
 
-const GymMarker = ({ coordinate }) => {
+const GymMarker = ({ coordinate, title, description }) => {
   const [tracksViewChanges, setTracksViewChanges] = useState(true);
 
   useEffect(() => {
@@ -21,7 +21,11 @@ const GymMarker = ({ coordinate }) => {
   }, [])
 
   return (
-    <Marker coordinate={coordinate} tracksViewChanges={tracksViewChanges}>
+    <Marker
+      coordinate={coordinate}
+      title={title}
+      description={description}
+      tracksViewChanges={tracksViewChanges}>
       <View style={styles.markerContainer}>
         <Image source={require('../../assets/images/gymMarker.png')} style={styles.marker} />
       </View>
