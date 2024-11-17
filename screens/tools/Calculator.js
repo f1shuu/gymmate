@@ -89,7 +89,7 @@ export default function Calculator() {
     )
 }
 
-const styles = ({
+const styles = {
     input: {
         backgroundColor: Colors.primary,
         color: Colors.white,
@@ -127,4 +127,4 @@ const styles = ({
         marginTop: 10,
         marginHorizontal: -5
     }
-})
+}

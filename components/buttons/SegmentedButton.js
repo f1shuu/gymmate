@@ -26,7 +26,7 @@ export default function SegmentedButton({ option1, option2 }) {
     )
 }
 
-const styles = ({
+const styles = {
     container: {
         flexDirection: 'row',
         borderRadius: 15,
@@ -54,4 +54,4 @@ const styles = ({
         fontSize: 16,
         color: Colors.secondary
     }
-})
+}

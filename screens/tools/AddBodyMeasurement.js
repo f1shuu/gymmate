@@ -19,7 +19,6 @@ export default function AddBodyMeasurement() {
     const navigation = useNavigation();
 
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const handleModal = () => setIsModalVisible(() => !isModalVisible);
 
     const categories = [
         { value: 'Masa ciała' },
@@ -39,7 +38,7 @@ export default function AddBodyMeasurement() {
 
     const saveMeasurement = async (category, value, unit) => {
         if (category === 'Wybierz kategorię...' || !value) {
-            handleModal();
+            () => setIsModalVisible(() => !isModalVisible);
         } else {
             try {
                 const existingData = await AsyncStorage.getItem('data');
@@ -86,12 +85,12 @@ export default function AddBodyMeasurement() {
             />
             <Text style={styles.reminder}>Data dodania pomiaru zostanie zapisana automatycznie.</Text>
             <Button onPress={() => saveMeasurement(category, value, unit)} text='Zapisz' />
-            <Modal isVisible={isModalVisible} text='Najpierw uzupełnij wszystkie pola.' twoButtons={false} buttonOneText='OK' buttonOneOnPress={() => handleModal()} />
+            <Modal isVisible={isModalVisible} text='Najpierw uzupełnij wszystkie pola.' twoButtons={false} buttonOneText='OK' buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)} />
         </Container>
     )
 }
 
-const styles = ({
+const styles = {
     text: {
         fontFamily: 'Nexa',
         fontSize: 18,
@@ -117,4 +116,4 @@ const styles = ({
         marginTop: 5,
         marginBottom: 10
     }
-})
+}

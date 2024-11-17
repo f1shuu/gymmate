@@ -9,11 +9,11 @@ export default function CustomModal({ isVisible, text, twoButtons, buttonOneText
         <Modal isVisible={isVisible} style={[styles.modal, { height: (twoButtons == true ? '30%' : '25%') }]}>
             <Text style={styles.text}>{text}</Text>
             {twoButtons ? (<View style={styles.row}>
-                <Button text={buttonOneText} onPress={buttonOneOnPress} type='delete' />
-                <Button text={buttonTwoText} onPress={buttonTwoOnPress} />
+                <Button onPress={buttonOneOnPress} text={buttonOneText} type='delete' />
+                <Button onPress={buttonTwoOnPress} text={buttonTwoText} />
             </View>) :
                 <View style={styles.row}>
-                    <Button text={buttonOneText} onPress={buttonOneOnPress} />
+                    <Button onPress={buttonOneOnPress} text={buttonOneText} />
                 </View>}
         </Modal >
     )

@@ -148,19 +148,19 @@ export default Timer = () => {
                         <SetTimerButton active={isActive === 2} time='05:00' onPress={() => setTime(5, 0, 2)} />
                         <SetTimerButton active={isActive === 3} time='10:00' onPress={() => setTime(10, 0, 3)} />
                     </View>
-                    <Button text='Start' onPress={() => startTimer(minutes, seconds)} />
+                    <Button onPress={() => startTimer(minutes, seconds)} text='Start' />
                 </>
             ) : (
                 <View style={styles.row}>
-                    <Button text={completed ? 'Odrzuć' : 'Usuń'} onPress={() => { setShowPicker(true); stopSound(); }} />
-                    <Button text={completed ? 'Uruchom ponownie' : (isPlaying ? 'Wstrzymaj' : 'Wznów')} onPress={completed ? () => startTimer(minutes, seconds) : () => { if (!isPlaying) setIsPlaying(true); else setIsPlaying(false); }} />
+                    <Button onPress={() => { setShowPicker(true); stopSound(); }} text={completed ? 'Odrzuć' : 'Usuń'} />
+                    <Button onPress={completed ? () => startTimer(minutes, seconds) : () => { if (!isPlaying) setIsPlaying(true); else setIsPlaying(false); }} text={completed ? 'Uruchom ponownie' : (isPlaying ? 'Wstrzymaj' : 'Wznów')} />
                 </View>
             )}
         </Container>
     )
 }
 
-const styles = ({
+const styles = {
     labels: {
         flexDirection: 'row'
     },
@@ -191,4 +191,4 @@ const styles = ({
         justifyContent: 'space-between',
         marginVertical: 20
     }
-})
+}

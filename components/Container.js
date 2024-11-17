@@ -6,10 +6,10 @@ export default function Container({ children }) {
     return <View style={styles.container}>{children}</View>
 }
 
-const styles = ({
+const styles = {
     container: {
         flex: 1,
         backgroundColor: Colors.background,
         padding: 15
     }
-})
+}

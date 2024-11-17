@@ -416,7 +416,7 @@ export default function UnitsConverter() {
     );
 }
 
-const styles = ({
+const styles = {
     converter: {
         flexDirection: 'row',
         justifyContent: 'space-around',
@@ -472,4 +472,4 @@ const styles = ({
         width: 40,
         height: 40,
     }
-})
+}

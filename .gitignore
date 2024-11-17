@@ -27,10 +27,10 @@ yarn-error.*
 *.pem
 
 # local env files
-.env*.local
+.env
 
 # typescript
 *.tsbuildinfo
 
 # my stuff
-.old
+.vscode
