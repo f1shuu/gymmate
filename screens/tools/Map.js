@@ -29,7 +29,8 @@ const CustomMarker = ({ type, coordinate, title, description }) => {
       <View style={styles.markerContainer}>
         {type === 'user' ?
           <Image source={require('../../assets/images/userMarker.png')} style={styles.marker} /> :
-          <Image source={require('../../assets/images/gymMarker.png')} style={styles.marker} />}
+          <Image source={require('../../assets/images/gymMarker.png')} style={styles.marker} />
+        }
       </View>
     </Marker>
   )
