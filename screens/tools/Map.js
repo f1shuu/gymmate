@@ -9,7 +9,7 @@ import Background from '../../components/Background';
 import Modal from '../../components/Modal';
 import Button from '../../components/buttons/Button';
 
-const GymMarker = ({ coordinate, title, description }) => {
+const CustomMarker = ({ type, coordinate, title, description }) => {
   const [tracksViewChanges, setTracksViewChanges] = useState(true);
 
   useEffect(() => {
@@ -27,7 +27,9 @@ const GymMarker = ({ coordinate, title, description }) => {
       description={description}
       tracksViewChanges={tracksViewChanges}>
       <View style={styles.markerContainer}>
-        <Image source={require('../../assets/images/gymMarker.png')} style={styles.marker} />
+        {type === 'user' ?
+          <Image source={require('../../assets/images/userMarker.png')} style={styles.marker} /> :
+          <Image source={require('../../assets/images/gymMarker.png')} style={styles.marker} />}
       </View>
     </Marker>
   )
@@ -121,7 +123,8 @@ export default function Map() {
         longitudeDelta: 0.042
       }}
     >
-      <Marker
+      <CustomMarker
+        type='user'
         coordinate={{
           latitude: location.latitude,
           longitude: location.longitude
@@ -131,9 +134,10 @@ export default function Map() {
         <View style={styles.markerContainer}>
           <Image source={require('../../assets/images/userMarker.png')} style={styles.marker} />
         </View>
-      </Marker>
+      </CustomMarker>
       {gyms.map((gym, index) => (
-        <GymMarker
+        <CustomMarker
+          type='gym'
           key={index}
           coordinate={{
             latitude: gym.geometry.location.lat,
