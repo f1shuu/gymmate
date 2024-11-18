@@ -21,7 +21,7 @@ const styles = {
         paddingHorizontal: 25
     },
     image: {
-        zIndex: -1,
+        zIndex: 0,
         width: 400,
         height: 400,
         resizeMode: 'contain',

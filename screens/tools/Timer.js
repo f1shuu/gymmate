@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { TimerPicker } from 'react-native-timer-picker';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Audio } from 'expo-av';
 import * as Haptics from 'expo-haptics';
 
 import Colors from '../../Colors';
@@ -20,7 +19,6 @@ export default Timer = () => {
     const [initialValue, setInitialValue] = useState({ minutes: 0, seconds: 0 });
     const [key, setKey] = useState(0);
     const [completed, setCompleted] = useState(false);
-    const [sound, setSound] = useState();
 
     const setTime = (minutes, seconds, id) => {
         setIsActive(prevIndex => prevIndex === id ? null : id);
@@ -34,28 +32,10 @@ export default Timer = () => {
         if (minutes === 0 && seconds === 0) { return; }
         else {
             setCompleted(false);
-            stopSound();
             setInitialValue({ minutes, seconds });
             setKey(prevKey => prevKey + 1);
             setShowPicker(false);
             setIsPlaying(true);
-        }
-    }
-
-    async function playSound() {
-        const { sound } = await Audio.Sound.createAsync(
-            require('../../assets/sounds/timesup.wav'),
-            { isLooping: true }
-        )
-        setSound(sound);
-        await sound.playAsync();
-    }
-
-    const stopSound = async () => {
-        if (sound) {
-            await sound.stopAsync();
-            await sound.unloadAsync();
-            setSound(null);
         }
     }
 
@@ -84,9 +64,7 @@ export default Timer = () => {
                                 setMinutes(minutes);
                                 setSeconds(seconds);
                             }}
-                            clickSoundAsset={require('../../assets/sounds/click.wav')}
                             LinearGradient={LinearGradient}
-                            Audio={Audio}
                             Haptics={Haptics}
                             styles={{
                                 pickerContainer: {
@@ -129,7 +107,7 @@ export default Timer = () => {
                     size={300}
                     strokeWidth={15}
                     trailColor={Colors.primary}
-                    onComplete={() => { setCompleted(true); playSound(); }}
+                    onComplete={() => { setCompleted(true); }}
                 >
                     {({ remainingTime }) => {
                         if (remainingTime === 0) {
@@ -152,8 +130,8 @@ export default Timer = () => {
                 </>
             ) : (
                 <View style={styles.row}>
-                    <Button onPress={() => { setShowPicker(true); stopSound(); }} text={completed ? 'Odrzuć' : 'Usuń'} />
-                    <Button onPress={completed ? () => startTimer(minutes, seconds) : () => { if (!isPlaying) setIsPlaying(true); else setIsPlaying(false); }} text={completed ? 'Uruchom ponownie' : (isPlaying ? 'Wstrzymaj' : 'Wznów')} />
+                    <Button onPress={() => { setShowPicker(true); }} text={completed ? 'Odrzuć' : 'Usuń'} />
+                    <Button onPress={completed ? () => startTimer(minutes, seconds) : () => { if (!isPlaying) setIsPlaying(true); else setIsPlaying(false); }} text={completed ? 'Uruchom ponownie' : (isPlaying ? 'Wstrzymaj' : 'Wznów')} type='delete' />
                 </View>
             )}
         </Container>
