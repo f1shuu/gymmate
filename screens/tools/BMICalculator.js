@@ -24,7 +24,6 @@ export default function BMICalculator() {
     const handleCalculateBMI = () => {
         let formattedHeight = height.replace(',', '.'), formattedWeight = weight.replace(',', '.');
         if (isNaN(formattedHeight) || isNaN(formattedWeight) || formattedHeight === '' || formattedWeight === '') {
-            console.log('wzrost: ' + formattedHeight + ' masa: ' + formattedWeight);
             setBMIResult('Najpierw uzupełnij wszystkie pola.');
             return;
         } else if (formattedHeight <= 0 || formattedWeight <= 0) {

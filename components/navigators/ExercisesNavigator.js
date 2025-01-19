@@ -2,9 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Colors from '../../Colors';
 import ExercisesScreen from '../../screens/navbar/ExercisesScreen';
-import ExerciseNameScreen from '../../screens/tools/exercises/ExerciseNameScreen';
-import ExerciseDetailsScreen1 from '../../screens/tools/exercises/ExerciseDetailsScreen1';
-import ExerciseDetailsScreen2 from '../../screens/tools/exercises/ExerciseDetailsScreen2';
+import ExerciseCreator from '../../screens/tools/ExerciseCreator';
 
 const Stack = createStackNavigator();
 
@@ -30,16 +28,8 @@ export default function ExercisesNavigator() {
                 component={ExercisesScreen}
                 options={{ headerShown: false }} />
             <Stack.Screen
-                name='ExerciseNameScreen'
-                component={ExerciseNameScreen}
-                options={{ ...customOptions }} />
-            <Stack.Screen
-                name='ExerciseDetailsScreen1'
-                component={ExerciseDetailsScreen1}
-                options={{ ...customOptions }} />
-            <Stack.Screen
-                name='ExerciseDetailsScreen2'
-                component={ExerciseDetailsScreen2}
+                name='ExerciseCreator'
+                component={ExerciseCreator}
                 options={{ ...customOptions }} />
         </Stack.Navigator>
     )

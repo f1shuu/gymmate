@@ -74,7 +74,7 @@ export default function AddBodyMeasurement() {
                     setIsFocus(false);
                 }}
             />
-            <Text style={styles.text}>Wartość pomiaru w centymetrach</Text>
+            <Text style={styles.text}>Wartość pomiaru</Text>
             <TextInput
                 style={styles.input}
                 placeholderTextColor={Colors.secondary}

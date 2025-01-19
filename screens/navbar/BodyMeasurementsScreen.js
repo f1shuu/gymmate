@@ -12,7 +12,6 @@ import Background from '../../components/Background';
 import AddButton from '../../components/buttons/AddButton';
 
 export default function BodyMeasurementsScreen() {
-
     const [activeSections, setActiveSections] = useState([]);
 
     const [data, setData] = useState([]);
