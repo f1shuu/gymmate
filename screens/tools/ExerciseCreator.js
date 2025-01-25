@@ -1,5 +1,5 @@
 import { Text, View, TextInput } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
@@ -15,28 +15,19 @@ import SegmentedButton from '../../components/buttons/SegmentedButton';
 
 import { muscleGroups } from '../../constants/muscleGroups';
 import { repsAmounts } from '../../constants/repsAmounts';
-import { restTimes } from '../../constants/restTimes';
 import { setsAmounts } from '../../constants/setsAmounts';
 import { times } from '../../constants/times';
 import { weights } from '../../constants/weights';
 
-export default function ExerciseCreator() {
-    // Step 1
-    const [muscleGroup, setMuscleGroup] = useState(null);
-    const [type, setType] = useState('Powtórzeniowe');
-    const handleTypeChange = (type) => {
-        setType(type);
-    }
-
-    // Step 2
-    const [setsAmount, setSetsAmount] = useState('4');
-    const [repsAmount, setRepsAmount] = useState('10');
-    const [restTime, setRestTime] = useState('30 s');
-    const [time, setTime] = useState('60 s');
-    const [weight, setWeight] = useState('-');
-
-    // Step 3
-    const [name, setName] = useState(null);
+export default function ExerciseCreator({ route }) {
+    const [id, setId]                   = useState(route.params?.id || null);
+    const [muscleGroup, setMuscleGroup] = useState(route.params?.muscleGroup || null);
+    const [type, setType]               = useState(route.params?.type || 'Powtórzeniowe');
+    const [setsAmount, setSetsAmount]   = useState(route.params?.setsAmount || '4');
+    const [repsAmount, setRepsAmount]   = useState(route.params?.repsAmount || '10');
+    const [time, setTime]               = useState(route.params?.time || '60 s');
+    const [weight, setWeight]           = useState(route.params?.weight || '-');
+    const [name, setName]               = useState(route.params?.name || null);
 
     const [isDropdownFocused, setIsDropdownFocused] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -44,34 +35,48 @@ export default function ExerciseCreator() {
 
     const navigation = useNavigation();
 
+    useEffect(() => {
+        if (route.params && route.params.type) {
+            setType(route.params.type);
+        }
+    }, [route.params]);
+
+    const handleTypeChange = (type) => {
+        setType(type);
+    }
+
     const validate = (isLast, param) => {
         if (!param) {
             setIsModalVisible(() => !isModalVisible);
             setErrors(true);
         } else {
             setErrors(false);
-            if (isLast) saveExercise(muscleGroup, type, setsAmount, repsAmount, restTime, weight, time, name);
+            if (isLast) saveExercise(id, muscleGroup, type, setsAmount, repsAmount, weight, time, name);
         }
     }
 
-    const saveExercise = async (muscleGroup, type, setsAmount, repsAmount, restTime, weight, time, name) => {
+    const saveExercise = async (id, muscleGroup, type, setsAmount, repsAmount, weight, time, name) => {
         try {
-            const existingData = await AsyncStorage.getItem('exercises');
-            const exercises = existingData ? JSON.parse(existingData) : [];
+            const existingExercises = await AsyncStorage.getItem('exercises');
+            const parsedExercises = existingExercises ? JSON.parse(existingExercises) : [];
 
-            exercises.push({
-                id: uuidv4(),
+            if (id) {
+                const index = parsedExercises.findIndex(exercise => exercise.id === id);
+                if (index !== -1) parsedExercises.splice(index, 1);
+            }
+
+            parsedExercises.push({
+                id: id ? id : uuidv4(),
                 muscleGroup,
                 type,
                 setsAmount: type === 'Powtórzeniowe' ? setsAmount : undefined,
                 repsAmount: type === 'Powtórzeniowe' ? repsAmount : undefined,
-                restTime: type === 'Powtórzeniowe' ? restTime : undefined,
                 time: type === 'Czasowe' ? time : undefined,
                 weight,
                 name
             })
 
-            await AsyncStorage.setItem('exercises', JSON.stringify(exercises, null, 2));
+            await AsyncStorage.setItem('exercises', JSON.stringify(parsedExercises, null, 2));
             navigation.navigate('ExercisesScreen');
         } catch (error) {
             console.error('Error saving exercise: ', error);
@@ -118,7 +123,7 @@ export default function ExerciseCreator() {
                             }}
                         />
                         <Text style={styles.text}>Wybierz typ ćwiczenia</Text>
-                        <SegmentedButton option1='Powtórzeniowe' option2='Czasowe' onOptionChange={handleTypeChange} />
+                        <SegmentedButton option1='Powtórzeniowe' option2='Czasowe' selectedOption={type} onOptionChange={handleTypeChange} />
                         <Modal
                             isVisible={isModalVisible}
                             text='Najpierw wybierz grupę mięśniową.'
@@ -166,21 +171,6 @@ export default function ExerciseCreator() {
                                         onBlur={() => setIsDropdownFocused(false)}
                                         onChange={item => {
                                             setRepsAmount(item.value);
-                                            setIsDropdownFocused(false);
-                                        }}
-                                    />
-                                </View>
-                                <View style={styles.row}>
-                                    <Text style={styles.text}>Odpoczynek między seriami</Text>
-                                    <Dropdown
-                                        passedStyle={{ width: '30%', borderBottomLeftRadius: isDropdownFocused ? 0 : 15, borderBottomRightRadius: isDropdownFocused ? 0 : 15 }}
-                                        data={restTimes}
-                                        placeholder={isDropdownFocused ? '...' : restTime}
-                                        value={restTime}
-                                        onFocus={() => setIsDropdownFocused(true)}
-                                        onBlur={() => setIsDropdownFocused(false)}
-                                        onChange={item => {
-                                            setRestTime(item.value);
                                             setIsDropdownFocused(false);
                                         }}
                                     />

@@ -1,6 +1,6 @@
 import { Text, View, TouchableOpacity } from 'react-native';
 import { useState, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Accordion from 'react-native-collapsible/Accordion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -20,6 +20,8 @@ export default function ExercisesScreen() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
     const [activeSections, setActiveSections] = useState([]);
+
+    const navigation = useNavigation();
 
     useFocusEffect(
         useCallback(() => {
@@ -51,6 +53,17 @@ export default function ExercisesScreen() {
         }
     }
 
+    const editExercise = async (id) => {
+        try {
+            const exisitingExercises = await AsyncStorage.getItem('exercises');
+            const parsedExercises = exisitingExercises ? JSON.parse(exisitingExercises) : [];
+            
+            navigation.navigate('ExerciseCreator', parsedExercises.find(exercise => exercise.id === id));
+        } catch (error) {
+            console.error('Error editing exercise: ', error);
+        }
+    }
+
     const deleteExercise = async (id) => {
         try {
             const exisitingExercises = await AsyncStorage.getItem('exercises');
@@ -62,7 +75,7 @@ export default function ExercisesScreen() {
             retrieveExercises();
             setIsModalVisible(!isModalVisible);
         } catch (error) {
-            console.error('Error deleting measurement from AsyncStorage:', error);
+            console.error('Error deleting exercise: ', error);
         }
     }
 
@@ -89,7 +102,7 @@ export default function ExercisesScreen() {
                 <View>
                     <View style={styles.exercise}>
                         {Object.entries(section).map(([key, value], index) => (
-                            key !== 'id' && key !== 'name' ? (
+                            key !== 'id' && key !== 'name' && value !== '-' ? (
                                 <View key={index} style={styles.row}>
                                     <Text style={styles.text}>{translateToPolish(key)}:</Text>
                                     <Text style={styles.text}>{value}</Text>
@@ -97,7 +110,7 @@ export default function ExercisesScreen() {
                             ) : null
                         ))}
                         <TouchableOpacity style={styles.removeButton}>
-                            <Button text={'Edytuj'} />
+                            <Button onPress={() => editExercise(section.id)} text={'Edytuj'} />
                             <Button onPress={() => handleModal(section.id)} text={'Usuń'} type='delete' />
                         </TouchableOpacity>
                     </View>

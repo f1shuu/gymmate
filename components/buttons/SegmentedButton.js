@@ -1,13 +1,9 @@
 import { View, Text, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
 
 import Colors from '../../Colors';
 
-export default function SegmentedButton({ option1, option2, onOptionChange }) {
-    const [selectedOption, setSelectedOption] = useState(option1);
-
+export default function SegmentedButton({ option1, option2, onOptionChange, selectedOption }) {
     const handleOptionChange = (option) => {
-        setSelectedOption(option);
         if (onOptionChange) onOptionChange(option);
     }
 

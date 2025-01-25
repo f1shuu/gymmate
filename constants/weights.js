@@ -1,4 +1,5 @@
 export const weights = [
+    { value: '-' },
     { value: '2.5 kg' },
     { value: '5 kg' },
     { value: '7.5 kg' },
