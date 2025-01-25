@@ -36,22 +36,22 @@ export default function AddBodyMeasurement() {
         return (`${day}.${month}.${year} r.`);
     }
 
-    const saveMeasurement = async (category, value, unit) => {
+    const saveBodyMeasurement = async (category, value, unit) => {
         if (category === 'Wybierz kategorię...' || !value) {
-            () => setIsModalVisible(() => !isModalVisible);
+            setIsModalVisible(true);
         } else {
             try {
-                const existingData = await AsyncStorage.getItem('data');
-                const measurements = existingData ? JSON.parse(existingData) : [];
+                const existingBodyMeasurements = await AsyncStorage.getItem('bodyMeasurements');
+                const parsedBodyMeasurements = existingBodyMeasurements ? JSON.parse(existingBodyMeasurements) : [];
                 const date = getFormattedDate();
-                const categoryIndex = measurements.findIndex(entry => entry.category === category);
+                const categoryIndex = parsedBodyMeasurements.findIndex(entry => entry.category === category);
 
-                if (categoryIndex !== -1) measurements[categoryIndex].data.push({ value, unit, date });
-                else measurements.push({ category, data: [{ value, unit, date }] });
-                await AsyncStorage.setItem('data', JSON.stringify(measurements, null, 2));
+                if (categoryIndex !== -1) parsedBodyMeasurements[categoryIndex].bodyMeasurements.push({ value, unit, date });
+                else parsedBodyMeasurements.push({ category, bodyMeasurements: [{ value, unit, date }] });
+                await AsyncStorage.setItem('bodyMeasurements', JSON.stringify(parsedBodyMeasurements, null, 2));
                 navigation.navigate('BodyMeasurementsScreen');
             } catch (error) {
-                console.error('Error saving measurement: ', error);
+                console.error('Error saving body measurement: ', error);
             }
         }
     }
@@ -83,8 +83,8 @@ export default function AddBodyMeasurement() {
                 keyboardType='numeric'
                 onChangeText={(text) => setValue(text)}
             />
-            <Text style={styles.reminder}>Data dodania pomiaru zostanie zapisana automatycznie.</Text>
-            <Button onPress={() => saveMeasurement(category, value, unit)} text='Zapisz' />
+            <Text style={styles.reminder}>Jednostka wartości pomiaru zostanie dodana automatycznie.</Text>
+            <Button onPress={() => saveBodyMeasurement(category, value, unit)} text='Zapisz' />
             <Modal isVisible={isModalVisible} text='Najpierw uzupełnij wszystkie pola.' twoButtons={false} buttonOneText='OK' buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)} />
         </Container>
     )

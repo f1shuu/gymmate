@@ -15,12 +15,13 @@ export default function AddButton({ onPress }) {
 
 const styles = {
     addButton: {
+        position: 'absolute',
+        bottom: 30,
+        right: 10,
         width: 80,
         height: 80,
         backgroundColor: Colors.button,
-        borderRadius: 50,
-        marginTop: 'auto',
-        marginLeft: 'auto'
+        borderRadius: 50
     },
     text: {
         color: Colors.white,

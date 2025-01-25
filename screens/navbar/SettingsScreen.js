@@ -11,7 +11,7 @@ export default function SettingsScreen() {
         <Container>
             <Background text={false} />
             <Setting />
-            <Text style={{ color: Colors.secondary, position: 'absolute', bottom: 10, alignSelf: 'center' }}>Wersja {appVersion}</Text>
+            <Text style={{ color: Colors.secondary, position: 'absolute', bottom: 20, alignSelf: 'center' }}>Wersja {appVersion}</Text>
         </Container>
     )
 }

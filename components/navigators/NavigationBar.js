@@ -33,6 +33,7 @@ const customOptions = {
         backgroundColor: Colors.primary,
         height: 60,
         paddingTop: 20,
+        marginTop: -20,
         borderTopWidth: 0
     },
     tabBarLabel: ''

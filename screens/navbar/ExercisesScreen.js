@@ -1,7 +1,6 @@
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { useState, useCallback } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import Accordion from 'react-native-collapsible/Accordion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -19,17 +18,19 @@ export default function ExercisesScreen() {
     const [isExercises, setIsExercises] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
-    const [activeSections, setActiveSections] = useState([]);
+    const [activeIndex, setActiveIndex] = useState(null);
 
     const navigation = useNavigation();
-
+    
     useFocusEffect(
         useCallback(() => {
             retrieveExercises();
-            renderHeader();
-            renderContent();
         }, [])
     )
+    
+    const toggleAccordion = (index) => {
+        setActiveIndex(activeIndex === index ? null : index);
+    };
 
     const handleModal = (index) => {
         setModalData(index);
@@ -55,9 +56,9 @@ export default function ExercisesScreen() {
 
     const editExercise = async (id) => {
         try {
-            const exisitingExercises = await AsyncStorage.getItem('exercises');
-            const parsedExercises = exisitingExercises ? JSON.parse(exisitingExercises) : [];
-            
+            const storedExercises = await AsyncStorage.getItem('exercises');
+            const parsedExercises = storedExercises ? JSON.parse(storedExercises) : [];
+
             navigation.navigate('ExerciseCreator', parsedExercises.find(exercise => exercise.id === id));
         } catch (error) {
             console.error('Error editing exercise: ', error);
@@ -66,8 +67,8 @@ export default function ExercisesScreen() {
 
     const deleteExercise = async (id) => {
         try {
-            const exisitingExercises = await AsyncStorage.getItem('exercises');
-            const parsedExercises = exisitingExercises ? JSON.parse(exisitingExercises) : [];
+            const storedExercises = await AsyncStorage.getItem('exercises');
+            const parsedExercises = storedExercises ? JSON.parse(storedExercises) : [];
             const updatedExercises = parsedExercises.filter(exercise => exercise.id !== id);
 
             await AsyncStorage.setItem('exercises', JSON.stringify(updatedExercises, null, 2));
@@ -79,29 +80,23 @@ export default function ExercisesScreen() {
         }
     }
 
-    const renderHeader = (section, _, isActive) => {
-        if (section) {
-            return (
+
+    const Exercise = ({ item }) => {
+        const isActive = activeIndex === item.id;
+        
+        return (
+            <TouchableOpacity onPress={() => toggleAccordion(item.id)} activeOpacity={1}>
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>{section.name}</Text>
+                    <Text style={styles.headerText}>{item.name}</Text>
                     <Icon
                         name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
                         size={32}
                         color={Colors.white}
                     />
                 </View>
-            )
-        } else {
-            return null;
-        }
-    }
-
-    const renderContent = (section) => {
-        if (section) {
-            return (
-                <View>
+                {isActive ? (
                     <View style={styles.exercise}>
-                        {Object.entries(section).map(([key, value], index) => (
+                        {Object.entries(item).map(([key, value], index) => (
                             key !== 'id' && key !== 'name' && value !== '-' ? (
                                 <View key={index} style={styles.row}>
                                     <Text style={styles.text}>{translateToPolish(key)}:</Text>
@@ -110,13 +105,13 @@ export default function ExercisesScreen() {
                             ) : null
                         ))}
                         <TouchableOpacity style={styles.removeButton}>
-                            <Button onPress={() => editExercise(section.id)} text={'Edytuj'} />
-                            <Button onPress={() => handleModal(section.id)} text={'Usuń'} type='delete' />
+                            <Button onPress={() => editExercise(item.id)} text={'Edytuj'} />
+                            <Button onPress={() => handleModal(item.id)} text={'Usuń'} type='delete' />
                         </TouchableOpacity>
                     </View>
-                </View>
-            )
-        } else return null;
+                ) : null}
+            </TouchableOpacity>
+        );
     }
 
     return (
@@ -124,13 +119,10 @@ export default function ExercisesScreen() {
             {isExercises ? (
                 <>
                     <Background text={false} />
-                    <Accordion
-                        underlayColor={Colors.background}
-                        sections={exercises}
-                        activeSections={activeSections}
-                        renderHeader={renderHeader}
-                        renderContent={renderContent}
-                        onChange={(activeSections) => setActiveSections(activeSections)}
+                    <FlatList
+                        data={exercises}
+                        renderItem={({ item }) => <Exercise item={item} />}
+                        keyExtractor={item => item.id}
                     />
                 </>
             ) : (
