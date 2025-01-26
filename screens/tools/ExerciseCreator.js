@@ -1,14 +1,12 @@
 import { Text, View, TextInput } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
 
 import Background from '../../components/Background';
 import Colors from '../../Colors';
 import Container from '../../components/Container';
+import DataController from '../../helpers/dataController';
 import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
 import SegmentedButton from '../../components/buttons/SegmentedButton';
@@ -20,14 +18,14 @@ import { times } from '../../constants/times';
 import { weights } from '../../constants/weights';
 
 export default function ExerciseCreator({ route }) {
-    const [id, setId]                   = useState(route.params?.id || null);
-    const [muscleGroup, setMuscleGroup] = useState(route.params?.muscleGroup || null);
-    const [type, setType]               = useState(route.params?.type || 'Powtórzeniowe');
-    const [setsAmount, setSetsAmount]   = useState(route.params?.setsAmount || '4');
-    const [repsAmount, setRepsAmount]   = useState(route.params?.repsAmount || '10');
-    const [time, setTime]               = useState(route.params?.time || '60 s');
-    const [weight, setWeight]           = useState(route.params?.weight || '-');
-    const [name, setName]               = useState(route.params?.name || null);
+    const [id, setId] = useState(route.params?.id || null);
+    const [muscleGroup, setMuscleGroup] = useState(route.params?.data.muscleGroup || null);
+    const [type, setType] = useState(route.params?.data.type || 'Powtórzeniowe');
+    const [setsAmount, setSetsAmount] = useState(route.params?.data.setsAmount || null);
+    const [repsAmount, setRepsAmount] = useState(route.params?.data.repsAmount || null);
+    const [time, setTime] = useState(route.params?.data.time || null);
+    const [weight, setWeight] = useState(route.params?.data.weight || null);
+    const [name, setName] = useState(route.params?.name || null);
 
     const [isDropdownFocused, setIsDropdownFocused] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -36,50 +34,22 @@ export default function ExerciseCreator({ route }) {
     const navigation = useNavigation();
 
     useEffect(() => {
-        if (route.params && route.params.type) {
-            setType(route.params.type);
-        }
+        if (route.params && route.params.type) setType(route.params.type);
     }, [route.params]);
 
-    const handleTypeChange = (type) => {
-        setType(type);
-    }
-
-    const validate = (isLast, param) => {
-        if (!param) {
+    const validate = async (isLast, ...params) => {
+        const result = Object.values(params).some(param => param === null);
+        if (result) {
             setIsModalVisible(() => !isModalVisible);
             setErrors(true);
         } else {
-            setErrors(false);
-            if (isLast) saveExercise(id, muscleGroup, type, setsAmount, repsAmount, weight, time, name);
-        }
-    }
-
-    const saveExercise = async (id, muscleGroup, type, setsAmount, repsAmount, weight, time, name) => {
-        try {
-            const existingExercises = await AsyncStorage.getItem('exercises');
-            const parsedExercises = existingExercises ? JSON.parse(existingExercises) : [];
-
-            if (id) {
-                const index = parsedExercises.findIndex(exercise => exercise.id === id);
-                if (index !== -1) parsedExercises.splice(index, 1);
+            if (type === 'Powtórzeniowe') setTime(null);
+            else {
+                setSetsAmount(null);
+                setRepsAmount(null);
             }
-
-            parsedExercises.push({
-                id: id ? id : uuidv4(),
-                muscleGroup,
-                type,
-                setsAmount: type === 'Powtórzeniowe' ? setsAmount : undefined,
-                repsAmount: type === 'Powtórzeniowe' ? repsAmount : undefined,
-                time: type === 'Czasowe' ? time : undefined,
-                weight,
-                name
-            })
-
-            await AsyncStorage.setItem('exercises', JSON.stringify(parsedExercises, null, 2));
-            navigation.navigate('ExercisesScreen');
-        } catch (error) {
-            console.error('Error saving exercise: ', error);
+            setErrors(false);
+            if (isLast) await DataController.store('exercises', id, name, 'exercises', navigation, 'ExercisesScreen', { muscleGroup, type, setsAmount, repsAmount, time, weight })
         }
     }
 
@@ -123,7 +93,7 @@ export default function ExerciseCreator({ route }) {
                             }}
                         />
                         <Text style={styles.text}>Wybierz typ ćwiczenia</Text>
-                        <SegmentedButton option1='Powtórzeniowe' option2='Czasowe' selectedOption={type} onOptionChange={handleTypeChange} />
+                        <SegmentedButton option1='Powtórzeniowe' option2='Czasowe' selectedOption={type} onOptionChange={(selectedOption) => setType(selectedOption)} />
                         <Modal
                             isVisible={isModalVisible}
                             text='Najpierw wybierz grupę mięśniową.'
@@ -141,6 +111,8 @@ export default function ExerciseCreator({ route }) {
                     nextBtnTextStyle={styles.text}
                     previousBtnStyle={styles.button}
                     previousBtnTextStyle={styles.text}
+                    onNext={() => validate(false, type === 'Powtórzeniowe' ? (setsAmount, repsAmount) : time)}
+                    errors={errors}
                 >
                     <>
                         {type === 'Powtórzeniowe' ? (
@@ -148,9 +120,9 @@ export default function ExerciseCreator({ route }) {
                                 <View style={styles.row}>
                                     <Text style={styles.text}>Ilość serii</Text>
                                     <Dropdown
-                                        passedStyle={{ width: '20%', borderBottomLeftRadius: isDropdownFocused ? 0 : 15, borderBottomRightRadius: isDropdownFocused ? 0 : 15 }}
+                                        passedStyle={{ width: '30%', borderBottomLeftRadius: isDropdownFocused ? 0 : 15, borderBottomRightRadius: isDropdownFocused ? 0 : 15 }}
                                         data={setsAmounts}
-                                        placeholder={isDropdownFocused ? '...' : setsAmount}
+                                        placeholder={'...'}
                                         value={setsAmount}
                                         onFocus={() => setIsDropdownFocused(true)}
                                         onBlur={() => setIsDropdownFocused(false)}
@@ -163,9 +135,9 @@ export default function ExerciseCreator({ route }) {
                                 <View style={styles.row}>
                                     <Text style={styles.text}>Ilość powtórzeń</Text>
                                     <Dropdown
-                                        passedStyle={{ width: '20%', borderBottomLeftRadius: isDropdownFocused ? 0 : 15, borderBottomRightRadius: isDropdownFocused ? 0 : 15 }}
+                                        passedStyle={{ width: '30%', borderBottomLeftRadius: isDropdownFocused ? 0 : 15, borderBottomRightRadius: isDropdownFocused ? 0 : 15 }}
                                         data={repsAmounts}
-                                        placeholder={isDropdownFocused ? '...' : repsAmount}
+                                        placeholder={'...'}
                                         value={repsAmount}
                                         onFocus={() => setIsDropdownFocused(true)}
                                         onBlur={() => setIsDropdownFocused(false)}
@@ -175,6 +147,13 @@ export default function ExerciseCreator({ route }) {
                                         }}
                                     />
                                 </View>
+                                <Modal
+                                    isVisible={isModalVisible}
+                                    text='Najpierw wybierz ilość serii i powtórzeń.'
+                                    twoButtons={false}
+                                    buttonOneText='Ok'
+                                    buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)}
+                                />
                             </>) : (
                             <>
                                 <View style={styles.row}>
@@ -182,7 +161,7 @@ export default function ExerciseCreator({ route }) {
                                     <Dropdown
                                         passedStyle={{ width: '30%', borderBottomLeftRadius: isDropdownFocused ? 0 : 15, borderBottomRightRadius: isDropdownFocused ? 0 : 15 }}
                                         data={times}
-                                        placeholder={isDropdownFocused ? '...' : time}
+                                        placeholder={'...'}
                                         value={time}
                                         onFocus={() => setIsDropdownFocused(true)}
                                         onBlur={() => setIsDropdownFocused(false)}
@@ -192,13 +171,20 @@ export default function ExerciseCreator({ route }) {
                                         }}
                                     />
                                 </View>
+                                <Modal
+                                    isVisible={isModalVisible}
+                                    text='Najpierw wybierz czas trwania ćwiczenia.'
+                                    twoButtons={false}
+                                    buttonOneText='Ok'
+                                    buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)}
+                                />
                             </>)}
                         <View style={styles.row}>
                             <Text style={styles.text}>Obciążenie (opc.)</Text>
                             <Dropdown
                                 passedStyle={{ width: '30%', borderBottomLeftRadius: isDropdownFocused ? 0 : 15, borderBottomRightRadius: isDropdownFocused ? 0 : 15 }}
                                 data={weights}
-                                placeholder={isDropdownFocused ? '...' : weight}
+                                placeholder={'...'}
                                 value={weight}
                                 onFocus={() => setIsDropdownFocused(true)}
                                 onBlur={() => setIsDropdownFocused(false)}

@@ -1,19 +1,20 @@
 import { Text, View, Image, TouchableOpacity, FlatList } from 'react-native';
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import AddButton from '../../components/buttons/AddButton';
+import Background from '../../components/Background';
 import Colors from '../../Colors';
 import Container from '../../components/Container';
+import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
-import Background from '../../components/Background';
-import AddButton from '../../components/buttons/AddButton';
 
 export default function BodyMeasurementsScreen() {
     const [bodyMeasurements, setBodyMeasurements] = useState([]);
+    const groupedBodyMeasurements = DataController.groupByCategory(bodyMeasurements);
     const [isBodyMeasurements, setIsBodyMeasurements] = useState(false);
-    const [activeCategory, setActiveCategory] = useState([]);
+    const [expandedCategories, setExpandedCategories] = useState({});
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
 
@@ -26,101 +27,65 @@ export default function BodyMeasurementsScreen() {
 
     useFocusEffect(
         useCallback(() => {
-            retrieveBodyMeasurements();
+            const fetchBodyMeasurements = async () => {
+                await DataController.get('bodyMeasurements', setBodyMeasurements, setIsBodyMeasurements);
+            }
+            fetchBodyMeasurements();
         }, [])
     )
 
-    const toggleAccordion = (category) => {
-        setActiveCategory(activeCategory === category ? null : category);
-    };
+    const deleteBodyMeasurement = async (id) => {
+        await DataController.delete('bodyMeasurements', setBodyMeasurements, setIsBodyMeasurements, id, isModalVisible, setIsModalVisible);
+    }
 
-    const handleModal = (category, index) => {
-        setModalData({ category, index });
+    const toggleCategory = (category) => {
+        setExpandedCategories((prev) => ({
+            ...prev,
+            [category]: !prev[category],
+        }))
+    }
+
+    const handleModal = (id) => {
+        setModalData(id);
         setIsModalVisible(!isModalVisible);
     }
 
-    const retrieveBodyMeasurements = async () => {
-        try {
-            const storedBodyMeasurements = await AsyncStorage.getItem('bodyMeasurements');
-            if (storedBodyMeasurements) {
-                const parsedBodyMeasurements = JSON.parse(storedBodyMeasurements);
-                setBodyMeasurements(parsedBodyMeasurements);
-                if (parsedBodyMeasurements.length === 0) setIsBodyMeasurements(false);
-                else setIsBodyMeasurements(true);
-            } else {
-                setBodyMeasurements([]);
-                setIsBodyMeasurements(false);
-            }
-        } catch (error) {
-            console.error('Error retrieving body measurements from AsyncStorage: ', error);
-        }
-    }
-
-    const deleteBodyMeasurement = async (category, index) => {
-        try {
-            const existingBodyMeasurements = await AsyncStorage.getItem('bodyMeasurements');
-            const parsedBodyMeasurements = existingBodyMeasurements ? JSON.parse(existingBodyMeasurements) : [];
-            const categoryIndex = parsedBodyMeasurements.findIndex(entry => entry.category === category);
-
-            if (categoryIndex !== -1) {
-                const elementIndex = index;
-                const updatedBodyMeasurements = [
-                    ...parsedBodyMeasurements.slice(0, categoryIndex),
-                    {
-                        ...parsedBodyMeasurements[categoryIndex],
-                        bodyMeasurements: [
-                            ...parsedBodyMeasurements[categoryIndex].bodyMeasurements.slice(0, elementIndex),
-                            ...parsedBodyMeasurements[categoryIndex].bodyMeasurements.slice(elementIndex + 1)
-                        ]
-                    },
-                    ...parsedBodyMeasurements.slice(categoryIndex + 1)
-                ]
-                if (updatedBodyMeasurements[categoryIndex].bodyMeasurements.length === 0) updatedBodyMeasurements.splice(categoryIndex, 1);
-                await AsyncStorage.setItem('measurements', JSON.stringify(updatedBodyMeasurements, null, 2));
-                retrieveBodyMeasurements();
-                setIsModalVisible(!isModalVisible);
-            }
-        } catch (error) {
-            console.error('Error deleting body measurement from AsyncStorage:', error);
-        }
-    }
-
-    const BodyMeasurement = ({ item }) => {
-        const isActive = activeCategory === item.category;
-        const url = imageMapping[item.category];
+    const BodyMeasurement = ({ category, items }) => {
+        const url = imageMapping[category];
 
         return (
-            <TouchableOpacity onPress={() => toggleAccordion(item.category)} activeOpacity={1}>
-                <View style={styles.header}>
+            <View>
+                <TouchableOpacity style={styles.header} onPress={() => toggleCategory(category)} activeOpacity={1}>
                     <View style={styles.imageBackground}>
-                        <Image source={url} style={{ width: 60, height: 60, margin: 5 }} />
+                        <Image source={url} style={styles.image} />
                     </View>
-                    <Text style={styles.headerText}>{item.category}</Text>
+                    <Text style={styles.text}>{category}</Text>
                     <Icon
-                        name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
-                        size={32}
+                        name={expandedCategories[category] ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+                        size={24}
                         color={Colors.white}
                     />
-                </View>
-                {isActive ? (
-                    <View>
-                        {item.bodyMeasurements && item.bodyMeasurements.map((bodyMeasurement, index) => (
-                            <View key={index} style={styles.bodyMeasurementItem}>
-                                <Text style={styles.bodyMeasurementText}>
-                                    {bodyMeasurement.value} {bodyMeasurement.unit}
+                </TouchableOpacity>
+
+                {expandedCategories[category] && (
+                    <View style={styles.itemsContainer}>
+                        {items.map((measurement) => (
+                            <View key={measurement.id} style={styles.row}>
+                                <Text style={styles.text}>
+                                    {measurement.date}
                                 </Text>
-                                <Text style={styles.bodyMeasurementText}>
-                                    {bodyMeasurement.date}
+                                <Text style={styles.text}>
+                                    {measurement.data.value} {measurement.data.unit}
                                 </Text>
-                                <TouchableOpacity onPress={() => handleModal(item.category, index)}>
+                                <TouchableOpacity onPress={() => handleModal(measurement.id)}>
                                     <Icon name='delete' size={30} color={Colors.white} />
                                 </TouchableOpacity>
                             </View>
                         ))}
                     </View>
-                ) : null}
-            </TouchableOpacity>
-        );
+                )}
+            </View>
+        )
     }
 
     return (
@@ -129,11 +94,10 @@ export default function BodyMeasurementsScreen() {
                 <>
                     <Background text={false} />
                     <FlatList
-                        data={bodyMeasurements}
-                        renderItem={({ item }) => <BodyMeasurement item={item} />}
-                        keyExtractor={item => item.id}
+                        data={Object.entries(groupedBodyMeasurements)}
+                        keyExtractor={([category]) => category}
+                        renderItem={({ item: [category, items] }) => <BodyMeasurement category={category} items={items} />}
                     />
-
                 </>
             ) : (
                 <Background text={true} content='pomiarów' type='masculine' />
@@ -144,7 +108,7 @@ export default function BodyMeasurementsScreen() {
                 text='Czy na pewno chcesz usunąć ten pomiar?'
                 twoButtons={true}
                 buttonOneText='Tak'
-                buttonOneOnPress={() => deleteBodyMeasurement(modalData.category, modalData.index)}
+                buttonOneOnPress={() => deleteBodyMeasurement(modalData)}
                 buttonTwoText='Nie'
                 buttonTwoOnPress={() => setIsModalVisible(!isModalVisible)}
             >
@@ -158,9 +122,10 @@ const styles = {
         backgroundColor: Colors.primary,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
         borderRadius: 15,
-        paddingHorizontal: 8,
         paddingVertical: 10,
+        paddingHorizontal: 20,
         marginTop: 10,
         marginBottom: 5
     },
@@ -168,24 +133,25 @@ const styles = {
         backgroundColor: Colors.primary,
         borderRadius: 15
     },
-    headerText: {
-        fontFamily: 'Nexa',
-        fontSize: 18,
-        color: Colors.white,
-        marginLeft: 10
+    image: {
+        width: 60,
+        height: 60,
+        margin: 5,
+        marginRight: 15
     },
-    bodyMeasurementItem: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        marginBottom: 5,
-        backgroundColor: Colors.button,
-        padding: 10,
-        borderRadius: 15
-    },
-    bodyMeasurementText: {
+    text: {
         fontFamily: 'Nexa',
         fontSize: 16,
         color: Colors.white
+    },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 5,
+        backgroundColor: Colors.button,
+        paddingVertical: 10,
+        paddingHorizontal: 30,
+        borderRadius: 15
     }
 }

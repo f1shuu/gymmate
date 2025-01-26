@@ -136,10 +136,10 @@ export default function Map() {
           <Image source={require('../../assets/images/userMarker.png')} style={styles.marker} />
         </View>
       </CustomMarker>
-      {gyms.map((gym, index) => (
+      {gyms.map((gym, id) => (
         <CustomMarker
           type='gym'
-          key={index}
+          key={id}
           coordinate={{
             latitude: gym.geometry.location.lat,
             longitude: gym.geometry.location.lng,

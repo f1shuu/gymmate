@@ -25,11 +25,11 @@ export default Setting = () => {
     return (
         <>
             <TouchableOpacity onPress={() => setIsModalVisible(() => !isModalVisible)} style={styles.container}>
-                <Text style={styles.text}>Usuń dane metryczne</Text>
+                <Text style={styles.text}>Usuń wszystkie dane</Text>
             </TouchableOpacity>
             <Modal
                 isVisible={isModalVisible}
-                text='Czy na pewno chcesz usunąć wszystkie pomiary? Tej operacji nie można cofnąć.'
+                text='Czy na pewno chcesz usunąć WSZYSTKIE dane z aplikacji? Tej operacji nie można cofnąć.'
                 twoButtons={true}
                 buttonOneText='Tak'
                 buttonOneOnPress={() => clearAsyncStorage()}
@@ -38,7 +38,7 @@ export default Setting = () => {
             />
             <Modal
                 isVisible={isConfirmationModalVisible}
-                text='Pomiary zostały pomyślnie usunięte.'
+                text='Dane zostały pomyślnie usunięte.'
                 twoButtons={false}
                 buttonOneText='OK'
                 buttonOneOnPress={() => setIsConfirmationModalVisible(() => !isConfirmationModalVisible)}

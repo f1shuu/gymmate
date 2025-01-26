@@ -21,7 +21,7 @@ export default Timer = () => {
     const [completed, setCompleted] = useState(false);
 
     const setTime = (minutes, seconds, id) => {
-        setIsActive(prevIndex => prevIndex === id ? null : id);
+        setIsActive(prevId => prevId === id ? null : id);
         setInitialValue({ minutes, seconds });
         setKey(prevKey => prevKey + 1);
         setMinutes(minutes);

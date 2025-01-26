@@ -1,7 +1,6 @@
 import { Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { useState, useCallback } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import AddButton from '../../components/buttons/AddButton';
@@ -9,85 +8,41 @@ import Background from '../../components/Background';
 import Button from '../../components/buttons/Button';
 import Colors from '../../Colors';
 import Container from '../../components/Container';
+import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
 
-import { translateToPolish } from '../../translations/pl';
+import { translateToPolish } from '../../helpers/translations/pl';
 
 export default function ExercisesScreen() {
     const [exercises, setExercises] = useState([]);
     const [isExercises, setIsExercises] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
-    const [activeIndex, setActiveIndex] = useState(null);
+    const [activeId, setActiveId] = useState(null);
 
     const navigation = useNavigation();
-    
+
     useFocusEffect(
         useCallback(() => {
-            retrieveExercises();
+            const fetchExercises = async () => {
+                await DataController.get('exercises', setExercises, setIsExercises);
+            }
+            fetchExercises();
         }, [])
     )
-    
-    const toggleAccordion = (index) => {
-        setActiveIndex(activeIndex === index ? null : index);
-    };
 
-    const handleModal = (index) => {
-        setModalData(index);
+    const handleModal = (id) => {
+        setModalData(id);
         setIsModalVisible(!isModalVisible);
     }
 
-    const retrieveExercises = async () => {
-        try {
-            const storedExercises = await AsyncStorage.getItem('exercises');
-            if (storedExercises) {
-                const parsedExercises = JSON.parse(storedExercises);
-                setExercises(parsedExercises);
-                if (parsedExercises.length === 0) setIsExercises(false);
-                else setIsExercises(true);
-            } else {
-                setExercises([]);
-                setIsExercises(false);
-            }
-        } catch (error) {
-            console.error('Error retrieving exercises from AsyncStorage: ', error);
-        }
-    }
-
-    const editExercise = async (id) => {
-        try {
-            const storedExercises = await AsyncStorage.getItem('exercises');
-            const parsedExercises = storedExercises ? JSON.parse(storedExercises) : [];
-
-            navigation.navigate('ExerciseCreator', parsedExercises.find(exercise => exercise.id === id));
-        } catch (error) {
-            console.error('Error editing exercise: ', error);
-        }
-    }
-
-    const deleteExercise = async (id) => {
-        try {
-            const storedExercises = await AsyncStorage.getItem('exercises');
-            const parsedExercises = storedExercises ? JSON.parse(storedExercises) : [];
-            const updatedExercises = parsedExercises.filter(exercise => exercise.id !== id);
-
-            await AsyncStorage.setItem('exercises', JSON.stringify(updatedExercises, null, 2));
-
-            retrieveExercises();
-            setIsModalVisible(!isModalVisible);
-        } catch (error) {
-            console.error('Error deleting exercise: ', error);
-        }
-    }
-
-
     const Exercise = ({ item }) => {
-        const isActive = activeIndex === item.id;
-        
+        const isActive = activeId === item.id;
+
         return (
-            <TouchableOpacity onPress={() => toggleAccordion(item.id)} activeOpacity={1}>
+            <TouchableOpacity onPress={() => setActiveId(activeId === item.id ? null : item.id)} activeOpacity={1}>
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>{item.name}</Text>
+                    <Text style={styles.text}>{item.name}</Text>
                     <Icon
                         name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
                         size={32}
@@ -96,22 +51,22 @@ export default function ExercisesScreen() {
                 </View>
                 {isActive ? (
                     <View style={styles.exercise}>
-                        {Object.entries(item).map(([key, value], index) => (
-                            key !== 'id' && key !== 'name' && value !== '-' ? (
-                                <View key={index} style={styles.row}>
+                        {Object.entries(item.data).map(([key, value], id) => (
+                            value ? (
+                                <View key={id} style={styles.row}>
                                     <Text style={styles.text}>{translateToPolish(key)}:</Text>
                                     <Text style={styles.text}>{value}</Text>
                                 </View>
                             ) : null
                         ))}
                         <TouchableOpacity style={styles.removeButton}>
-                            <Button onPress={() => editExercise(item.id)} text={'Edytuj'} />
+                            <Button onPress={async () => await DataController.update('exercises', item.id, navigation, 'ExerciseCreator')} text={'Edytuj'} />
                             <Button onPress={() => handleModal(item.id)} text={'Usuń'} type='delete' />
                         </TouchableOpacity>
                     </View>
                 ) : null}
             </TouchableOpacity>
-        );
+        )
     }
 
     return (
@@ -134,7 +89,7 @@ export default function ExercisesScreen() {
                 text='Czy na pewno chcesz usunąć to ćwiczenie?'
                 twoButtons={true}
                 buttonOneText='Tak'
-                buttonOneOnPress={() => deleteExercise(modalData)}
+                buttonOneOnPress={async () => await DataController.delete('exercises', setExercises, setIsExercises, modalData, isModalVisible, setIsModalVisible)}
                 buttonTwoText='Nie'
                 buttonTwoOnPress={() => setIsModalVisible(!isModalVisible)}
             >
@@ -150,16 +105,15 @@ const styles = {
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: 15,
-        paddingHorizontal: 8,
-        paddingVertical: 16,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
         marginTop: 10,
         marginBottom: 5
     },
-    headerText: {
+    text: {
         fontFamily: 'Nexa',
-        fontSize: 18,
-        color: Colors.white,
-        marginLeft: 10
+        fontSize: 16,
+        color: Colors.white
     },
     exercise: {
         flexDirection: 'column',
@@ -173,11 +127,6 @@ const styles = {
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingVertical: 2
-    },
-    text: {
-        fontFamily: 'Nexa',
-        fontSize: 16,
-        color: Colors.white
     },
     removeButton: {
         flexDirection: 'row',

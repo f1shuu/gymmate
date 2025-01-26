@@ -46,10 +46,12 @@ const styles = {
         textAlign: 'center'
     },
     placeholderStyle: {
+        textAlign: 'center',
         fontFamily: 'Nexa',
         color: Colors.secondary
     },
     selectedTextStyle: {
+        textAlign: 'center',
         fontFamily: 'Nexa',
         color: Colors.white
     }
