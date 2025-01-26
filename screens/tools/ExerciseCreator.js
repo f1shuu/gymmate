@@ -35,7 +35,7 @@ export default function ExerciseCreator({ route }) {
 
     useEffect(() => {
         if (route.params && route.params.type) setType(route.params.type);
-    }, [route.params]);
+    }, [route.params])
 
     const validate = async (isLast, ...params) => {
         const result = Object.values(params).some(param => param === null);
@@ -49,7 +49,7 @@ export default function ExerciseCreator({ route }) {
                 setRepsAmount(null);
             }
             setErrors(false);
-            if (isLast) await DataController.store('exercises', id, name, 'exercises', navigation, 'ExercisesScreen', { muscleGroup, type, setsAmount, repsAmount, time, weight })
+            if (isLast) await DataController.store('exercises', id, name, 'exercises', navigation, 'ExercisesScreen', { muscleGroup, type, setsAmount, repsAmount, time, weight });
         }
     }
 
