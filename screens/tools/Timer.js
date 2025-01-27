@@ -39,6 +39,15 @@ export default Timer = () => {
         }
     }
 
+    const onDurationChange = (duration) => {
+        const { minutes, seconds } = duration;
+        if (!(minutes === 1 && seconds === 0) && !(minutes === 5 && seconds === 0) && !(minutes === 10 && seconds === 0)) {
+            setIsActive(null);
+        }
+        setMinutes(minutes);
+        setSeconds(seconds);
+    }
+
     return (
         <Container>
             {showPicker ? (
@@ -56,14 +65,7 @@ export default Timer = () => {
                             secondLabel=''
                             minutes={minutes}
                             seconds={seconds}
-                            onDurationChange={(duration) => {
-                                const { minutes, seconds } = duration;
-                                if (!(minutes === 1 && seconds === 0) && !(minutes === 5 && seconds === 0) && !(minutes === 10 && seconds === 0)) {
-                                    setIsActive(null);
-                                }
-                                setMinutes(minutes);
-                                setSeconds(seconds);
-                            }}
+                            onDurationChange={(duration) => onDurationChange(duration)}
                             LinearGradient={LinearGradient}
                             Haptics={Haptics}
                             styles={{

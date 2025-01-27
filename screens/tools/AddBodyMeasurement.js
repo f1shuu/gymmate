@@ -21,6 +21,13 @@ export default function AddBodyMeasurement() {
 
     const navigation = useNavigation();
 
+    const changeCategory = (item) => {
+        if (item.value === 'Masa ciała') setUnit('kg');
+        else setUnit('cm');
+        setCategory(item.value);
+        setIsFocus(false);
+    }
+
     return (
         <Container>
             <Background text={false} />
@@ -32,12 +39,7 @@ export default function AddBodyMeasurement() {
                 value={category}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
-                onChange={item => {
-                    if (item.value === 'Masa ciała') setUnit('kg');
-                    else setUnit('cm');
-                    setCategory(item.value);
-                    setIsFocus(false);
-                }}
+                onChange={(item) => changeCategory(item)}
             />
             <Text style={styles.text}>Wartość pomiaru</Text>
             <TextInput

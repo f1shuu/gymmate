@@ -1,6 +1,6 @@
 {
   "name": "gymmate",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",

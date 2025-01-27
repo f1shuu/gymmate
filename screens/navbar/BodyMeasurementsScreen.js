@@ -12,11 +12,12 @@ import Modal from '../../components/Modal';
 
 export default function BodyMeasurementsScreen() {
     const [bodyMeasurements, setBodyMeasurements] = useState([]);
-    const groupedBodyMeasurements = DataController.groupByCategory(bodyMeasurements);
     const [isBodyMeasurements, setIsBodyMeasurements] = useState(false);
     const [expandedCategories, setExpandedCategories] = useState({});
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
+
+    const groupedBodyMeasurements = DataController.groupByCategory(bodyMeasurements);
 
     const imageMapping = {
         'Masa ciała': require('../../assets/images/measures/body-mass.png'),
@@ -33,10 +34,6 @@ export default function BodyMeasurementsScreen() {
             fetchBodyMeasurements();
         }, [])
     )
-
-    const deleteBodyMeasurement = async (id) => {
-        await DataController.delete('bodyMeasurements', setBodyMeasurements, setIsBodyMeasurements, id, isModalVisible, setIsModalVisible);
-    }
 
     const toggleCategory = (category) => {
         setExpandedCategories((prev) => ({
@@ -108,7 +105,7 @@ export default function BodyMeasurementsScreen() {
                 text='Czy na pewno chcesz usunąć ten pomiar?'
                 twoButtons={true}
                 buttonOneText='Tak'
-                buttonOneOnPress={() => deleteBodyMeasurement(modalData)}
+                buttonOneOnPress={async () => await DataController.delete('bodyMeasurements', setBodyMeasurements, setIsBodyMeasurements, modalData, isModalVisible, setIsModalVisible)}
                 buttonTwoText='Nie'
                 buttonTwoOnPress={() => setIsModalVisible(!isModalVisible)}
             >

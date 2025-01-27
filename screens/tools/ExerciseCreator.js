@@ -27,7 +27,7 @@ export default function ExerciseCreator({ route }) {
     const [weight, setWeight] = useState(route.params?.data.weight || null);
     const [name, setName] = useState(route.params?.name || null);
 
-    const [isDropdownFocused, setIsDropdownFocused] = useState(false);
+    const [isFocus, setIsFocus] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [errors, setErrors] = useState(false);
 
@@ -36,6 +36,11 @@ export default function ExerciseCreator({ route }) {
     useEffect(() => {
         if (route.params && route.params.type) setType(route.params.type);
     }, [route.params])
+
+    const onDropdownChange = (setData, item) => {
+        setData(item);
+        setIsFocus(false);
+    }
 
     const validate = async (isLast, ...params) => {
         const result = Object.values(params).some(param => param === null);
@@ -81,16 +86,13 @@ export default function ExerciseCreator({ route }) {
                     <>
                         <Text style={styles.text}>Wybierz grupę mięśniową</Text>
                         <Dropdown
-                            passedStyle={{ borderBottomLeftRadius: isDropdownFocused ? 0 : 15, borderBottomRightRadius: isDropdownFocused ? 0 : 15 }}
+                            passedStyle={{ borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                             data={muscleGroups}
-                            placeholder={isDropdownFocused ? '...' : 'Wybierz grupę mięśni...'}
+                            placeholder={isFocus ? '...' : 'Wybierz grupę mięśni...'}
                             value={muscleGroup}
-                            onFocus={() => setIsDropdownFocused(true)}
-                            onBlur={() => setIsDropdownFocused(false)}
-                            onChange={item => {
-                                setMuscleGroup(item.value);
-                                setIsDropdownFocused(false);
-                            }}
+                            onFocus={() => setIsFocus(true)}
+                            onBlur={() => setIsFocus(false)}
+                            onChange={(item) => onDropdownChange(setMuscleGroup, item.value)}
                         />
                         <Text style={styles.text}>Wybierz typ ćwiczenia</Text>
                         <SegmentedButton option1='Powtórzeniowe' option2='Czasowe' selectedOption={type} onOptionChange={(selectedOption) => setType(selectedOption)} />
@@ -120,31 +122,25 @@ export default function ExerciseCreator({ route }) {
                                 <View style={styles.row}>
                                     <Text style={styles.text}>Ilość serii</Text>
                                     <Dropdown
-                                        passedStyle={{ width: '30%', borderBottomLeftRadius: isDropdownFocused ? 0 : 15, borderBottomRightRadius: isDropdownFocused ? 0 : 15 }}
+                                        passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                         data={setsAmounts}
                                         placeholder={'...'}
                                         value={setsAmount}
-                                        onFocus={() => setIsDropdownFocused(true)}
-                                        onBlur={() => setIsDropdownFocused(false)}
-                                        onChange={item => {
-                                            setSetsAmount(item.value);
-                                            setIsDropdownFocused(false);
-                                        }}
+                                        onFocus={() => setIsFocus(true)}
+                                        onBlur={() => setIsFocus(false)}
+                                        onChange={(item) => onDropdownChange(setSetsAmount, item.value)}
                                     />
                                 </View>
                                 <View style={styles.row}>
                                     <Text style={styles.text}>Ilość powtórzeń</Text>
                                     <Dropdown
-                                        passedStyle={{ width: '30%', borderBottomLeftRadius: isDropdownFocused ? 0 : 15, borderBottomRightRadius: isDropdownFocused ? 0 : 15 }}
+                                        passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                         data={repsAmounts}
                                         placeholder={'...'}
                                         value={repsAmount}
-                                        onFocus={() => setIsDropdownFocused(true)}
-                                        onBlur={() => setIsDropdownFocused(false)}
-                                        onChange={item => {
-                                            setRepsAmount(item.value);
-                                            setIsDropdownFocused(false);
-                                        }}
+                                        onFocus={() => setIsFocus(true)}
+                                        onBlur={() => setIsFocus(false)}
+                                        onChange={item => onDropdownChange(setRepsAmount, item.value)}
                                     />
                                 </View>
                                 <Modal
@@ -159,16 +155,13 @@ export default function ExerciseCreator({ route }) {
                                 <View style={styles.row}>
                                     <Text style={styles.text}>Czas</Text>
                                     <Dropdown
-                                        passedStyle={{ width: '30%', borderBottomLeftRadius: isDropdownFocused ? 0 : 15, borderBottomRightRadius: isDropdownFocused ? 0 : 15 }}
+                                        passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                         data={times}
                                         placeholder={'...'}
                                         value={time}
-                                        onFocus={() => setIsDropdownFocused(true)}
-                                        onBlur={() => setIsDropdownFocused(false)}
-                                        onChange={item => {
-                                            setTime(item.value);
-                                            setIsDropdownFocused(false);
-                                        }}
+                                        onFocus={() => setIsFocus(true)}
+                                        onBlur={() => setIsFocus(false)}
+                                        onChange={(item) => onDropdownChange(setTime, item.value)}
                                     />
                                 </View>
                                 <Modal
@@ -182,16 +175,13 @@ export default function ExerciseCreator({ route }) {
                         <View style={styles.row}>
                             <Text style={styles.text}>Obciążenie (opc.)</Text>
                             <Dropdown
-                                passedStyle={{ width: '30%', borderBottomLeftRadius: isDropdownFocused ? 0 : 15, borderBottomRightRadius: isDropdownFocused ? 0 : 15 }}
+                                passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                 data={weights}
                                 placeholder={'...'}
                                 value={weight}
-                                onFocus={() => setIsDropdownFocused(true)}
-                                onBlur={() => setIsDropdownFocused(false)}
-                                onChange={item => {
-                                    setWeight(item.value);
-                                    setIsDropdownFocused(false);
-                                }}
+                                onFocus={() => setIsFocus(true)}
+                                onBlur={() => setIsFocus(false)}
+                                onChange={(item) => onDropdownChange(setWeight, item.value)}
                             />
                         </View>
                     </>
