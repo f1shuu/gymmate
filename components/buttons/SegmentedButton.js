@@ -36,10 +36,10 @@ const styles = {
         alignItems: 'center'
     },
     activeSegment: {
-        backgroundColor: Colors.button
+        backgroundColor: Colors.primary
     },
     inactiveSegment: {
-        backgroundColor: Colors.primary
+        backgroundColor: Colors.background
     },
     activeText: {
         fontFamily: 'Nexa',

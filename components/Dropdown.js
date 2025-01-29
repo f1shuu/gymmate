@@ -10,7 +10,7 @@ export default function CustomDropdown({ passedStyle, data, placeholder, value, 
             itemTextStyle={styles.itemTextStyle}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
-            activeColor={Colors.button}
+            activeColor={Colors.primary}
             data={data}
             labelField='value'
             valueField='value'
@@ -26,7 +26,7 @@ export default function CustomDropdown({ passedStyle, data, placeholder, value, 
 const styles = {
     dropdown: {
         width: '100%',
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         height: 60,
         borderRadius: 15,
         padding: 15,
@@ -35,7 +35,7 @@ const styles = {
     containerStyle: {
         marginTop: -2,
         marginLeft: 1,
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
         borderWidth: 0
@@ -43,15 +43,12 @@ const styles = {
     itemTextStyle: {
         fontFamily: 'Nexa',
         color: Colors.white,
-        textAlign: 'center'
     },
     placeholderStyle: {
-        textAlign: 'center',
         fontFamily: 'Nexa',
         color: Colors.secondary
     },
     selectedTextStyle: {
-        textAlign: 'center',
         fontFamily: 'Nexa',
         color: Colors.white
     }

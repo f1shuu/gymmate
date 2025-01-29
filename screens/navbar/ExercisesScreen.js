@@ -70,10 +70,9 @@ export default function ExercisesScreen() {
     }
 
     return (
-        <Container>
+        <Container gradient={true} gradientLength={0.75}>
             {isExercises ? (
                 <>
-                    <Background text={false} />
                     <FlatList
                         data={exercises}
                         renderItem={({ item }) => <Exercise item={item} />}
@@ -100,14 +99,13 @@ export default function ExercisesScreen() {
 
 const styles = {
     header: {
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: 15,
         paddingVertical: 10,
         paddingHorizontal: 20,
-        marginTop: 10,
         marginBottom: 5
     },
     text: {
@@ -118,7 +116,7 @@ const styles = {
     exercise: {
         flexDirection: 'column',
         marginBottom: 5,
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         padding: 16,
         borderRadius: 15,
         color: Colors.white

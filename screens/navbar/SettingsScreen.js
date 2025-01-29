@@ -11,8 +11,7 @@ export default function SettingsScreen() {
     const navigation = useNavigation();
 
     return (
-        <Container>
-            <Background text={false} />
+        <Container gradient={true} gradientLength={0.5}>
             <View style={styles.avatar}>
                 <Icon name={'account-circle'} size={100} color={Colors.white} style={styles.icon} />
             </View>
@@ -22,7 +21,7 @@ export default function SettingsScreen() {
                 <Setting active={false} name='Ustawienia aplikacji' icon={'settings'} color={Colors.white} onPress='' />
                 <Setting active={false} name='Język' icon={'language'} color={Colors.white} onPress='' />
                 <Setting active={false} name='Personalizacja' icon={'tune'} color={Colors.white} nPress='' />
-                <Setting active={true} name='Usuwanie danych' icon={'delete'} color={Colors.delete} onPress={() => navigation.navigate('DataDeletionScreen')} />
+                <Setting active={true} name='Usuwanie danych' icon={'delete'} color={Colors.white} onPress={() => navigation.navigate('DataDeletionScreen')} />
                 <Setting active={false} name='Informacje o aplikacji' icon={'info'} color={Colors.white} onPress='' />
             </View>
         </Container>
@@ -34,7 +33,6 @@ const styles = {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
         marginBottom: 10
     },
     text: {

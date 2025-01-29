@@ -1,4 +1,5 @@
 import { Text, Image, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Colors from '../../Colors';
 
@@ -19,10 +20,7 @@ export default function CalculatorButton({ type, value, onPress }) {
     return (
         <TouchableOpacity style={styles.button} onPress={onPress}>
             {type === 'backspace' ? (
-                <Image
-                    source={require('../../assets/images/tools/calculator/backspace.png')}
-                    style={{ width: 40, height: 40 }}
-                />
+                <Icon name='backspace' size={40} color={Colors.primary} />
             ) : (
                 <Text style={getStyle()}>{value}</Text>
             )}
@@ -33,7 +31,7 @@ export default function CalculatorButton({ type, value, onPress }) {
 const styles = {
     button: {
         flex: 1,
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 5,
@@ -42,16 +40,16 @@ const styles = {
     delete: {
         fontFamily: 'Nexa',
         fontSize: 36,
-        color: Colors.delete
+        color: Colors.red
     },
     symbols: {
         fontFamily: 'Nexa',
         fontSize: 36,
-        color: Colors.add
+        color: Colors.green
     },
     numbers: {
         fontFamily: 'Nexa',
         fontSize: 36,
-        color: Colors.button
+        color: Colors.primary
     }
 }

@@ -21,7 +21,7 @@ export default function CustomModal({ isVisible, text, twoButtons, buttonOneText
 
 const styles = {
     modal: {
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         position: 'absolute',
         bottom: 0,
         width: '100%',

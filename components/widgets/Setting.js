@@ -15,13 +15,13 @@ export default Setting = ({ active, name, icon, color, onPress, style }) => {
 const styles = {
     widget: {
         flexDirection: 'row',
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         padding: 20,
         borderRadius: 15
     },
     text: {
         fontFamily: 'Nexa',
-        fontSize: 18,
+        fontSize: 16,
         alignSelf: 'center',
         marginLeft: 16
     }

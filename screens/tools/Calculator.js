@@ -91,7 +91,7 @@ export default function Calculator() {
 
 const styles = {
     input: {
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         color: Colors.white,
         fontSize: 28,
         textAlign: 'right',
@@ -101,7 +101,7 @@ const styles = {
         borderTopRightRadius: 15
     },
     output: {
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         color: Colors.white,
         fontSize: 44,
         textAlign: 'right',

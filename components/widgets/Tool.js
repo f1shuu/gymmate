@@ -19,8 +19,9 @@ const styles = {
         flex: 1,
         flexDirection: 'row',
         borderRadius: 15,
-        backgroundColor: Colors.primary,
-        margin: 10
+        backgroundColor: Colors.background,
+        marginBottom: 20,
+        padding: 10
     },
     image: {
         alignSelf: 'center',
@@ -31,7 +32,7 @@ const styles = {
     text: {
         flex: 1,
         fontFamily: 'Nexa',
-        fontSize: 24,
+        fontSize: 20,
         color: Colors.white,
         textAlign: 'center',
         alignSelf: 'center',

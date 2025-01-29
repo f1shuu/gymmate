@@ -14,16 +14,16 @@ const styles = {
     presetInactive: {
         width: 90,
         height: 90,
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         borderRadius: 50,
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 10
     },
     presetActive: {
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         borderWidth: 2,
-        borderColor: Colors.button
+        borderColor: Colors.primary
     },
     presetTextInactive: {
         fontFamily: 'Nexa',
@@ -33,6 +33,6 @@ const styles = {
     presetTextActive: {
         fontFamily: 'Nexa',
         fontSize: 20,
-        color: Colors.white
+        color: Colors.primary
     }
 }

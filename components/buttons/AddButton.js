@@ -1,5 +1,6 @@
-import { Text, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Colors from '../../Colors';
 
@@ -8,7 +9,7 @@ export default function AddButton({ onPress }) {
 
     return (
         <TouchableOpacity onPress={() => navigation.navigate(onPress)} style={styles.addButton}>
-            <Text style={styles.text}>+</Text>
+            <Icon name='add' size={40} color={Colors.white} />
         </TouchableOpacity>
     )
 }
@@ -16,17 +17,13 @@ export default function AddButton({ onPress }) {
 const styles = {
     addButton: {
         position: 'absolute',
-        bottom: 30,
-        right: 10,
-        width: 80,
-        height: 80,
-        backgroundColor: Colors.button,
+        justifyContent: 'center',
+        alignItems: 'center',
+        bottom: 40,
+        right: 20,
+        width: 65,
+        height: 65,
+        backgroundColor: Colors.green,
         borderRadius: 50
-    },
-    text: {
-        color: Colors.white,
-        textAlign: 'center',
-        lineHeight: 80,
-        fontSize: 64
     }
 }

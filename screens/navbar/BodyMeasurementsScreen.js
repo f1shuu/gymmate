@@ -53,9 +53,7 @@ export default function BodyMeasurementsScreen() {
         return (
             <View>
                 <TouchableOpacity style={styles.header} onPress={() => toggleCategory(category)} activeOpacity={0.8}>
-                    <View style={styles.imageBackground}>
-                        <Image source={url} style={styles.image} />
-                    </View>
+                    <Image source={url} style={styles.image} />
                     <Text style={styles.text}>{category}</Text>
                     <Icon
                         name={expandedCategories[category] ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
@@ -86,10 +84,9 @@ export default function BodyMeasurementsScreen() {
     }
 
     return (
-        <Container>
+        <Container gradient={true} gradientLength={0.75}>
             {isBodyMeasurements ? (
                 <>
-                    <Background text={false} />
                     <FlatList
                         data={Object.entries(groupedBodyMeasurements)}
                         keyExtractor={([category]) => category}
@@ -116,19 +113,14 @@ export default function BodyMeasurementsScreen() {
 
 const styles = {
     header: {
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         borderRadius: 15,
         paddingVertical: 10,
         paddingHorizontal: 20,
-        marginTop: 10,
         marginBottom: 5
-    },
-    imageBackground: {
-        backgroundColor: Colors.primary,
-        borderRadius: 15
     },
     image: {
         width: 60,
@@ -146,7 +138,7 @@ const styles = {
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 5,
-        backgroundColor: Colors.button,
+        backgroundColor: Colors.background,
         paddingVertical: 10,
         paddingHorizontal: 30,
         borderRadius: 15

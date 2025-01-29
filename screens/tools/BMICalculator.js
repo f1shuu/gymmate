@@ -99,7 +99,7 @@ const styles = {
     },
     input: {
         width: '100%',
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         height: 60,
         fontFamily: 'Nexa',
         fontSize: 16,

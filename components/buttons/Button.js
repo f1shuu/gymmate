@@ -4,7 +4,7 @@ import Colors from '../../Colors';
 
 export default function Button({ onPress, text, type }) {
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.button, { backgroundColor: (type == 'delete' ? Colors.delete : Colors.button) }]}>
+        <TouchableOpacity onPress={onPress} style={[styles.button, { backgroundColor: (type == 'delete' ? Colors.red : Colors.primary) }]}>
             <Text style={styles.text}>{text}</Text>
         </TouchableOpacity>
     )

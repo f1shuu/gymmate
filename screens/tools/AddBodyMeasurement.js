@@ -30,7 +30,6 @@ export default function AddBodyMeasurement() {
 
     return (
         <Container>
-            <Background text={false} />
             <Text style={styles.text}>Kategoria pomiaru</Text>
             <Dropdown
                 passedStyle={{ borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
@@ -72,7 +71,7 @@ const styles = {
     },
     input: {
         width: '100%',
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         height: 60,
         fontFamily: 'Nexa',
         fontSize: 16,

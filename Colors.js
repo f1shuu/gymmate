@@ -1,9 +1,9 @@
 export default {
-    background: '#121212',
-    primary: '#1E1E1E',
+    primary: '#0D3B69',
     secondary: '#737373',
-    button: '#376DEC',
-    add: '#2ECC71',
-    delete: '#FD5056',
-    white: '#FBFBFB'
+    background: '#121212',
+    green: '#00BB69',
+    red: '#DD5050',
+    white: '#DDDDDD',
+    black: '#000000'
 }

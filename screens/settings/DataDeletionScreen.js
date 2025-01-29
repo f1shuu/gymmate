@@ -43,12 +43,11 @@ export default function DataDeletionScreen() {
 
     return (
         <Container>
-            <Background text={false} />
             <View style={styles.container}>
-                <Setting active={exercisesCount > 0} name='Usuń ćwiczenia' icon={'delete'} color={Colors.delete} onPress={() => showModal(isModalVisible, 'exercises', 'ćwiczenia')} />
-                <Setting active={bodyMeasurementsCount > 0} name='Usuń pomiary' icon={'delete'} color={Colors.delete} onPress={() => showModal(isModalVisible, 'bodyMeasurements', 'pomiary')} />
-                <Setting active={trainingsCount > 0} name='Usuń treningi' icon={'delete'} color={Colors.delete} onPress={() => showModal(isModalVisible, 'trainings', 'treningi')} />
-                <Setting active={dataCount > 0} name='Usuń wszystkie dane' icon={'delete'} color={Colors.delete} onPress={() => showModal(isModalVisible, 'all', 'dane')} style={{ borderWidth: 1, borderColor: Colors.delete }} />
+                <Setting active={exercisesCount > 0} name='Usuń ćwiczenia' icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'exercises', 'ćwiczenia')} />
+                <Setting active={bodyMeasurementsCount > 0} name='Usuń pomiary' icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'bodyMeasurements', 'pomiary')} />
+                <Setting active={trainingsCount > 0} name='Usuń treningi' icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'trainings', 'treningi')} />
+                <Setting active={dataCount > 0} name='Usuń wszystkie dane' icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'all', 'dane')} style={{ borderWidth: 1, borderColor: Colors.red }} />
             </View>
             <Modal
                 isVisible={isModalVisible}

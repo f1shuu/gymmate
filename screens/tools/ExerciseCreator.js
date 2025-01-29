@@ -60,19 +60,18 @@ export default function ExerciseCreator({ route }) {
 
     return (
         <Container>
-            <Background text={false} />
             <ProgressSteps
-                activeStepIconBorderColor={Colors.button}
+                activeStepIconBorderColor={Colors.primary}
                 progressBarColor={Colors.secondary}
-                completedProgressBarColor={Colors.add}
-                completedStepIconColor={Colors.add}
+                completedProgressBarColor={Colors.green}
+                completedStepIconColor={Colors.green}
                 disabledStepIconColor={Colors.secondary}
                 labelFontFamily='Nexa'
                 labelColor={Colors.secondary}
-                activeLabelColor={Colors.button}
-                completedLabelColor={Colors.add}
-                activeStepNumColor={Colors.button}
-                completedStepNumColor={Colors.add}
+                activeLabelColor={Colors.primary}
+                completedLabelColor={Colors.green}
+                activeStepNumColor={Colors.primary}
+                completedStepNumColor={Colors.green}
                 disabledStepNumColor={Colors.background}
             >
                 <ProgressStep
@@ -225,7 +224,7 @@ export default function ExerciseCreator({ route }) {
 
 const styles = {
     button: {
-        backgroundColor: Colors.button,
+        backgroundColor: Colors.primary,
         width: 100,
         height: 60,
         borderRadius: 15,
@@ -246,7 +245,7 @@ const styles = {
     },
     input: {
         width: '100%',
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         height: 60,
         fontFamily: 'Nexa',
         fontSize: 16,

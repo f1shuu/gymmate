@@ -3,14 +3,12 @@ import { useNavigation } from '@react-navigation/native';
 
 import Colors from '../../Colors';
 import Container from '../../components/Container';
-import Background from '../../components/Background';
 
 export default function HomeScreen() {
     const navigation = useNavigation();
 
     return (
-        <Container>
-            <Background home={true} />
+        <Container gradient={true} gradientLength={0.75}>
             <TouchableOpacity onPress={() => { navigation.navigate('Map') }} style={styles.widget} activeOpacity={0.8}>
                 <Image source={require('../../assets/images/map.png')} style={styles.map} resizeMode='cover' />
                 <Image source={require('../../assets/images/gymMarker.png')} style={styles.marker} />
@@ -25,7 +23,7 @@ export default function HomeScreen() {
 const styles = {
     widget: {
         height: '25%',
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         borderRadius: 15
     },
     map: {

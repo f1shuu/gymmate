@@ -70,24 +70,24 @@ export default Timer = () => {
                             Haptics={Haptics}
                             styles={{
                                 pickerContainer: {
-                                    backgroundColor: Colors.background
+                                    backgroundColor: Colors.black
                                 },
                                 pickerItem: {
                                     fontFamily: 'Nexa',
                                     fontSize: 64,
-                                    color: Colors.button
+                                    color: Colors.primary
                                 },
                                 pickerLabel: {
-                                    backgroundColor: Colors.background,
+                                    backgroundColor: Colors.black,
                                     fontFamily: 'Nexa',
                                     fontSize: 64,
-                                    color: Colors.button
+                                    color: Colors.primary
                                 },
                                 pickerItemContainer: {
                                     width: 100,
                                     height: 80,
                                     marginHorizontal: 10,
-                                    backgroundColor: Colors.background,
+                                    backgroundColor: Colors.black,
                                     right: -15
                                 },
                                 pickerLabelContainer: {
@@ -104,7 +104,7 @@ export default Timer = () => {
                     key={key}
                     isPlaying={isPlaying}
                     duration={minutes * 60 + seconds}
-                    colors={Colors.button}
+                    colors={Colors.primary}
                     colorsTime={[minutes * 60 + seconds, 0]}
                     size={300}
                     strokeWidth={15}
@@ -159,12 +159,12 @@ const styles = {
     timesUpText: {
         fontFamily: 'Nexa',
         fontSize: 36,
-        color: Colors.delete
+        color: Colors.red
     },
     timerText: {
         fontFamily: 'Nexa',
         fontSize: 56,
-        color: Colors.button
+        color: Colors.primary
     },
     row: {
         flexDirection: 'row',

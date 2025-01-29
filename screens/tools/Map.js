@@ -91,9 +91,8 @@ export default function Map() {
   if (!location) {
     return (
       <Container>
-        <Background />
         <View style={styles.textArea}>
-          <Text style={[styles.text, { color: message === 'Ładowanie...' ? Colors.white : Colors.delete }]}>{message}</Text>
+          <Text style={[styles.text, { color: message === 'Ładowanie...' ? Colors.white : Colors.red }]}>{message}</Text>
           {!locationAccessGranted ?
             <>
               <TouchableOpacity onPress={() => setIsModalVisible(() => !isModalVisible)}>

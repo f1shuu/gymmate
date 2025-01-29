@@ -453,7 +453,7 @@ const styles = {
         textAlign: 'center',
         paddingVertical: 15,
         paddingHorizontal: 15,
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         borderRadius: 15,
         width: 60
     },
@@ -464,7 +464,7 @@ const styles = {
         textAlign: 'center',
         paddingVertical: 15,
         paddingHorizontal: 15,
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.background,
         borderRadius: 15,
         width: 120
     },
