@@ -52,7 +52,7 @@ export default function BodyMeasurementsScreen() {
 
         return (
             <View>
-                <TouchableOpacity style={styles.header} onPress={() => toggleCategory(category)} activeOpacity={1}>
+                <TouchableOpacity style={styles.header} onPress={() => toggleCategory(category)} activeOpacity={0.8}>
                     <View style={styles.imageBackground}>
                         <Image source={url} style={styles.image} />
                     </View>

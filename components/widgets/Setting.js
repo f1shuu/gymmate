@@ -1,70 +1,28 @@
-// this code needs to be refactored since it's not a reusable component
-
 import { Text, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Colors from '../../Colors';
-import Modal from '../Modal';
 
-export default Setting = () => {
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
-
-    const clearAsyncStorage = async () => {
-        try {
-            await AsyncStorage.clear();
-            setIsModalVisible(!isModalVisible);
-            setIsConfirmationModalVisible(!isConfirmationModalVisible);
-            () => setIsConfirmationModalVisible(() => !isConfirmationModalVisible)
-        } catch (error) {
-            console.error('Error clearing AsyncStorage:', error);
-        }
-    }
-
+export default Setting = ({ active, name, icon, color, onPress, style }) => {
     return (
-        <>
-            <TouchableOpacity onPress={() => setIsModalVisible(() => !isModalVisible)} style={styles.container}>
-                <Text style={styles.text}>Usuń wszystkie dane</Text>
-            </TouchableOpacity>
-            <Modal
-                isVisible={isModalVisible}
-                text='Czy na pewno chcesz usunąć WSZYSTKIE dane z aplikacji? Tej operacji nie można cofnąć.'
-                twoButtons={true}
-                buttonOneText='Tak'
-                buttonOneOnPress={() => clearAsyncStorage()}
-                buttonTwoText='Anuluj'
-                buttonTwoOnPress={() => setIsModalVisible(() => !isModalVisible)}
-            />
-            <Modal
-                isVisible={isConfirmationModalVisible}
-                text='Dane zostały pomyślnie usunięte.'
-                twoButtons={false}
-                buttonOneText='OK'
-                buttonOneOnPress={() => setIsConfirmationModalVisible(() => !isConfirmationModalVisible)}
-            />
-        </>
+        <TouchableOpacity onPress={active ? onPress : () => { }} style={[styles.widget, style]} activeOpacity={active ? 0.8 : 0.8}>
+            <Icon name={icon} size={30} color={active ? color : Colors.secondary} />
+            <Text style={[styles.text, { color: (active ? color : Colors.secondary) }]}>{name}</Text>
+        </TouchableOpacity>
     )
 }
 
 const styles = {
-    container: {
-        backgroundColor: Colors.primary,
-        padding: 15,
-        borderRadius: 15,
+    widget: {
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: 10,
-        marginHorizontal: 5
+        backgroundColor: Colors.primary,
+        padding: 20,
+        borderRadius: 15
     },
     text: {
-        flex: 1,
         fontFamily: 'Nexa',
-        fontSize: 20,
-        color: Colors.delete,
-        textAlign: 'center',
+        fontSize: 18,
         alignSelf: 'center',
-        margin: 10
+        marginLeft: 16
     }
 }

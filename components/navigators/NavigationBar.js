@@ -7,7 +7,7 @@ import ExercisesNavigator from './ExercisesNavigator';
 import BodyMeasurementsNavigator from './BodyMeasurementsNavigator';
 import HomeNavigator from './HomeNavigator';
 import ToolsNavigator from './ToolsNavigator';
-import SettingsScreen from '../../screens/navbar/SettingsScreen';
+import SettingsNavigator from './SettingsNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -129,7 +129,7 @@ export default function NavigationBar() {
                 />
                 <Tab.Screen
                     name='Ustawienia'
-                    component={SettingsScreen}
+                    component={SettingsNavigator}
                     options={({ route }) => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (

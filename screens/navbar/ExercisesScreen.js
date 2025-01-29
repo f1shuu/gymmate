@@ -40,7 +40,7 @@ export default function ExercisesScreen() {
         const isActive = activeId === item.id;
 
         return (
-            <TouchableOpacity onPress={() => setActiveId(activeId === item.id ? null : item.id)} activeOpacity={1}>
+            <TouchableOpacity onPress={() => setActiveId(activeId === item.id ? null : item.id)} activeOpacity={0.8}>
                 <View style={styles.header}>
                     <Text style={styles.text}>{item.name}</Text>
                     <Icon

@@ -41,6 +41,18 @@ export default new class DataController {
         }
     }
 
+    async getCount(dataSet) {
+        try {
+            const storedData = await AsyncStorage.getItem(dataSet);
+            const parsedData = storedData ? JSON.parse(storedData) : [];
+
+            if (parsedData) return parsedData.length;
+            else return 0;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     async store(dataSet, id, name, category, navigation, navigator, data = {}) {
         try {
             const storedData = await AsyncStorage.getItem(dataSet);
@@ -84,6 +96,18 @@ export default new class DataController {
             await AsyncStorage.setItem(dataSet, JSON.stringify(updatedData));
             this.get(dataSet, setData, setIsData);
             setIsModalVisible(!isModalVisible);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async clear(dataSet, isModalVisible, setIsModalVisible, fetchData, isConfirmationModalVisible, setIsConfirmationModalVisible) {
+        try {
+            if (dataSet === 'all') await AsyncStorage.clear();
+            else await AsyncStorage.removeItem(dataSet);
+            setIsModalVisible(!isModalVisible);
+            fetchData();
+            setIsConfirmationModalVisible(!isConfirmationModalVisible);
         } catch (error) {
             console.error(error);
         }
