@@ -59,7 +59,7 @@ export default function ExercisesScreen() {
                                 </View>
                             ) : null
                         ))}
-                        <TouchableOpacity style={styles.removeButton}>
+                        <TouchableOpacity style={styles.row}>
                             <Button onPress={async () => await DataController.update('exercises', item.id, navigation, 'ExerciseCreator')} text={'Edytuj'} />
                             <Button onPress={() => handleModal(item.id)} text={'Usuń'} type='delete' />
                         </TouchableOpacity>
@@ -125,9 +125,5 @@ const styles = {
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingVertical: 2
-    },
-    removeButton: {
-        flexDirection: 'row',
-        marginTop: 15
     }
 }

@@ -27,8 +27,7 @@ const customOptions = {
     },
     headerStyle: {
         backgroundColor: Colors.primary,
-        elevation: 0,
-        height: 100
+        elevation: 0
     },
     tabBarStyle: {
         backgroundColor: Colors.black,
