@@ -43,11 +43,7 @@ export default function ExercisesScreen() {
             <TouchableOpacity onPress={() => setActiveId(activeId === item.id ? null : item.id)} activeOpacity={0.8}>
                 <View style={styles.header}>
                     <Text style={styles.text}>{item.name}</Text>
-                    <Icon
-                        name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
-                        size={32}
-                        color={Colors.white}
-                    />
+                    <Icon name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={32} color={Colors.white} />
                 </View>
                 {isActive ? (
                     <View style={styles.exercise}>
@@ -59,7 +55,7 @@ export default function ExercisesScreen() {
                                 </View>
                             ) : null
                         ))}
-                        <TouchableOpacity style={styles.row}>
+                        <TouchableOpacity style={[styles.row, { marginBottom: -10, marginHorizontal: -10 }]}>
                             <Button onPress={async () => await DataController.update('exercises', item.id, navigation, 'ExerciseCreator')} text={'Edytuj'} />
                             <Button onPress={() => handleModal(item.id)} text={'Usuń'} type='delete' />
                         </TouchableOpacity>
@@ -117,7 +113,7 @@ const styles = {
         flexDirection: 'column',
         marginBottom: 5,
         backgroundColor: Colors.background,
-        padding: 16,
+        padding: 15,
         borderRadius: 15,
         color: Colors.white
     },

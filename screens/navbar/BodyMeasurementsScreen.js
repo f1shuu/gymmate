@@ -55,11 +55,7 @@ export default function BodyMeasurementsScreen() {
                 <TouchableOpacity style={styles.header} onPress={() => toggleCategory(category)} activeOpacity={0.8}>
                     <Image source={url} style={styles.image} />
                     <Text style={styles.text}>{category}</Text>
-                    <Icon
-                        name={expandedCategories[category] ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
-                        size={24}
-                        color={Colors.white}
-                    />
+                    <Icon name={expandedCategories[category] ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={24} color={Colors.white} />
                 </TouchableOpacity>
 
                 {expandedCategories[category] && (

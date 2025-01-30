@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 
-import Background from '../../components/Background';
 import Colors from '../../Colors';
 import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';

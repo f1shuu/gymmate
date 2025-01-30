@@ -1,6 +1,6 @@
-import { Image } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import FE5Icon from 'react-native-vector-icons/FontAwesome5';
 
 import Colors from '../../Colors';
 import ExercisesNavigator from './ExercisesNavigator';
@@ -27,40 +27,16 @@ const customOptions = {
     },
     headerStyle: {
         backgroundColor: Colors.primary,
-        elevation: 0
+        elevation: 0,
+        height: 90
     },
     tabBarStyle: {
         backgroundColor: Colors.black,
         height: 60,
-        paddingTop: 20,
-        marginTop: -20,
+        marginTop: -25,
         borderTopWidth: 0
     },
     tabBarLabel: ''
-}
-
-const getIconName = (routeName, focused) => {
-    let iconName;
-
-    switch (routeName) {
-        case 'Ćwiczenia':
-            iconName = focused ? require('../../assets/images/navbar/exercises-active.png') : require('../../assets/images/navbar/exercises-inactive.png');
-            break;
-        case 'Metryczka':
-            iconName = focused ? require('../../assets/images/navbar/body-measurements-active.png') : require('../../assets/images/navbar/body-measurements-inactive.png');
-            break;
-        case 'Rozpocznij trening':
-            iconName = focused ? require('../../assets/images/navbar/home-active.png') : require('../../assets/images/navbar/home-inactive.png');
-            break;
-        case 'Narzędzia':
-            iconName = focused ? require('../../assets/images/navbar/tools-active.png') : require('../../assets/images/navbar/tools-inactive.png');
-            break;
-        case 'Ustawienia':
-            iconName = focused ? require('../../assets/images/navbar/settings-active.png') : require('../../assets/images/navbar/settings-inactive.png');
-            break;
-    }
-
-    return iconName;
 }
 
 export default function NavigationBar() {
@@ -70,14 +46,10 @@ export default function NavigationBar() {
                 <Tab.Screen
                     name='Ćwiczenia'
                     component={ExercisesNavigator}
-                    options={({ route }) => ({
+                    options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <Image source={getIconName(route.name, focused)} style={{
-                                width: 30,
-                                height: 30,
-                                marginBottom: 5
-                            }} />
+                            <FE5Icon name="dumbbell" size={25} color={focused ? Colors.primary : Colors.secondary} />
                         )
                     })
                     }
@@ -85,14 +57,10 @@ export default function NavigationBar() {
                 <Tab.Screen
                     name='Metryczka'
                     component={BodyMeasurementsNavigator}
-                    options={({ route }) => ({
+                    options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <Image source={getIconName(route.name, focused)} style={{
-                                width: 30,
-                                height: 30,
-                                marginBottom: 5
-                            }} />
+                            <FE5Icon name="ruler-horizontal" size={25} color={focused ? Colors.primary : Colors.secondary} />
                         )
                     })
                     }
@@ -100,14 +68,10 @@ export default function NavigationBar() {
                 <Tab.Screen
                     name='Rozpocznij trening'
                     component={HomeNavigator}
-                    options={({ route }) => ({
+                    options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <Image source={getIconName(route.name, focused)} style={{
-                                width: 35,
-                                height: 35,
-                                marginBottom: 5
-                            }} />
+                            <FE5Icon name="home" size={35} color={focused ? Colors.primary : Colors.secondary} />
                         )
                     })
                     }
@@ -115,14 +79,10 @@ export default function NavigationBar() {
                 <Tab.Screen
                     name='Narzędzia'
                     component={ToolsNavigator}
-                    options={({ route }) => ({
+                    options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <Image source={getIconName(route.name, focused)} style={{
-                                width: 30,
-                                height: 30,
-                                marginBottom: 5
-                            }} />
+                            <FE5Icon name="calculator" size={25} color={focused ? Colors.primary : Colors.secondary} />
                         )
                     })
                     }
@@ -130,14 +90,10 @@ export default function NavigationBar() {
                 <Tab.Screen
                     name='Ustawienia'
                     component={SettingsNavigator}
-                    options={({ route }) => ({
+                    options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <Image source={getIconName(route.name, focused)} style={{
-                                width: 30,
-                                height: 30,
-                                marginBottom: 5
-                            }} />
+                            <FE5Icon name="cog" size={25} color={focused ? Colors.primary : Colors.secondary} />
                         )
                     })
                     }

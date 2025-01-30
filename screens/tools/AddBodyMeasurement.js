@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import Colors from '../../Colors';
 import Container from '../../components/Container';
-import Background from '../../components/Background';
 import DataController from '../../helpers/dataController';
 import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';

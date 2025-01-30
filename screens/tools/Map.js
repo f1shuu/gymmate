@@ -5,7 +5,6 @@ import * as Location from 'expo-location';
 
 import Colors from '../../Colors';
 import Container from '../../components/Container';
-import Background from '../../components/Background';
 import Modal from '../../components/Modal';
 import Button from '../../components/buttons/Button';
 
