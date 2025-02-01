@@ -1,25 +1,26 @@
 import { View, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTheme } from '../providers/ThemeProvider';
 
-import Colors from '../Colors';
+export default function Container({ gradient, children }) {
+    const { theme, toggleTheme } = useTheme();
 
-export default function Container({ gradient, gradientLength, children }) {
+    const styles = {
+        container: {
+            flex: 1,
+            padding: 15,
+            paddingBottom: 30,
+            backgroundColor: theme.secondary
+        }
+    }
+
     return <View style={styles.container}>
-        {gradient ? (<LinearGradient
-            colors={[Colors.primary, Colors.black]}
+        {gradient && gradient > 0 ? (<LinearGradient
+            colors={[theme.primary, theme.secondary]}
             style={StyleSheet.absoluteFill}
             start={{ x: 0.5, y: 0 }}
-            end={{ x: 0.5, y: gradientLength }}
+            end={{ x: 0.5, y: gradient }}
         />) : null}
         {children}
     </View>
-}
-
-const styles = {
-    container: {
-        flex: 1,
-        padding: 15,
-        paddingBottom: 30,
-        backgroundColor: Colors.black
-    }
 }

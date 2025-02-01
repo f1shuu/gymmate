@@ -1,26 +1,28 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Colors from '../../Colors';
 import SettingsScreen from '../../screens/navbar/SettingsScreen';
 import DataDeletionScreen from '../../screens/settings/DataDeletionScreen';
+import ThemeSelectionScreen from '../../screens/settings/ThemeSelectionScreen';
+import { useTheme } from '../../providers/ThemeProvider';
 
 const Stack = createStackNavigator();
 
-const customOptions = {
-    headerTintColor: Colors.white,
-    headerTitle: 'Usuwanie danych',
-    headerStyle: {
-        backgroundColor: Colors.primary,
-        elevation: 0
-    },
-    headerTitleStyle: {
-        fontFamily: 'Nexa',
-        fontSize: 18,
-        color: Colors.white
-    }
-}
-
 export default function SettingsNavigator() {
+    const { theme, toggleTheme } = useTheme();
+
+    const customOptions = {
+        headerTintColor: theme.textHeader,
+        headerStyle: {
+            backgroundColor: theme.primary,
+            elevation: 0
+        },
+        headerTitleStyle: {
+            fontFamily: 'Nexa',
+            fontSize: 18,
+            color: theme.textHeader
+        }
+    }
+
     return (
         <Stack.Navigator>
             <Stack.Screen
@@ -30,7 +32,17 @@ export default function SettingsNavigator() {
             <Stack.Screen
                 name='DataDeletionScreen'
                 component={DataDeletionScreen}
-                options={{ ...customOptions }} />
+                options={{
+                    headerTitle: 'Usuń dane',
+                    ...customOptions
+                }} />
+            <Stack.Screen
+                name='ThemeSelectionScreen'
+                component={ThemeSelectionScreen}
+                options={{
+                    headerTitle: 'Wybierz motyw',
+                    ...customOptions
+                }} />
         </Stack.Navigator>
     )
 }

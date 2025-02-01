@@ -9,6 +9,7 @@ import DataController from '../../helpers/dataController';
 import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
 import SegmentedButton from '../../components/buttons/SegmentedButton';
+import { useTheme } from '../../providers/ThemeProvider';
 
 import { muscleGroups } from '../../constants/muscleGroups';
 import { repsAmounts } from '../../constants/repsAmounts';
@@ -29,6 +30,8 @@ export default function ExerciseCreator({ route }) {
     const [isFocus, setIsFocus] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [errors, setErrors] = useState(false);
+
+    const { theme, toggleTheme } = useTheme();
 
     const navigation = useNavigation();
 
@@ -57,21 +60,55 @@ export default function ExerciseCreator({ route }) {
         }
     }
 
+    const styles = {
+        button: {
+            backgroundColor: theme.primary,
+            width: 100,
+            height: 60,
+            borderRadius: 15,
+            justifyContent: 'center'
+        },
+        text: {
+            fontFamily: 'Nexa',
+            fontSize: 16,
+            color: theme.textHeader,
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            marginVertical: 10
+        },
+        row: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+        },
+        input: {
+            width: '100%',
+            backgroundColor: theme.background,
+            height: 60,
+            fontFamily: 'Nexa',
+            fontSize: 16,
+            color: theme.textPrimary,
+            borderRadius: 15,
+            padding: 15,
+            marginVertical: 10
+        }
+    }
+
     return (
         <Container>
             <ProgressSteps
-                activeStepIconBorderColor={Colors.primary}
-                progressBarColor={Colors.secondary}
+                activeStepIconBorderColor={theme.primary}
+                progressBarColor={theme.tertiary}
                 completedProgressBarColor={Colors.green}
                 completedStepIconColor={Colors.green}
-                disabledStepIconColor={Colors.secondary}
+                disabledStepIconColor={theme.tertiary}
                 labelFontFamily='Nexa'
-                labelColor={Colors.secondary}
-                activeLabelColor={Colors.primary}
+                labelColor={theme.tertiary}
+                activeLabelColor={theme.primary}
                 completedLabelColor={Colors.green}
-                activeStepNumColor={Colors.primary}
+                activeStepNumColor={theme.primary}
                 completedStepNumColor={Colors.green}
-                disabledStepNumColor={Colors.background}
+                disabledStepNumColor={theme.background}
             >
                 <ProgressStep
                     label='Typ'
@@ -82,7 +119,7 @@ export default function ExerciseCreator({ route }) {
                     errors={errors}
                 >
                     <>
-                        <Text style={styles.text}>Wybierz grupę mięśniową</Text>
+                        <Text style={[styles.text, { color: theme.textPrimary }]}>Wybierz grupę mięśniową</Text>
                         <Dropdown
                             passedStyle={{ borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                             data={muscleGroups}
@@ -92,7 +129,7 @@ export default function ExerciseCreator({ route }) {
                             onBlur={() => setIsFocus(false)}
                             onChange={(item) => onDropdownChange(setMuscleGroup, item.value)}
                         />
-                        <Text style={styles.text}>Wybierz typ ćwiczenia</Text>
+                        <Text style={[styles.text, { color: theme.textPrimary }]}>Wybierz typ ćwiczenia</Text>
                         <SegmentedButton option1='Powtórzeniowe' option2='Czasowe' selectedOption={type} onOptionChange={(selectedOption) => setType(selectedOption)} />
                         <Modal
                             isVisible={isModalVisible}
@@ -118,7 +155,7 @@ export default function ExerciseCreator({ route }) {
                         {type === 'Powtórzeniowe' ? (
                             <>
                                 <View style={styles.row}>
-                                    <Text style={styles.text}>Ilość serii</Text>
+                                    <Text style={[styles.text, { color: theme.textPrimary }]}>Ilość serii</Text>
                                     <Dropdown
                                         passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                         data={setsAmounts}
@@ -130,7 +167,7 @@ export default function ExerciseCreator({ route }) {
                                     />
                                 </View>
                                 <View style={styles.row}>
-                                    <Text style={styles.text}>Ilość powtórzeń</Text>
+                                    <Text style={[styles.text, { color: theme.textPrimary }]}>Ilość powtórzeń</Text>
                                     <Dropdown
                                         passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                         data={repsAmounts}
@@ -151,7 +188,7 @@ export default function ExerciseCreator({ route }) {
                             </>) : (
                             <>
                                 <View style={styles.row}>
-                                    <Text style={styles.text}>Czas</Text>
+                                    <Text style={[styles.text, { color: theme.textPrimary }]}>Czas</Text>
                                     <Dropdown
                                         passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                         data={times}
@@ -171,7 +208,7 @@ export default function ExerciseCreator({ route }) {
                                 />
                             </>)}
                         <View style={styles.row}>
-                            <Text style={styles.text}>Obciążenie (opc.)</Text>
+                            <Text style={[styles.text, { color: theme.textPrimary }]}>Obciążenie (opc.)</Text>
                             <Dropdown
                                 passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                 data={weights}
@@ -196,14 +233,14 @@ export default function ExerciseCreator({ route }) {
                     errors={errors}
                 >
                     <>
-                        <Text style={styles.text}>Nadaj swojemu ćwiczeniu nazwę</Text>
+                        <Text style={[styles.text, { color: theme.textPrimary }]}>Nadaj swojemu ćwiczeniu nazwę</Text>
                         <TextInput
                             style={styles.input}
                             placeholder='np. Wyciskanie sztangi na ławce'
-                            placeholderTextColor={Colors.secondary}
+                            placeholderTextColor={theme.textSecondary}
                             maxLength={50}
                             fontSize={16}
-                            color={Colors.white}
+                            color={theme.textPrimary}
                             onChangeText={(text) => setName(text)}
                             value={name} >
                         </TextInput>
@@ -219,38 +256,4 @@ export default function ExerciseCreator({ route }) {
             </ProgressSteps>
         </Container>
     )
-}
-
-const styles = {
-    button: {
-        backgroundColor: Colors.primary,
-        width: 100,
-        height: 60,
-        borderRadius: 15,
-        justifyContent: 'center'
-    },
-    text: {
-        fontFamily: 'Nexa',
-        fontSize: 16,
-        color: Colors.white,
-        textAlign: 'center',
-        textAlignVertical: 'center',
-        marginVertical: 10
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    input: {
-        width: '100%',
-        backgroundColor: Colors.background,
-        height: 60,
-        fontFamily: 'Nexa',
-        fontSize: 16,
-        color: Colors.white,
-        borderRadius: 15,
-        padding: 15,
-        marginVertical: 10
-    }
 }

@@ -6,10 +6,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddButton from '../../components/buttons/AddButton';
 import Background from '../../components/Background';
 import Button from '../../components/buttons/Button';
-import Colors from '../../Colors';
 import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
+import { useTheme } from '../../providers/ThemeProvider';
 
 import { translateToPolish } from '../../helpers/translations/pl';
 
@@ -19,6 +19,8 @@ export default function ExercisesScreen() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
     const [activeId, setActiveId] = useState(null);
+
+    const { theme, toggleTheme } = useTheme();
 
     const navigation = useNavigation();
 
@@ -43,7 +45,7 @@ export default function ExercisesScreen() {
             <TouchableOpacity onPress={() => setActiveId(activeId === item.id ? null : item.id)} activeOpacity={0.8}>
                 <View style={styles.header}>
                     <Text style={styles.text}>{item.name}</Text>
-                    <Icon name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={32} color={Colors.white} />
+                    <Icon name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={32} color={theme.textPrimary} />
                 </View>
                 {isActive ? (
                     <View style={styles.exercise}>
@@ -65,8 +67,38 @@ export default function ExercisesScreen() {
         )
     }
 
+    const styles = {
+        header: {
+            backgroundColor: theme.background,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderRadius: 15,
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            marginBottom: 5
+        },
+        text: {
+            fontFamily: 'Nexa',
+            fontSize: 16,
+            color: theme.textPrimary
+        },
+        exercise: {
+            flexDirection: 'column',
+            marginBottom: 5,
+            backgroundColor: theme.background,
+            padding: 15,
+            borderRadius: 15
+        },
+        row: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingVertical: 2
+        }
+    }
+
     return (
-        <Container gradient={true} gradientLength={0.75}>
+        <Container gradient={0.75}>
             {isExercises ? (
                 <>
                     <FlatList
@@ -91,35 +123,4 @@ export default function ExercisesScreen() {
             </Modal>
         </Container>
     )
-}
-
-const styles = {
-    header: {
-        backgroundColor: Colors.background,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderRadius: 15,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        marginBottom: 5
-    },
-    text: {
-        fontFamily: 'Nexa',
-        fontSize: 16,
-        color: Colors.white
-    },
-    exercise: {
-        flexDirection: 'column',
-        marginBottom: 5,
-        backgroundColor: Colors.background,
-        padding: 15,
-        borderRadius: 15,
-        color: Colors.white
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingVertical: 2
-    }
 }

@@ -5,10 +5,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import AddButton from '../../components/buttons/AddButton';
 import Background from '../../components/Background';
-import Colors from '../../Colors';
 import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default function BodyMeasurementsScreen() {
     const [bodyMeasurements, setBodyMeasurements] = useState([]);
@@ -16,6 +16,8 @@ export default function BodyMeasurementsScreen() {
     const [expandedCategories, setExpandedCategories] = useState({});
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
+
+    const { theme, toggleTheme } = useTheme();
 
     const groupedBodyMeasurements = DataController.groupByCategory(bodyMeasurements);
 
@@ -55,7 +57,7 @@ export default function BodyMeasurementsScreen() {
                 <TouchableOpacity style={styles.header} onPress={() => toggleCategory(category)} activeOpacity={0.8}>
                     <Image source={url} style={styles.image} />
                     <Text style={styles.text}>{category}</Text>
-                    <Icon name={expandedCategories[category] ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={24} color={Colors.white} />
+                    <Icon name={expandedCategories[category] ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={24} color={theme.textPrimary} />
                 </TouchableOpacity>
 
                 {expandedCategories[category] && (
@@ -69,7 +71,7 @@ export default function BodyMeasurementsScreen() {
                                     {measurement.data.value} {measurement.data.unit}
                                 </Text>
                                 <TouchableOpacity onPress={() => handleModal(measurement.id)}>
-                                    <Icon name='delete' size={30} color={Colors.white} />
+                                    <Icon name='delete' size={30} color={theme.textPrimary} />
                                 </TouchableOpacity>
                             </View>
                         ))}
@@ -79,8 +81,42 @@ export default function BodyMeasurementsScreen() {
         )
     }
 
+    const styles = {
+        header: {
+            backgroundColor: theme.background,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderRadius: 15,
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            marginBottom: 5
+        },
+        image: {
+            width: 60,
+            height: 60,
+            margin: 5,
+            marginRight: 15
+        },
+        text: {
+            fontFamily: 'Nexa',
+            fontSize: 16,
+            color: theme.textPrimary
+        },
+        row: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 5,
+            backgroundColor: theme.background,
+            paddingVertical: 10,
+            paddingHorizontal: 30,
+            borderRadius: 15
+        }
+    }
+
     return (
-        <Container gradient={true} gradientLength={0.75}>
+        <Container gradient={0.75}>
             {isBodyMeasurements ? (
                 <>
                     <FlatList
@@ -105,38 +141,4 @@ export default function BodyMeasurementsScreen() {
             </Modal>
         </Container>
     )
-}
-
-const styles = {
-    header: {
-        backgroundColor: Colors.background,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderRadius: 15,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        marginBottom: 5
-    },
-    image: {
-        width: 60,
-        height: 60,
-        margin: 5,
-        marginRight: 15
-    },
-    text: {
-        fontFamily: 'Nexa',
-        fontSize: 16,
-        color: Colors.white
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 5,
-        backgroundColor: Colors.background,
-        paddingVertical: 10,
-        paddingHorizontal: 30,
-        borderRadius: 15
-    }
 }

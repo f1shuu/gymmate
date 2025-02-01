@@ -3,13 +3,16 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Colors from '../../Colors';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default function AddButton({ onPress }) {
+    const { theme, toggleTheme } = useTheme();
+
     const navigation = useNavigation();
 
     return (
         <TouchableOpacity onPress={() => navigation.navigate(onPress)} style={styles.addButton}>
-            <Icon name='add' size={40} color={Colors.white} />
+            <Icon name='add' size={40} color={theme.textHeader} />
         </TouchableOpacity>
     )
 }

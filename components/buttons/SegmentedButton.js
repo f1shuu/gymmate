@@ -1,8 +1,40 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 
-import Colors from '../../Colors';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default function SegmentedButton({ option1, option2, onOptionChange, selectedOption }) {
+    const { theme, toggleTheme } = useTheme();
+
+    const styles = {
+        container: {
+            flexDirection: 'row',
+            borderRadius: 15,
+            overflow: 'hidden',
+            marginVertical: 10
+        },
+        segment: {
+            flex: 1,
+            paddingVertical: 15,
+            alignItems: 'center'
+        },
+        activeSegment: {
+            backgroundColor: theme.primary
+        },
+        inactiveSegment: {
+            backgroundColor: theme.background
+        },
+        activeText: {
+            fontFamily: 'Nexa',
+            fontSize: 16,
+            color: theme.textHeader
+        },
+        inactiveText: {
+            fontFamily: 'Nexa',
+            fontSize: 16,
+            color: theme.textSecondary
+        }
+    }
+
     return (
         <View style={styles.container}>
             <TouchableOpacity
@@ -21,34 +53,4 @@ export default function SegmentedButton({ option1, option2, onOptionChange, sele
             </TouchableOpacity>
         </View>
     )
-}
-
-const styles = {
-    container: {
-        flexDirection: 'row',
-        borderRadius: 15,
-        overflow: 'hidden',
-        marginVertical: 10
-    },
-    segment: {
-        flex: 1,
-        paddingVertical: 15,
-        alignItems: 'center'
-    },
-    activeSegment: {
-        backgroundColor: Colors.primary
-    },
-    inactiveSegment: {
-        backgroundColor: Colors.background
-    },
-    activeText: {
-        fontFamily: 'Nexa',
-        fontSize: 16,
-        color: Colors.white
-    },
-    inactiveText: {
-        fontFamily: 'Nexa',
-        fontSize: 16,
-        color: Colors.secondary
-    }
 }

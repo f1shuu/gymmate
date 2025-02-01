@@ -6,6 +6,7 @@ import Colors from '../../Colors';
 import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
+import Setting from '../../components/widgets/Setting';
 
 export default function DataDeletionScreen() {
     const [exercisesCount, setExercisesCount] = useState(0);
@@ -46,7 +47,7 @@ export default function DataDeletionScreen() {
                 <Setting active={exercisesCount > 0} name='Usuń ćwiczenia' icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'exercises', 'ćwiczenia')} />
                 <Setting active={bodyMeasurementsCount > 0} name='Usuń pomiary' icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'bodyMeasurements', 'pomiary')} />
                 <Setting active={trainingsCount > 0} name='Usuń treningi' icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'trainings', 'treningi')} />
-                <Setting active={dataCount > 0} name='Usuń wszystkie dane' icon={'delete-forever'} color={Colors.red} onPress={() => showModal(isModalVisible, 'all', 'dane')} style={{ borderWidth: 1, borderColor: Colors.red }} />
+                <Setting active={dataCount > 0} name='Usuń wszystkie dane' icon={'delete-forever'} color={Colors.red} onPress={() => showModal(isModalVisible, 'all', 'dane')} style={styles.allDataButton} />
             </View>
             <Modal
                 isVisible={isModalVisible}
@@ -73,5 +74,9 @@ const styles = {
         gap: 10,
         borderRadius: 15,
         overflow: 'hidden'
+    },
+    allDataButton: {
+        borderWidth: 2,
+        borderColor: Colors.red
     }
 }

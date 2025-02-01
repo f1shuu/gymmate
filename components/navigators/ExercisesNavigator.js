@@ -1,26 +1,28 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Colors from '../../Colors';
 import ExercisesScreen from '../../screens/navbar/ExercisesScreen';
 import ExerciseCreator from '../../screens/tools/ExerciseCreator';
+import { useTheme } from '../../providers/ThemeProvider';
 
 const Stack = createStackNavigator();
 
-const customOptions = {
-    headerTintColor: Colors.white,
-    headerTitle: 'Dodawanie nowego ćwiczenia',
-    headerStyle: {
-        backgroundColor: Colors.primary,
-        elevation: 0
-    },
-    headerTitleStyle: {
-        fontFamily: 'Nexa',
-        fontSize: 18,
-        color: Colors.white
-    }
-}
-
 export default function ExercisesNavigator() {
+    const { theme, toggleTheme } = useTheme();
+
+    const customOptions = {
+        headerTintColor: theme.textHeader,
+        headerTitle: 'Dodawanie nowego ćwiczenia',
+        headerStyle: {
+            backgroundColor: theme.primary,
+            elevation: 0
+        },
+        headerTitleStyle: {
+            fontFamily: 'Nexa',
+            fontSize: 18,
+            color: theme.textHeader
+        }
+    }
+
     return (
         <Stack.Navigator>
             <Stack.Screen

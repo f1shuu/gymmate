@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import Colors from './Colors';
 import NavigationBar from './components/navigators/NavigationBar';
+import { ThemeProvider } from './providers/ThemeProvider';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,9 +25,11 @@ export default function App() {
       {isLoading ? (
         <View />
       ) : (
-        <View style={{ flex: 1, backgroundColor: Colors.background }}>
-          <NavigationBar />
-        </View>
+        <ThemeProvider>
+          <View style={{ flex: 1, backgroundColor: Colors.black }}>
+            <NavigationBar />
+          </View>
+        </ThemeProvider>
       )}
     </>
   )

@@ -1,29 +1,31 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Colors from '../../Colors';
-import ToolsScreen from '../../screens/navbar/ToolsScreen';
-import Timer from '../../screens/tools/Timer';
 import BMICalculator from '../../screens/tools/BMICalculator';
-import Calculator from '../../screens/tools/Calculator';
-import UnitsConverter from '../../screens/tools/UnitsConverter';
 import BMIHelp from '../../screens/tools/BMIHelp';
+import Calculator from '../../screens/tools/Calculator';
+import Timer from '../../screens/tools/Timer';
+import ToolsScreen from '../../screens/navbar/ToolsScreen';
+import UnitsConverter from '../../screens/tools/UnitsConverter';
+import { useTheme } from '../../providers/ThemeProvider';
 
 const Stack = createStackNavigator();
 
-const customOptions = {
-    headerTintColor: Colors.white,
-    headerTitleStyle: {
-        fontFamily: 'Nexa',
-        fontSize: 18,
-        color: Colors.white
-    },
-    headerStyle: {
-        backgroundColor: Colors.primary,
-        elevation: 0
-    }
-}
-
 export default function ToolsNavigator() {
+    const { theme, toggleTheme } = useTheme();
+
+    const customOptions = {
+        headerTintColor: theme.textHeader,
+        headerTitleStyle: {
+            fontFamily: 'Nexa',
+            fontSize: 18,
+            color: theme.textHeader
+        },
+        headerStyle: {
+            backgroundColor: theme.primary,
+            elevation: 0
+        }
+    }
+
     return (
         <Stack.Navigator>
             <Stack.Screen

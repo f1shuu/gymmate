@@ -2,22 +2,26 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import Colors from '../../Colors';
 import Container from '../../components/Container';
 import Button from '../../components/buttons/Button';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default function BMICalculator() {
-    const navigation = useNavigation();
-
     const [height, setHeight] = useState();
     const [weight, setWeight] = useState();
     const [bmiResult, setBMIResult] = useState('Tutaj pojawi się wynik');
-    const [textColor, setTextColor] = useState(Colors.secondary);
+
+    const { theme, toggleTheme } = useTheme();
+
+    const [textColor, setTextColor] = useState(theme.textSecondary);
+
+
+    const navigation = useNavigation();
 
     const handleClear = () => {
         setHeight();
         setWeight();
-        setTextColor(Colors.secondary);
+        setTextColor(theme.textSecondary);
         setBMIResult('Tutaj pojawi się wynik');
     }
 
@@ -41,8 +45,45 @@ export default function BMICalculator() {
             } else if (bmi > 30 && bmi <= 35) {
                 result = 'otyłość';
             } else result = 'otyłość kliniczną';
-            setTextColor(Colors.white);
+            setTextColor(theme.textPrimary);
             setBMIResult(`Twoje BMI wynosi ${bmi.toFixed(2)} i oznacza ${result}.`);
+        }
+    }
+
+    const styles = {
+        resultArea: {
+            height: 60,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginVertical: 10
+        },
+        result: {
+            fontFamily: 'Nexa',
+            fontSize: 20,
+            color: theme.textSecondary,
+            textAlign: 'center'
+        },
+        input: {
+            width: '100%',
+            backgroundColor: theme.background,
+            height: 60,
+            fontFamily: 'Nexa',
+            fontSize: 16,
+            color: theme.textPrimary,
+            borderRadius: 15,
+            padding: 15,
+            marginVertical: 10
+        },
+        help: {
+            fontFamily: 'Nexa',
+            color: theme.textSecondary,
+            textAlign: 'center',
+            marginTop: 15
+        },
+        row: {
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            marginTop: 10
         }
     }
 
@@ -55,10 +96,10 @@ export default function BMICalculator() {
                 style={styles.input}
                 keyboardType='numeric'
                 placeholder='Wzrost [cm]'
-                placeholderTextColor={Colors.secondary}
+                placeholderTextColor={theme.textSecondary}
                 maxLength={6}
                 fontSize={16}
-                color={Colors.white}
+                color={theme.textPrimary}
                 onChangeText={(text) => setHeight(text)}
                 value={height} >
             </TextInput>
@@ -66,10 +107,10 @@ export default function BMICalculator() {
                 style={styles.input}
                 keyboardType='numeric'
                 placeholder='Masa ciała [kg]'
-                placeholderTextColor={Colors.secondary}
+                placeholderTextColor={theme.textSecondary}
                 maxLength={6}
                 fontSize={16}
-                color={Colors.white}
+                color={theme.textPrimary}
                 onChangeText={(text) => setWeight(text)}
                 value={weight} >
             </TextInput>
@@ -82,41 +123,4 @@ export default function BMICalculator() {
             </View>
         </Container>
     )
-}
-
-const styles = {
-    resultArea: {
-        height: 60,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginVertical: 10
-    },
-    result: {
-        fontFamily: 'Nexa',
-        fontSize: 20,
-        color: Colors.secondary,
-        textAlign: 'center'
-    },
-    input: {
-        width: '100%',
-        backgroundColor: Colors.background,
-        height: 60,
-        fontFamily: 'Nexa',
-        fontSize: 16,
-        color: Colors.white,
-        borderRadius: 15,
-        padding: 15,
-        marginVertical: 10
-    },
-    help: {
-        fontFamily: 'Nexa',
-        color: Colors.secondary,
-        textAlign: 'center',
-        marginTop: 15
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginTop: 10
-    }
 }

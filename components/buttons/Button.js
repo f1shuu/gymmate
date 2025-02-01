@@ -1,30 +1,33 @@
 import { Text, TouchableOpacity } from 'react-native';
 
 import Colors from '../../Colors';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default function Button({ onPress, text, type }) {
+    const { theme, toggleTheme } = useTheme();
+
+    const styles = {
+        button: {
+            width: 140,
+            height: 50,
+            borderRadius: 15,
+            justifyContent: 'center',
+            alignItems: 'center',
+            margin: 10,
+            alignSelf: 'center'
+        },
+        text: {
+            fontFamily: 'Nexa',
+            fontSize: 18,
+            color: theme.textHeader,
+            textAlign: 'center',
+            textAlignVertical: 'center'
+        }
+    }
+
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.button, { backgroundColor: (type == 'delete' ? Colors.red : Colors.primary) }]}>
+        <TouchableOpacity onPress={onPress} style={[styles.button, { backgroundColor: (type == 'delete' ? Colors.red : theme.primary) }]}>
             <Text style={styles.text}>{text}</Text>
         </TouchableOpacity>
     )
-}
-
-const styles = {
-    button: {
-        width: 140,
-        height: 50,
-        borderRadius: 15,
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 10,
-        alignSelf: 'center'
-    },
-    text: {
-        fontFamily: 'Nexa',
-        fontSize: 18,
-        color: Colors.white,
-        textAlign: 'center',
-        textAlignVertical: 'center'
-    }
 }

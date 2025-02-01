@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 
+import Button from '../../components/buttons/Button';
 import Colors from '../../Colors';
 import Container from '../../components/Container';
 import Modal from '../../components/Modal';
-import Button from '../../components/buttons/Button';
+import { useTheme } from '../../providers/ThemeProvider';
 
 const CustomMarker = ({ type, coordinate, title, description }) => {
   const [tracksViewChanges, setTracksViewChanges] = useState(true);
@@ -18,6 +19,17 @@ const CustomMarker = ({ type, coordinate, title, description }) => {
 
     return () => clearTimeout(timer);
   }, [])
+
+  const styles = {
+    markerContainer: {
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    marker: {
+      width: 32,
+      height: 32
+    }
+  }
 
   return (
     <Marker
@@ -36,11 +48,13 @@ const CustomMarker = ({ type, coordinate, title, description }) => {
 }
 
 export default function Map() {
-  const [message, setMessage] = useState('Ładowanie...');
+  const [message, setMessage] = useState('Ładowanie mapy...');
   const [locationAccessGranted, setLocationAccessGranted] = useState(false);
   const [location, setLocation] = useState(null);
   const [gyms, setGyms] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const { theme, toggleTheme } = useTheme();
 
   const checkForLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -77,7 +91,7 @@ export default function Map() {
       if (data.results) return data.results;
       else return [];
     } catch (error) {
-      console.error('Error fetching gyms: ', error);
+      console.error(error);
       return [];
     }
   }
@@ -87,11 +101,39 @@ export default function Map() {
     checkForLocation();
   }
 
+  const styles = {
+    textArea: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    text: {
+      fontFamily: 'Nexa',
+      fontSize: 20,
+      color: theme.textPrimary,
+      textAlign: 'center',
+      margin: 20
+    },
+    help: {
+      fontFamily: 'Nexa',
+      color: theme.textSecondary,
+      marginBottom: 10
+    },
+    markerContainer: {
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    marker: {
+      width: 32,
+      height: 32
+    }
+  }
+
   if (!location) {
     return (
-      <Container>
+      <Container gradient={0.4}>
         <View style={styles.textArea}>
-          <Text style={[styles.text, { color: message === 'Ładowanie...' ? Colors.white : Colors.red }]}>{message}</Text>
+          <Text style={[styles.text, { color: message === 'Ładowanie mapy...' ? theme.textPrimary : Colors.red }]}>{message}</Text>
           {!locationAccessGranted ?
             <>
               <TouchableOpacity onPress={() => setIsModalVisible(() => !isModalVisible)}>
@@ -148,32 +190,4 @@ export default function Map() {
       ))}
     </MapView>
   )
-}
-
-const styles = {
-  textArea: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  text: {
-    fontFamily: 'Nexa',
-    fontSize: 20,
-    color: Colors.white,
-    textAlign: 'center',
-    margin: 20
-  },
-  help: {
-    fontFamily: 'Nexa',
-    color: Colors.secondary,
-    marginBottom: 10
-  },
-  markerContainer: {
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  marker: {
-    width: 32,
-    height: 32
-  }
 }

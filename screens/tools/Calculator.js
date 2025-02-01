@@ -1,14 +1,16 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import Colors from '../../Colors';
 import Container from '../../components/Container';
 import CalculatorButton from '../../components/buttons/CalculatorButton';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default function Calculator() {
     const [input, setInput] = useState('');
     const [output, setOutput] = useState('');
+
+    const { theme, toggleTheme } = useTheme();
 
     const navigation = useNavigation();
 
@@ -46,13 +48,45 @@ export default function Calculator() {
         }
     }
 
+    const styles = {
+        input: {
+            backgroundColor: theme.background,
+            color: theme.textPrimary,
+            fontSize: 28,
+            textAlign: 'right',
+            paddingVertical: 5,
+            paddingRight: 20,
+            borderTopLeftRadius: 15,
+            borderTopRightRadius: 15
+        },
+        output: {
+            backgroundColor: theme.background,
+            color: theme.textPrimary,
+            fontSize: 44,
+            textAlign: 'right',
+            paddingVertical: 5,
+            paddingRight: 20,
+            borderBottomLeftRadius: 15,
+            borderBottomRightRadius: 15,
+            borderColor: theme.primary
+        },
+        container: {
+            flex: 1,
+            justifyContent: 'space-between',
+            marginTop: 10
+        },
+        row: {
+            flex: 1,
+            flexDirection: 'row',
+            marginTop: 10,
+            marginHorizontal: -5
+        }
+    }
+
     return (
         <Container>
             <Text style={styles.input}>{input}</Text>
             <Text style={styles.output}>{output}</Text>
-            <TouchableOpacity style={styles.tools} onPress={() => navigation.navigate('UnitsConverter')}>
-                <Image source={require('../../assets/images/tools/calculator/units-converter.png')} style={{ width: 48, height: 18 }} />
-            </TouchableOpacity>
             <View style={styles.container}>
                 <View style={styles.row}>
                     <CalculatorButton type='delete' value='C' onPress={() => calculate('C')} />
@@ -87,44 +121,4 @@ export default function Calculator() {
             </View>
         </Container>
     )
-}
-
-const styles = {
-    input: {
-        backgroundColor: Colors.background,
-        color: Colors.white,
-        fontSize: 28,
-        textAlign: 'right',
-        paddingVertical: 5,
-        paddingRight: 20,
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15
-    },
-    output: {
-        backgroundColor: Colors.background,
-        color: Colors.white,
-        fontSize: 44,
-        textAlign: 'right',
-        paddingVertical: 5,
-        paddingRight: 20,
-        borderBottomLeftRadius: 15,
-        borderBottomRightRadius: 15,
-        borderColor: Colors.primary
-    },
-    tools: {
-        height: 60,
-        justifyContent: 'center',
-        marginLeft: 5
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'space-between',
-        marginTop: -10
-    },
-    row: {
-        flex: 1,
-        flexDirection: 'row',
-        marginTop: 10,
-        marginHorizontal: -5
-    }
 }

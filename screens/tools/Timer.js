@@ -9,6 +9,7 @@ import Colors from '../../Colors';
 import Container from '../../components/Container';
 import Button from '../../components/buttons/Button';
 import SetTimerButton from '../../components/buttons/SetTimerButton';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default Timer = () => {
     const [showPicker, setShowPicker] = useState(true);
@@ -19,6 +20,8 @@ export default Timer = () => {
     const [initialValue, setInitialValue] = useState({ minutes: 0, seconds: 0 });
     const [key, setKey] = useState(0);
     const [completed, setCompleted] = useState(false);
+
+    const { theme, toggleTheme } = useTheme();
 
     const setTime = (minutes, seconds, id) => {
         setIsActive(prevId => prevId === id ? null : id);
@@ -48,6 +51,39 @@ export default Timer = () => {
         setSeconds(seconds);
     }
 
+    const styles = {
+        labels: {
+            flexDirection: 'row'
+        },
+        label: {
+            fontFamily: 'Nexa',
+            fontSize: 20,
+            color: theme.textPrimary,
+            marginHorizontal: 25,
+            marginVertical: 10
+        },
+        timer: {
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginVertical: 50
+        },
+        timesUpText: {
+            fontFamily: 'Nexa',
+            fontSize: 36,
+            color: Colors.red
+        },
+        timerText: {
+            fontFamily: 'Nexa',
+            fontSize: 56,
+            color: theme.primary
+        },
+        row: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginVertical: 20
+        }
+    }
+
     return (
         <Container>
             {showPicker ? (
@@ -70,24 +106,24 @@ export default Timer = () => {
                             Haptics={Haptics}
                             styles={{
                                 pickerContainer: {
-                                    backgroundColor: Colors.black
+                                    backgroundColor: theme.secondary
                                 },
                                 pickerItem: {
                                     fontFamily: 'Nexa',
                                     fontSize: 64,
-                                    color: Colors.primary
+                                    color: theme.primary
                                 },
                                 pickerLabel: {
-                                    backgroundColor: Colors.black,
+                                    backgroundColor: theme.secondary,
                                     fontFamily: 'Nexa',
                                     fontSize: 64,
-                                    color: Colors.primary
+                                    color: theme.primary
                                 },
                                 pickerItemContainer: {
                                     width: 100,
                                     height: 80,
                                     marginHorizontal: 10,
-                                    backgroundColor: Colors.black,
+                                    backgroundColor: theme.secondary,
                                     right: -15
                                 },
                                 pickerLabelContainer: {
@@ -104,11 +140,11 @@ export default Timer = () => {
                     key={key}
                     isPlaying={isPlaying}
                     duration={minutes * 60 + seconds}
-                    colors={Colors.primary}
+                    colors={theme.primary}
                     colorsTime={[minutes * 60 + seconds, 0]}
                     size={300}
                     strokeWidth={15}
-                    trailColor={Colors.primary}
+                    trailColor={theme.primary}
                     onComplete={() => { setCompleted(true); }}
                 >
                     {({ remainingTime }) => {
@@ -138,37 +174,4 @@ export default Timer = () => {
             )}
         </Container>
     )
-}
-
-const styles = {
-    labels: {
-        flexDirection: 'row'
-    },
-    label: {
-        fontFamily: 'Nexa',
-        fontSize: 20,
-        color: Colors.white,
-        marginHorizontal: 25,
-        marginVertical: 10
-    },
-    timer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginVertical: 50
-    },
-    timesUpText: {
-        fontFamily: 'Nexa',
-        fontSize: 36,
-        color: Colors.red
-    },
-    timerText: {
-        fontFamily: 'Nexa',
-        fontSize: 56,
-        color: Colors.primary
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginVertical: 20
-    }
 }

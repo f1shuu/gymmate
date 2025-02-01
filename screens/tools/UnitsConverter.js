@@ -1,10 +1,9 @@
-// this code will be enitirely refactored in the future
-
-import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import FE5Icon from 'react-native-vector-icons/FontAwesome5';
 
 import Container from '../../components/Container';
-import Colors from '../../Colors';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default function UnitsConverter() {
     const [centimeters1, setCentimeters1] = useState('');
@@ -23,6 +22,8 @@ export default function UnitsConverter() {
     const [whichCmCalConverter, setCmCalConverter] = useState(true);
     const [whichMFtConverter, setMFtConverter] = useState(true);
     const [whichGOzConverter, setGOzConverter] = useState(true);
+
+    const { theme, toggleTheme } = useTheme();
 
     const cmToFeetAndInches = (text) => {
         updateFeetAndInches(text);
@@ -174,6 +175,64 @@ export default function UnitsConverter() {
 
     const swapConverter = (setter) => () => setter((prev) => !prev);
 
+    const styles = {
+        converter: {
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            paddingHorizontal: 1,
+            marginVertical: 10
+        },
+        text: {
+            fontFamily: 'Nexa',
+            color: theme.textPrimary,
+            fontSize: 18,
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            width: 32
+        },
+        titleText: {
+            fontFamily: 'Nexa',
+            color: theme.textPrimary,
+            fontSize: 18,
+            textAlignVertical: 'center',
+            paddingTop: 10,
+            paddingLeft: 10
+        },
+        customText: {
+            fontFamily: 'Nexa',
+            color: theme.textPrimary,
+            fontSize: 18,
+            textAlignVertical: 'center',
+        },
+        input: {
+            fontFamily: 'Nexa',
+            color: theme.textPrimary,
+            fontSize: 16,
+            textAlign: 'center',
+            paddingVertical: 15,
+            paddingHorizontal: 15,
+            backgroundColor: theme.background,
+            borderRadius: 15,
+            width: 60
+        },
+        wideInput: {
+            fontFamily: 'Nexa',
+            color: theme.textPrimary,
+            fontSize: 16,
+            textAlign: 'center',
+            paddingVertical: 15,
+            paddingHorizontal: 15,
+            backgroundColor: theme.background,
+            borderRadius: 15,
+            width: 120
+        },
+        image: {
+            width: 40,
+            height: 40,
+        }
+    }
+
     return (
         <Container>
             <View style={styles.container}>
@@ -189,7 +248,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.customText}>cm</Text>
                             <TouchableOpacity onPress={swapConverter(setHeightConverter)}>
-                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <FE5Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.input}
@@ -221,7 +280,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.customText}>"</Text>
                             <TouchableOpacity onPress={swapConverter(setHeightConverter)}>
-                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <FE5Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -245,7 +304,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>kg </Text>
                             <TouchableOpacity onPress={swapConverter(setWeightConverter)}>
-                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <FE5Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -265,7 +324,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>lbs</Text>
                             <TouchableOpacity onPress={swapConverter(setWeightConverter)}>
-                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <FE5Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -290,7 +349,7 @@ export default function UnitsConverter() {
                             />
                             <Text style={styles.text}>cm </Text>
                             <TouchableOpacity onPress={swapConverter(setCmCalConverter)}>
-                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <FE5Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -312,7 +371,7 @@ export default function UnitsConverter() {
                             />
                             <Text style={styles.text}>cal</Text>
                             <TouchableOpacity onPress={swapConverter(setCmCalConverter)}>
-                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <FE5Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -336,7 +395,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>m  </Text>
                             <TouchableOpacity onPress={swapConverter(setMFtConverter)}>
-                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <FE5Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -356,7 +415,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>ft </Text>
                             <TouchableOpacity onPress={swapConverter(setMFtConverter)}>
-                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <FE5Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -379,7 +438,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>g  </Text>
                             <TouchableOpacity onPress={swapConverter(setGOzConverter)}>
-                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <FE5Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -399,7 +458,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>oz </Text>
                             <TouchableOpacity onPress={swapConverter(setGOzConverter)}>
-                                <Image source={require('../../assets/images/tools/converter/swap.png')} style={styles.image} resizeMode='cover' />
+                                <FE5Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -414,62 +473,4 @@ export default function UnitsConverter() {
             </View>
         </Container>
     );
-}
-
-const styles = {
-    converter: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        paddingHorizontal: 1,
-        marginVertical: 10
-    },
-    text: {
-        fontFamily: 'Nexa',
-        color: Colors.white,
-        fontSize: 18,
-        textAlign: 'center',
-        textAlignVertical: 'center',
-        width: 32
-    },
-    titleText: {
-        fontFamily: 'Nexa',
-        color: Colors.white,
-        fontSize: 18,
-        textAlignVertical: 'center',
-        paddingTop: 10,
-        paddingLeft: 10
-    },
-    customText: {
-        fontFamily: 'Nexa',
-        color: Colors.white,
-        fontSize: 18,
-        textAlignVertical: 'center',
-    },
-    input: {
-        fontFamily: 'Nexa',
-        color: Colors.white,
-        fontSize: 16,
-        textAlign: 'center',
-        paddingVertical: 15,
-        paddingHorizontal: 15,
-        backgroundColor: Colors.background,
-        borderRadius: 15,
-        width: 60
-    },
-    wideInput: {
-        fontFamily: 'Nexa',
-        color: Colors.white,
-        fontSize: 16,
-        textAlign: 'center',
-        paddingVertical: 15,
-        paddingHorizontal: 15,
-        backgroundColor: Colors.background,
-        borderRadius: 15,
-        width: 120
-    },
-    image: {
-        width: 40,
-        height: 40,
-    }
 }

@@ -1,17 +1,35 @@
-import { Text, Image, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Colors from '../../Colors';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default function CalculatorButton({ type, value, onPress }) {
+    const { theme, toggleTheme } = useTheme();
+
+    const styles = {
+        button: {
+            flex: 1,
+            backgroundColor: theme.background,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginHorizontal: 5,
+            borderRadius: 15
+        },
+        text: {
+            fontFamily: 'Nexa',
+            fontSize: 36,
+        }
+    }
+
     const getStyle = () => {
         switch (type) {
             case 'delete':
-                return styles.delete;
+                return [styles.text, { color: Colors.red }];
             case 'symbols':
-                return styles.symbols;
+                return [styles.text, { color: Colors.green }];
             case 'numbers':
-                return styles.numbers;
+                return [styles.text, { color: theme.primary }];
             default:
                 return styles.numbers;
         }
@@ -20,36 +38,10 @@ export default function CalculatorButton({ type, value, onPress }) {
     return (
         <TouchableOpacity style={styles.button} onPress={onPress}>
             {type === 'backspace' ? (
-                <Icon name='backspace' size={40} color={Colors.primary} />
+                <Icon name='backspace' size={40} color={theme.primary} />
             ) : (
                 <Text style={getStyle()}>{value}</Text>
             )}
         </TouchableOpacity>
     )
-}
-
-const styles = {
-    button: {
-        flex: 1,
-        backgroundColor: Colors.background,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: 5,
-        borderRadius: 15
-    },
-    delete: {
-        fontFamily: 'Nexa',
-        fontSize: 36,
-        color: Colors.red
-    },
-    symbols: {
-        fontFamily: 'Nexa',
-        fontSize: 36,
-        color: Colors.green
-    },
-    numbers: {
-        fontFamily: 'Nexa',
-        fontSize: 36,
-        color: Colors.primary
-    }
 }
