@@ -27,7 +27,7 @@ export default function Calculator() {
         },
         text: {
             fontFamily: 'Nexa',
-            fontSize: 14,
+            fontSize: 12,
             color: theme.textSecondary,
             textAlign: 'center',
             marginHorizontal: 5
@@ -44,7 +44,7 @@ export default function Calculator() {
                 source={require('../../assets/images/tools/bmi/graph.png')}
                 style={styles.image}
             />
-            <Text style={styles.text}>Wykres BMI dla zakresu masy ciała od 45 do 135 kg oraz zakresu wzrostu od 1,4 m do 2 m
+            <Text style={styles.text}>Wykres BMI dla zakresu masy ciała od 45 do 135&nbsp;kg oraz zakresu wzrostu od 1,4 m do 2 m
             </Text>
         </Container>
     )

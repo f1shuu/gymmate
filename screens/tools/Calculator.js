@@ -1,6 +1,5 @@
 import { View, Text } from 'react-native';
 import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 
 import Container from '../../components/Container';
 import CalculatorButton from '../../components/buttons/CalculatorButton';
@@ -12,16 +11,11 @@ export default function Calculator() {
 
     const { theme, toggleTheme } = useTheme();
 
-    const navigation = useNavigation();
-
     const calculate = (value) => {
         const replaceSymbols = (expr) => expr.replace(/x/g, '*').replace(/÷/g, '/').replace(/\^/g, '**');
         if (value === '=') {
             try {
-                const result = replaceSymbols(input);
-                let newOutput = eval(result).toPrecision(8).toString();
-                newOutput = parseFloat(newOutput);
-                setOutput(newOutput);
+                if (input) setOutput(parseFloat(eval(replaceSymbols(input)).toPrecision(8)));
             } catch (error) {
                 setOutput('Błąd');
             }
@@ -30,9 +24,7 @@ export default function Calculator() {
             setOutput('');
         } else if (value === 'sqrt') {
             try {
-                let newOutput = Math.sqrt(eval(replaceSymbols(input))).toPrecision(8).toString();
-                newOutput = parseFloat(newOutput);
-                setOutput(newOutput);
+                setOutput(parseFloat(Math.sqrt(eval(replaceSymbols(input))).toPrecision(8)));
             } catch (error) {
                 setOutput('Błąd');
             }
@@ -42,9 +34,9 @@ export default function Calculator() {
             const lastChar = input.slice(-1);
             const isLastCharSymbol = ['+', '-', 'x', '÷', '^'].includes(lastChar);
             if (isLastCharSymbol) {
-                if (['+', '-', 'x', '÷', '^'].includes(value)) setInput((prevInput) => prevInput.slice(0, -1) + value);
-                else setInput((prevInput) => prevInput + value);
-            } else setInput((prevInput) => prevInput + value);
+                if (['+', '-', 'x', '÷', '^'].includes(value)) if (input.length < 42) setInput((prevInput) => prevInput.slice(0, -1) + value);
+                else if (input.length < 42) setInput((prevInput) => prevInput + value);
+            } else if (input.length < 42) setInput((prevInput) => prevInput + value);
         }
     }
 

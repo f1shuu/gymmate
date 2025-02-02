@@ -73,12 +73,12 @@ export default function AddBodyMeasurement() {
             <TextInput
                 style={styles.input}
                 placeholderTextColor={theme.textSecondary}
-                maxLength={3}
+                maxLength={6}
                 placeholder='Wpisz wartość...'
                 keyboardType='numeric'
                 onChangeText={(text) => setValue(text)}
             />
-            <Text style={styles.reminder}>Jednostka wartości pomiaru zostanie dodana automatycznie.</Text>
+            <Text style={styles.reminder}>Jednostka wartości pomiaru oraz data jego utworzenia zostaną dodane automatycznie.</Text>
             <Button onPress={category && value ? async () => await DataController.store('bodyMeasurements', null, null, category, navigation, 'BodyMeasurementsScreen', { value, unit }) : () => setIsModalVisible(() => !isModalVisible)} text='Zapisz' />
             <Modal
                 isVisible={isModalVisible}

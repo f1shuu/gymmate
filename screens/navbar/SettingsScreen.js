@@ -22,7 +22,7 @@ export default function SettingsScreen() {
         name: {
             fontFamily: 'Nexa',
             fontSize: 28,
-            color: theme.textPrimary,
+            color: theme.textHeader,
             alignSelf: 'center',
             justifyContent: 'center',
             marginBottom: 10
@@ -44,7 +44,7 @@ export default function SettingsScreen() {
         <Container gradient={0.5}>
             <ScrollView>
                 <View style={styles.avatar}>
-                    <Icon name={'account-circle'} size={100} color={theme.textPrimary} style={styles.icon} />
+                    <Icon name={'account-circle'} size={100} color={theme.textHeader} style={styles.icon} />
                 </View>
                 <Text style={styles.name}>Filip Szulżycki</Text>
                 <Text style={[styles.name, { fontSize: 16 }]}>@f1shu</Text>

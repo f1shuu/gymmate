@@ -32,7 +32,7 @@ export default function CustomModal({ isVisible, text, twoButtons, buttonOneText
     }
 
     return (
-        <Modal isVisible={isVisible} style={[styles.modal, { height: (twoButtons == true ? '30%' : '25%') }]}>
+        <Modal isVisible={isVisible} style={[styles.modal, { height: (twoButtons == true ? '30%' : '25%') }]} backdropTransitionOutTiming={1} >
             <Text style={styles.text}>{text}</Text>
             {twoButtons ? (<View style={styles.row}>
                 <Button onPress={buttonOneOnPress} text={buttonOneText} type='delete' />

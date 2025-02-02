@@ -2,7 +2,7 @@ export default {
     expo: {
         name: 'GymMate',
         slug: 'GymMate',
-        version: '0.9.4',
+        version: '0.9.5',
         orientation: 'portrait',
         icon: './assets/images/icon.png',
         userInterfaceStyle: 'dark',

@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import AddButton from '../../components/buttons/AddButton';
 import Background from '../../components/Background';
+import Colors from '../../Colors';
 import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
@@ -62,8 +63,8 @@ export default function BodyMeasurementsScreen() {
 
                 {expandedCategories[category] && (
                     <View style={styles.itemsContainer}>
-                        {items.map((measurement) => (
-                            <View key={measurement.id} style={styles.row}>
+                        {items.map((measurement, index) => (
+                            <View key={measurement.id} style={[styles.measurement, index + 1 === items.length ? { backgroundColor: Colors.green } : '']}>
                                 <Text style={styles.text}>
                                     {measurement.date}
                                 </Text>
@@ -103,7 +104,7 @@ export default function BodyMeasurementsScreen() {
             fontSize: 16,
             color: theme.textPrimary
         },
-        row: {
+        measurement: {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',

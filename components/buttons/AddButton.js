@@ -22,7 +22,7 @@ const styles = {
         position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',
-        bottom: 40,
+        bottom: 20,
         right: 20,
         width: 65,
         height: 65,

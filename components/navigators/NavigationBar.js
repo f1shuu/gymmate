@@ -30,13 +30,13 @@ export default function NavigationBar() {
         },
         headerStyle: {
             backgroundColor: theme.primary,
-            elevation: 0,
-            height: 90
+            height: 80,
+            elevation: 0
         },
         tabBarStyle: {
             backgroundColor: theme.secondary,
             height: 60,
-            borderTopWidth: 0
+            elevation: 0
         },
         tabBarLabel: ''
     }
@@ -50,7 +50,7 @@ export default function NavigationBar() {
                     options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <FE5Icon name="dumbbell" size={25} color={focused ? theme.primary : theme.tertiary} style={{ marginTop: 15 }} />
+                            <FE5Icon name="dumbbell" size={25} color={focused ? theme.primary : theme.tertiary} />
                         )
                     })
                     }
@@ -61,7 +61,7 @@ export default function NavigationBar() {
                     options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <FE5Icon name="ruler-horizontal" size={25} color={focused ? theme.primary : theme.tertiary} style={{ marginTop: 15 }} />
+                            <FE5Icon name="ruler-horizontal" size={25} color={focused ? theme.primary : theme.tertiary} />
                         )
                     })
                     }
@@ -72,7 +72,7 @@ export default function NavigationBar() {
                     options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <FE5Icon name="home" size={35} color={focused ? theme.primary : theme.tertiary} style={{ marginTop: 12 }} />
+                            <FE5Icon name="home" size={35} color={focused ? theme.primary : theme.tertiary} />
                         )
                     })
                     }
@@ -83,7 +83,7 @@ export default function NavigationBar() {
                     options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <FE5Icon name="calculator" size={25} color={focused ? theme.primary : theme.tertiary} style={{ marginTop: 15 }} />
+                            <FE5Icon name="calculator" size={25} color={focused ? theme.primary : theme.tertiary} />
                         )
                     })
                     }
@@ -94,7 +94,7 @@ export default function NavigationBar() {
                     options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <FE5Icon name="cog" size={25} color={focused ? theme.primary : theme.tertiary} style={{ marginTop: 15 }} />
+                            <FE5Icon name="cog" size={25} color={focused ? theme.primary : theme.tertiary} />
                         )
                     })
                     }

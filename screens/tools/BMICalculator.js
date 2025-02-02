@@ -26,25 +26,22 @@ export default function BMICalculator() {
     }
 
     const handleCalculateBMI = () => {
-        let formattedHeight = height.replace(',', '.'), formattedWeight = weight.replace(',', '.');
-        if (isNaN(formattedHeight) || isNaN(formattedWeight) || formattedHeight === '' || formattedWeight === '') {
+        if (!(height) || !(weight)) {
+            setTextColor(theme.textSecondary);
             setBMIResult('Najpierw uzupełnij wszystkie pola.');
             return;
-        } else if (formattedHeight <= 0 || formattedWeight <= 0) {
+        } else if (isNaN(height.replace(',', '.')) || isNaN(weight.replace(',', '.')) || height.replace(',', '.') <= 0 || height.replace(',', '.') <= 0) {
+            setTextColor(theme.textSecondary);
             setBMIResult('Wprowadzono niepoprawne dane.');
             return;
         } else {
             let result;
-            const bmi = formattedWeight / ((formattedHeight / 100) ** 2);
-            if (bmi < 18.5) {
-                result = 'niedowagę';
-            } else if (bmi >= 18.5 && bmi <= 25) {
-                result = 'prawidłową masę ciała';
-            } else if (bmi > 25 && bmi <= 30) {
-                result = 'nadwagę';
-            } else if (bmi > 30 && bmi <= 35) {
-                result = 'otyłość';
-            } else result = 'otyłość kliniczną';
+            const bmi = weight.replace(',', '.') / ((height.replace(',', '.') / 100) ** 2);
+            if (bmi < 18.5) result = 'niedowagę';
+            else if (bmi >= 18.5 && bmi <= 25) result = 'prawidłową masę ciała';
+            else if (bmi > 25 && bmi <= 30) result = 'nadwagę';
+            else if (bmi > 30 && bmi <= 35) result = 'otyłość';
+            else result = 'otyłość kliniczną';
             setTextColor(theme.textPrimary);
             setBMIResult(`Twoje BMI wynosi ${bmi.toFixed(2)} i oznacza ${result}.`);
         }

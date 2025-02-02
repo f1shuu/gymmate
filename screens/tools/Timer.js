@@ -11,7 +11,7 @@ import Button from '../../components/buttons/Button';
 import SetTimerButton from '../../components/buttons/SetTimerButton';
 import { useTheme } from '../../providers/ThemeProvider';
 
-export default Timer = () => {
+export default function Timer() {
     const [showPicker, setShowPicker] = useState(true);
     const [isActive, setIsActive] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -20,6 +20,11 @@ export default Timer = () => {
     const [initialValue, setInitialValue] = useState({ minutes: 0, seconds: 0 });
     const [key, setKey] = useState(0);
     const [completed, setCompleted] = useState(false);
+    const presetTimes = [
+        { text: '01:00', minutes: 1, seconds: 0, id: 1 },
+        { text: '05:00', minutes: 5, seconds: 0, id: 2 },
+        { text: '10:00', minutes: 10, seconds: 0, id: 3 }
+    ];
 
     const { theme, toggleTheme } = useTheme();
 
@@ -44,9 +49,9 @@ export default Timer = () => {
 
     const onDurationChange = (duration) => {
         const { minutes, seconds } = duration;
-        if (!(minutes === 1 && seconds === 0) && !(minutes === 5 && seconds === 0) && !(minutes === 10 && seconds === 0)) {
-            setIsActive(null);
-        }
+        const activePreset = presetTimes.find(preset => preset.minutes === minutes && preset.seconds === seconds);
+
+        setIsActive(activePreset ? activePreset.id : null);
         setMinutes(minutes);
         setSeconds(seconds);
     }
@@ -80,7 +85,8 @@ export default Timer = () => {
         row: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginVertical: 20
+            marginVertical: 20,
+            alignItems: 'stretch'
         }
     }
 
@@ -144,7 +150,7 @@ export default Timer = () => {
                     colorsTime={[minutes * 60 + seconds, 0]}
                     size={300}
                     strokeWidth={15}
-                    trailColor={theme.primary}
+                    trailColor={theme.tertiary}
                     onComplete={() => { setCompleted(true); }}
                 >
                     {({ remainingTime }) => {
@@ -160,9 +166,10 @@ export default Timer = () => {
             {showPicker ? (
                 <>
                     <View style={styles.row}>
-                        <SetTimerButton active={isActive === 1} time='01:00' onPress={() => setTime(1, 0, 1)} />
-                        <SetTimerButton active={isActive === 2} time='05:00' onPress={() => setTime(5, 0, 2)} />
-                        <SetTimerButton active={isActive === 3} time='10:00' onPress={() => setTime(10, 0, 3)} />
+                        {
+                            presetTimes.map(element => (
+                                <SetTimerButton key={element.id} active={isActive === element.id} time={element.text} onPress={() => setTime(element.minutes, element.seconds, element.id)} />
+                            ))}
                     </View>
                     <Button onPress={() => startTimer(minutes, seconds)} text='Start' />
                 </>
