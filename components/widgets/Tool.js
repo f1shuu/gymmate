@@ -6,7 +6,7 @@ import { useTheme } from '../../providers/ThemeProvider';
 export default function Tool({ name, url, onPress }) {
     const navigation = useNavigation();
 
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const styles = {
         widget: {

@@ -5,7 +5,8 @@ const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
     const [settings, setSettings] = useState({
-        isHapticsOn: true
+        isHapticsOn: true,
+        isSoundOn: true
     })
 
     useEffect(() => {

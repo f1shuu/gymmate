@@ -9,6 +9,7 @@ import DataController from '../../helpers/dataController';
 import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
 import SegmentedButton from '../../components/buttons/SegmentedButton';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 import { muscleGroups } from '../../constants/muscleGroups';
@@ -31,7 +32,7 @@ export default function ExerciseCreator({ route }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [errors, setErrors] = useState(false);
 
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const navigation = useNavigation();
 

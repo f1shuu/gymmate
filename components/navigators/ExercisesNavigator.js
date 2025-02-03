@@ -2,12 +2,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import ExercisesScreen from '../../screens/navbar/ExercisesScreen';
 import ExerciseCreator from '../../screens/tools/ExerciseCreator';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 const Stack = createStackNavigator();
 
 export default function ExercisesNavigator() {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const customOptions = {
         headerTintColor: theme.textHeader,

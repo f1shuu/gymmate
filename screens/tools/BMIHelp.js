@@ -1,12 +1,13 @@
 import { Text, Image, Dimensions } from 'react-native';
 
 import Container from '../../components/Container';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 const { width } = Dimensions.get('window');
 
 export default function Calculator() {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const styles = {
         mainText: {

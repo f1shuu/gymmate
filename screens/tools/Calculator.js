@@ -3,13 +3,14 @@ import { useState } from 'react';
 
 import Container from '../../components/Container';
 import CalculatorButton from '../../components/buttons/CalculatorButton';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function Calculator() {
     const [input, setInput] = useState('');
     const [output, setOutput] = useState('');
 
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const calculate = (value) => {
         const replaceSymbols = (expr) => expr.replace(/x/g, '*').replace(/÷/g, '/').replace(/\^/g, '**');

@@ -24,7 +24,7 @@ export default function ExercisesScreen() {
     const [activeId, setActiveId] = useState(null);
 
     const { settings } = useSettings();
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const navigation = useNavigation();
 

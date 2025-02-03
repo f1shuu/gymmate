@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function SegmentedButton({ option1, option2, onOptionChange, selectedOption }) {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const styles = {
         container: {

@@ -5,10 +5,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Colors from '../../Colors';
 import Container from '../../components/Container';
 import Setting from '../../components/widgets/Setting';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function SettingsScreen() {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const navigation = useNavigation();
 
@@ -51,7 +52,7 @@ export default function SettingsScreen() {
                 <View style={styles.container}>
                     <Text style={styles.sectionName}>Ustawienia</Text>
                     <Setting active={false} name='Powiadomienia' icon={'notifications'} color={theme.textPrimary} onPress={() => { }} isToggle={true} />
-                    <Setting active={false} name='Dźwięk' icon={'volume-up'} color={theme.textPrimary} onPress={() => { }} isToggle={true} />
+                    <Setting active={true} name='Dźwięk' icon={'volume-up'} color={theme.textPrimary} onPress={() => { }} isToggle={true} parameter='isSoundOn' />
                     <Setting active={true} name='Wibracje' icon={'vibration'} color={theme.textPrimary} onPress={() => { }} isToggle={true} parameter='isHapticsOn' />
                     <Setting active={false} name='Treningi' icon={'workspace-premium'} color={theme.textPrimary} isToggle={false} onPress={() => { }} />
                     <Setting active={false} name='Eksport i migracja danych' icon={'loop'} color={theme.textPrimary} isToggle={false} onPress={() => { }} />

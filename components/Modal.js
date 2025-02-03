@@ -2,10 +2,11 @@ import { Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import Button from './buttons/Button';
+
 import { useTheme } from '../providers/ThemeProvider';
 
 export default function CustomModal({ isVisible, text, twoButtons, buttonOneText, buttonOneOnPress, buttonTwoText, buttonTwoOnPress }) {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const styles = {
         modal: {

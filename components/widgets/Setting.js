@@ -7,7 +7,7 @@ import { useTheme } from '../../providers/ThemeProvider';
 
 export default function Setting({ active, name, icon, color, onPress, isToggle, parameter, style }) {
     const { settings, updateSettings } = useSettings();
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const styles = {
         widget: {

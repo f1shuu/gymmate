@@ -2,10 +2,11 @@ import { Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Colors from '../../Colors';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function CalculatorButton({ type, value, onPress }) {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const styles = {
         button: {

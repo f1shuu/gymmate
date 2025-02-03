@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { useTheme } from '../providers/ThemeProvider';
 
 export default function Background({ text, content, type }) {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const styles = {
         container: {

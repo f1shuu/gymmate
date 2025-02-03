@@ -2,12 +2,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import AddBodyMeasurement from '../../screens/tools/AddBodyMeasurement';
 import BodyMeasurementsScreen from '../../screens/navbar/BodyMeasurementsScreen';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 const Stack = createStackNavigator();
 
 export default function BodyMeasurementsNavigator() {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     return (
         <Stack.Navigator>

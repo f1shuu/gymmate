@@ -6,12 +6,13 @@ import Calculator from '../../screens/tools/Calculator';
 import Timer from '../../screens/tools/Timer';
 import ToolsScreen from '../../screens/navbar/ToolsScreen';
 import UnitsConverter from '../../screens/tools/UnitsConverter';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 const Stack = createStackNavigator();
 
 export default function ToolsNavigator() {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const customOptions = {
         headerTintColor: theme.textHeader,

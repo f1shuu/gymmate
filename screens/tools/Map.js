@@ -7,6 +7,7 @@ import Button from '../../components/buttons/Button';
 import Colors from '../../Colors';
 import Container from '../../components/Container';
 import Modal from '../../components/Modal';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 const CustomMarker = ({ type, coordinate, title, description }) => {
@@ -54,7 +55,7 @@ export default function Map() {
   const [gyms, setGyms] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
   const checkForLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();

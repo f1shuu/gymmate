@@ -7,6 +7,7 @@ import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';
 import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 import { categories } from '../../constants/categories';
@@ -18,7 +19,7 @@ export default function AddBodyMeasurement() {
     const [isFocus, setIsFocus] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const navigation = useNavigation();
 

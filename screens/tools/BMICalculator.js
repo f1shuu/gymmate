@@ -15,7 +15,7 @@ export default function BMICalculator() {
     const [bmiResult, setBMIResult] = useState('Tutaj pojawi się wynik');
 
     const { settings } = useSettings();
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const [textColor, setTextColor] = useState(theme.textSecondary);
 

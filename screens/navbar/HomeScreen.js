@@ -2,10 +2,11 @@ import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import Container from '../../components/Container';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function HomeScreen() {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const navigation = useNavigation();
 

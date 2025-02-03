@@ -3,7 +3,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { useTheme } from '../providers/ThemeProvider';
 
 export default function CustomDropdown({ passedStyle, data, placeholder, value, onFocus, onBlur, onChange }) {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const styles = {
         dropdown: {

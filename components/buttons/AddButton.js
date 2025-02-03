@@ -3,10 +3,11 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Colors from '../../Colors';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function AddButton({ onPress }) {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const navigation = useNavigation();
 

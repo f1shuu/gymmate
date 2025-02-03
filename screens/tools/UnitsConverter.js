@@ -3,6 +3,7 @@ import { useState } from 'react';
 import FE5Icon from 'react-native-vector-icons/FontAwesome5';
 
 import Container from '../../components/Container';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function UnitsConverter() {
@@ -23,7 +24,7 @@ export default function UnitsConverter() {
     const [whichMFtConverter, setMFtConverter] = useState(true);
     const [whichGOzConverter, setGOzConverter] = useState(true);
 
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const cmToFeetAndInches = (text) => {
         updateFeetAndInches(text);

@@ -22,7 +22,7 @@ export default function BodyMeasurementsScreen() {
     const [modalData, setModalData] = useState({});
 
     const { settings } = useSettings();
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const groupedBodyMeasurements = DataController.groupByCategory(bodyMeasurements);
 

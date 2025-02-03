@@ -3,12 +3,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SettingsScreen from '../../screens/navbar/SettingsScreen';
 import DataDeletionScreen from '../../screens/settings/DataDeletionScreen';
 import ThemeSelectionScreen from '../../screens/settings/ThemeSelectionScreen';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 const Stack = createStackNavigator();
 
 export default function SettingsNavigator() {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const customOptions = {
         headerTintColor: theme.textHeader,

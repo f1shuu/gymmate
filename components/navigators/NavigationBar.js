@@ -7,12 +7,13 @@ import BodyMeasurementsNavigator from './BodyMeasurementsNavigator';
 import HomeNavigator from './HomeNavigator';
 import SettingsNavigator from './SettingsNavigator';
 import ToolsNavigator from './ToolsNavigator';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 const Tab = createBottomTabNavigator();
 
 export default function NavigationBar() {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const MyDarkTheme = {
         ...DefaultTheme,

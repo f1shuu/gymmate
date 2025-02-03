@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function Theme({ name, primaryColor, secondaryColor, textColor, onPress }) {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const styles = {
         tile: {

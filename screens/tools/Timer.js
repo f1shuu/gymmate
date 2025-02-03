@@ -4,11 +4,13 @@ import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { TimerPicker } from 'react-native-timer-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
+import { Audio } from 'expo-av';
 
 import Colors from '../../Colors';
 import Container from '../../components/Container';
 import Button from '../../components/buttons/Button';
 import SetTimerButton from '../../components/buttons/SetTimerButton';
+
 import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
@@ -22,6 +24,7 @@ export default function Timer() {
     const [key, setKey] = useState(0);
     const [completed, setCompleted] = useState(false);
     const [isVibrating, setIsVibrating] = useState(false);
+    const [isSoundPlaying, setIsSoundPlaying] = useState(false);
     const presetTimes = [
         { text: '01:00', minutes: 1, seconds: 0, id: 1 },
         { text: '05:00', minutes: 5, seconds: 0, id: 2 },
@@ -48,6 +51,7 @@ export default function Timer() {
             setShowPicker(false);
             setIsPlaying(true);
             setIsVibrating(false);
+            setIsSoundPlaying(false);
         }
     }
 
@@ -58,6 +62,7 @@ export default function Timer() {
 
     const restart = () => {
         setIsVibrating(false);
+        setIsSoundPlaying(false);
         setShowPicker(true);
     }
 
@@ -73,6 +78,7 @@ export default function Timer() {
     const finish = () => {
         setCompleted(true);
         setIsVibrating(true);
+        setIsSoundPlaying(true);
     }
 
     useEffect(() => {
@@ -90,13 +96,33 @@ export default function Timer() {
 
             if (isVibrating) {
                 startVibrationSeries();
-                seriesInterval = setInterval(startVibrationSeries, 900);
+                seriesInterval = setInterval(startVibrationSeries, 1000);
             } else clearInterval(seriesInterval);
 
             return () => clearInterval(seriesInterval);
         }
     }, [isVibrating]);
 
+    useEffect(() => {
+        let soundObject;
+
+        const playSound = async () => {
+            const { sound } = await Audio.Sound.createAsync(
+                require('../../assets/sounds/alarm.wav'),
+                { shouldPlay: true, isLooping: true }
+            )
+            soundObject = sound;
+        }
+
+        if (settings.isSoundOn && isSoundPlaying) playSound();
+
+        return () => {
+            if (soundObject) {
+                soundObject.stopAsync();
+                soundObject.unloadAsync();
+            }
+        }
+    }, [isSoundPlaying])
 
     const styles = {
         labels: {

@@ -3,6 +3,7 @@ import { FlatList } from 'react-native';
 import Container from '../../components/Container';
 import Theme from '../../components/widgets/Theme';
 import * as themes from '../../Themes';
+
 import { useTheme } from '../../providers/ThemeProvider';
 
 const data = Object.keys(themes);
