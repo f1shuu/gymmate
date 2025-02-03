@@ -1,9 +1,12 @@
 import { Text, View, TouchableOpacity, Switch } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import * as Haptics from 'expo-haptics';
 
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
-export default function Setting({ active, name, icon, color, onPress, toggle, isEnabled, toggleSwitch, style }) {
+export default function Setting({ active, name, icon, color, onPress, isToggle, parameter, style }) {
+    const { settings, updateSettings } = useSettings();
     const { theme, toggleTheme } = useTheme();
 
     const styles = {
@@ -24,18 +27,23 @@ export default function Setting({ active, name, icon, color, onPress, toggle, is
         }
     }
 
+    const toggleSetting = (newValue) => {
+        updateSettings(parameter, newValue);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    }
+
     return (
         <TouchableOpacity onPress={active ? onPress : () => { }} style={[styles.widget, style]} activeOpacity={0.8}>
             <View style={{ flexDirection: 'row' }}>
                 <Icon name={icon} size={30} color={active ? color : theme.tertiary} />
                 <Text style={[styles.text, { color: active ? color : theme.tertiary }]}>{name}</Text>
             </View>
-            {toggle ? (
+            {isToggle ? (
                 <Switch
-                    trackColor={{ false: '#767577', true: '#81b0ff' }}
-                    thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-                    onValueChange={toggleSwitch}
-                    value={isEnabled}
+                    trackColor={{ false: theme.tertiary, true: theme.tertiary }}
+                    thumbColor={settings[parameter] ? theme.primary : theme.textHeader}
+                    onValueChange={toggleSetting}
+                    value={settings[parameter]}
                 />
             ) : (
                 <Icon name='keyboard-arrow-right' size={24} color={active ? color : theme.tertiary} />

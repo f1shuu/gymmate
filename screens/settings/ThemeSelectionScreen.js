@@ -1,4 +1,4 @@
-import { FlatList } from "react-native";
+import { FlatList } from 'react-native';
 
 import Container from '../../components/Container';
 import Theme from '../../components/widgets/Theme';

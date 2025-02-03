@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { TimerPicker } from 'react-native-timer-picker';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,6 +9,7 @@ import Colors from '../../Colors';
 import Container from '../../components/Container';
 import Button from '../../components/buttons/Button';
 import SetTimerButton from '../../components/buttons/SetTimerButton';
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function Timer() {
@@ -20,13 +21,15 @@ export default function Timer() {
     const [initialValue, setInitialValue] = useState({ minutes: 0, seconds: 0 });
     const [key, setKey] = useState(0);
     const [completed, setCompleted] = useState(false);
+    const [isVibrating, setIsVibrating] = useState(false);
     const presetTimes = [
         { text: '01:00', minutes: 1, seconds: 0, id: 1 },
         { text: '05:00', minutes: 5, seconds: 0, id: 2 },
         { text: '10:00', minutes: 10, seconds: 0, id: 3 }
     ];
 
-    const { theme, toggleTheme } = useTheme();
+    const { settings } = useSettings();
+    const { theme } = useTheme();
 
     const setTime = (minutes, seconds, id) => {
         setIsActive(prevId => prevId === id ? null : id);
@@ -36,7 +39,7 @@ export default function Timer() {
         setSeconds(seconds);
     }
 
-    const startTimer = (minutes, seconds) => {
+    const start = (minutes, seconds) => {
         if (minutes === 0 && seconds === 0) { return; }
         else {
             setCompleted(false);
@@ -44,7 +47,18 @@ export default function Timer() {
             setKey(prevKey => prevKey + 1);
             setShowPicker(false);
             setIsPlaying(true);
+            setIsVibrating(false);
         }
+    }
+
+    const playOrPause = () => {
+        if (!isPlaying) setIsPlaying(true);
+        else setIsPlaying(false);
+    }
+
+    const restart = () => {
+        setIsVibrating(false);
+        setShowPicker(true);
     }
 
     const onDurationChange = (duration) => {
@@ -55,6 +69,34 @@ export default function Timer() {
         setMinutes(minutes);
         setSeconds(seconds);
     }
+
+    const finish = () => {
+        setCompleted(true);
+        setIsVibrating(true);
+    }
+
+    useEffect(() => {
+        if (settings.isHapticsOn) {
+            let seriesInterval;
+
+            const startVibrationSeries = () => {
+                let vibrationCount = 0;
+                const vibrationInterval = setInterval(() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                    vibrationCount++;
+                    if (vibrationCount >= 4) clearInterval(vibrationInterval);
+                }, 100)
+            }
+
+            if (isVibrating) {
+                startVibrationSeries();
+                seriesInterval = setInterval(startVibrationSeries, 900);
+            } else clearInterval(seriesInterval);
+
+            return () => clearInterval(seriesInterval);
+        }
+    }, [isVibrating]);
+
 
     const styles = {
         labels: {
@@ -151,7 +193,7 @@ export default function Timer() {
                     size={300}
                     strokeWidth={15}
                     trailColor={theme.tertiary}
-                    onComplete={() => { setCompleted(true); }}
+                    onComplete={() => finish()}
                 >
                     {({ remainingTime }) => {
                         if (remainingTime === 0) {
@@ -171,12 +213,12 @@ export default function Timer() {
                                 <SetTimerButton key={element.id} active={isActive === element.id} time={element.text} onPress={() => setTime(element.minutes, element.seconds, element.id)} />
                             ))}
                     </View>
-                    <Button onPress={() => startTimer(minutes, seconds)} text='Start' />
+                    <Button onPress={() => start(minutes, seconds)} text='Start' />
                 </>
             ) : (
                 <View style={styles.row}>
-                    <Button onPress={() => { setShowPicker(true); }} text={completed ? 'Odrzuć' : 'Usuń'} />
-                    <Button onPress={completed ? () => startTimer(minutes, seconds) : () => { if (!isPlaying) setIsPlaying(true); else setIsPlaying(false); }} text={completed ? 'Uruchom ponownie' : (isPlaying ? 'Wstrzymaj' : 'Wznów')} type='delete' />
+                    <Button onPress={() => restart()} text={completed ? 'Odrzuć' : 'Usuń'} />
+                    <Button onPress={completed ? () => start(minutes, seconds) : () => playOrPause()} text={completed ? 'Uruchom ponownie' : (isPlaying ? 'Wstrzymaj' : 'Wznów')} type='delete' />
                 </View>
             )}
         </Container>

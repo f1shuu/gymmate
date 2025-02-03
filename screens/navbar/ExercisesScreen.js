@@ -2,6 +2,7 @@ import { Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { useState, useCallback } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import * as Haptics from 'expo-haptics';
 
 import AddButton from '../../components/buttons/AddButton';
 import Background from '../../components/Background';
@@ -9,6 +10,8 @@ import Button from '../../components/buttons/Button';
 import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
+
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 import { translateToPolish } from '../../helpers/translations/pl';
@@ -20,6 +23,7 @@ export default function ExercisesScreen() {
     const [modalData, setModalData] = useState({});
     const [activeId, setActiveId] = useState(null);
 
+    const { settings } = useSettings();
     const { theme, toggleTheme } = useTheme();
 
     const navigation = useNavigation();
@@ -35,6 +39,7 @@ export default function ExercisesScreen() {
 
     const handleModal = (id) => {
         setModalData(id);
+        if (settings.isHapticsOn) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Error);
         setIsModalVisible(!isModalVisible);
     }
 

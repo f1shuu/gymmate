@@ -1,12 +1,15 @@
 import { View } from 'react-native';
 import { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
 
 import Colors from '../../Colors';
 import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
 import Setting from '../../components/widgets/Setting';
+
+import { useSettings } from '../../providers/SettingsProvider';
 
 export default function DataDeletionScreen() {
     const [exercisesCount, setExercisesCount] = useState(0);
@@ -17,6 +20,8 @@ export default function DataDeletionScreen() {
     const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
     const [text, setText] = useState(null);
     const [dataSet, setDataSet] = useState(null);
+
+    const { settings } = useSettings();
 
     const fetchData = async () => {
         const exercises = await DataController.getCount('exercises');
@@ -36,6 +41,7 @@ export default function DataDeletionScreen() {
     )
 
     const showModal = (isModalVisible, dataSet, text) => {
+        if (settings.isHapticsOn) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Error);
         setIsModalVisible(!isModalVisible);
         setDataSet(dataSet);
         setText(text);

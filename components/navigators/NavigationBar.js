@@ -36,7 +36,8 @@ export default function NavigationBar() {
         tabBarStyle: {
             backgroundColor: theme.secondary,
             height: 60,
-            elevation: 0
+            elevation: 0,
+            borderTopWidth: 0
         },
         tabBarLabel: ''
     }

@@ -1,9 +1,12 @@
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
 
 import Container from '../../components/Container';
 import Button from '../../components/buttons/Button';
+
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function BMICalculator() {
@@ -11,10 +14,10 @@ export default function BMICalculator() {
     const [weight, setWeight] = useState();
     const [bmiResult, setBMIResult] = useState('Tutaj pojawi się wynik');
 
+    const { settings } = useSettings();
     const { theme, toggleTheme } = useTheme();
 
     const [textColor, setTextColor] = useState(theme.textSecondary);
-
 
     const navigation = useNavigation();
 
@@ -27,6 +30,7 @@ export default function BMICalculator() {
 
     const handleCalculateBMI = () => {
         if (!(height) || !(weight)) {
+            if (settings.isHapticsOn) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Error);
             setTextColor(theme.textSecondary);
             setBMIResult('Najpierw uzupełnij wszystkie pola.');
             return;

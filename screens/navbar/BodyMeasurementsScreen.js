@@ -2,6 +2,7 @@ import { Text, View, Image, TouchableOpacity, FlatList } from 'react-native';
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import * as Haptics from 'expo-haptics';
 
 import AddButton from '../../components/buttons/AddButton';
 import Background from '../../components/Background';
@@ -9,6 +10,8 @@ import Colors from '../../Colors';
 import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
+
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function BodyMeasurementsScreen() {
@@ -18,6 +21,7 @@ export default function BodyMeasurementsScreen() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
 
+    const { settings } = useSettings();
     const { theme, toggleTheme } = useTheme();
 
     const groupedBodyMeasurements = DataController.groupByCategory(bodyMeasurements);
@@ -47,6 +51,7 @@ export default function BodyMeasurementsScreen() {
 
     const handleModal = (id) => {
         setModalData(id);
+        if (settings.isHapticsOn) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Error);
         setIsModalVisible(!isModalVisible);
     }
 
