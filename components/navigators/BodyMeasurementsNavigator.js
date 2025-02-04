@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import AddBodyMeasurement from '../../screens/tools/AddBodyMeasurement';
+import BodyMeasurementsCreator from '../../screens/tools/BodyMeasurementsCreator';
 import BodyMeasurementsScreen from '../../screens/navbar/BodyMeasurementsScreen';
 
 import { useTheme } from '../../providers/ThemeProvider';
@@ -17,8 +17,8 @@ export default function BodyMeasurementsNavigator() {
                 component={BodyMeasurementsScreen}
                 options={{ headerShown: false }} />
             <Stack.Screen
-                name='AddBodyMeasurement'
-                component={AddBodyMeasurement}
+                name='BodyMeasurementsCreator'
+                component={BodyMeasurementsCreator}
                 options={{
                     headerTintColor: theme.textHeader,
                     headerTitle: 'Dodawanie nowego pomiaru',

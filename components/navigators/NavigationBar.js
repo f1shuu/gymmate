@@ -1,6 +1,6 @@
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import FE5Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import ExercisesNavigator from './ExercisesNavigator';
 import BodyMeasurementsNavigator from './BodyMeasurementsNavigator';
@@ -52,7 +52,7 @@ export default function NavigationBar() {
                     options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <FE5Icon name="dumbbell" size={25} color={focused ? theme.primary : theme.tertiary} />
+                            <Icon name="dumbbell" size={25} color={focused ? theme.primary : theme.tertiary} />
                         )
                     })
                     }
@@ -63,7 +63,7 @@ export default function NavigationBar() {
                     options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <FE5Icon name="ruler-horizontal" size={25} color={focused ? theme.primary : theme.tertiary} />
+                            <Icon name="ruler-horizontal" size={25} color={focused ? theme.primary : theme.tertiary} />
                         )
                     })
                     }
@@ -74,7 +74,7 @@ export default function NavigationBar() {
                     options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <FE5Icon name="home" size={35} color={focused ? theme.primary : theme.tertiary} />
+                            <Icon name="home" size={35} color={focused ? theme.primary : theme.tertiary} />
                         )
                     })
                     }
@@ -85,7 +85,7 @@ export default function NavigationBar() {
                     options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <FE5Icon name="calculator" size={25} color={focused ? theme.primary : theme.tertiary} />
+                            <Icon name="calculator" size={25} color={focused ? theme.primary : theme.tertiary} />
                         )
                     })
                     }
@@ -96,7 +96,7 @@ export default function NavigationBar() {
                     options={() => ({
                         ...customOptions,
                         tabBarIcon: ({ focused }) => (
-                            <FE5Icon name="cog" size={25} color={focused ? theme.primary : theme.tertiary} />
+                            <Icon name="cog" size={25} color={focused ? theme.primary : theme.tertiary} />
                         )
                     })
                     }

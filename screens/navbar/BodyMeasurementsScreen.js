@@ -68,8 +68,8 @@ export default function BodyMeasurementsScreen() {
 
                 {expandedCategories[category] && (
                     <View style={styles.itemsContainer}>
-                        {items.map((measurement, index) => (
-                            <View key={measurement.id} style={[styles.measurement, index + 1 === items.length ? { backgroundColor: Colors.green } : '']}>
+                        {items.slice().reverse().map((measurement, index) => (
+                            <View key={measurement.id} style={[styles.measurement, index === 0 ? { backgroundColor: Colors.green } : '']}>
                                 <Text style={styles.text}>
                                     {measurement.date}
                                 </Text>
@@ -134,7 +134,7 @@ export default function BodyMeasurementsScreen() {
             ) : (
                 <Background text={true} content='pomiarów' type='masculine' />
             )}
-            <AddButton onPress='AddBodyMeasurement' />
+            <AddButton onPress='BodyMeasurementsCreator' />
             <Modal
                 isVisible={isModalVisible}
                 text='Czy na pewno chcesz usunąć ten pomiar?'

@@ -8,24 +8,32 @@ import DataController from '../../helpers/dataController';
 import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
 
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 import { categories } from '../../constants/categories';
 
-export default function AddBodyMeasurement() {
+export default function BodyMeasurementsCreator() {
     const [category, setCategory] = useState(null);
     const [value, setValue] = useState(null);
     const [unit, setUnit] = useState('cm');
     const [isFocus, setIsFocus] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
+    const { settings } = useSettings();
     const { theme } = useTheme();
 
     const navigation = useNavigation();
 
     const changeCategory = (item) => {
-        if (item.value === 'Masa ciała') setUnit('kg');
-        else setUnit('cm');
+        if (item.value === 'Masa ciała') {
+            if (settings.units === 'metric') setUnit('kg');
+            else setUnit('lbs')
+        }
+        else {
+            if (settings.units === 'metric') setUnit('cm');
+            else setUnit('in.');
+        }
         setCategory(item.value);
         setIsFocus(false);
     }

@@ -1,8 +1,9 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import SettingsScreen from '../../screens/navbar/SettingsScreen';
 import DataDeletionScreen from '../../screens/settings/DataDeletionScreen';
+import SettingsScreen from '../../screens/navbar/SettingsScreen';
 import ThemeSelectionScreen from '../../screens/settings/ThemeSelectionScreen';
+import UnitsSelectionScreen from '../../screens/settings/UnitsSelectionScreen';
 
 import { useTheme } from '../../providers/ThemeProvider';
 
@@ -42,6 +43,13 @@ export default function SettingsNavigator() {
                 component={ThemeSelectionScreen}
                 options={{
                     headerTitle: 'Wybierz motyw',
+                    ...customOptions
+                }} />
+            <Stack.Screen
+                name='UnitsSelectionScreen'
+                component={UnitsSelectionScreen}
+                options={{
+                    headerTitle: 'Wybierz jednostki',
                     ...customOptions
                 }} />
         </Stack.Navigator>

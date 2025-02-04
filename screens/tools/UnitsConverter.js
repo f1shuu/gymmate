@@ -1,6 +1,6 @@
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import FE5Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import Container from '../../components/Container';
 
@@ -249,7 +249,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.customText}>cm</Text>
                             <TouchableOpacity onPress={swapConverter(setHeightConverter)}>
-                                <FE5Icon name='cog' size={25} color={theme.primary} />
+                                <Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.input}
@@ -281,7 +281,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.customText}>"</Text>
                             <TouchableOpacity onPress={swapConverter(setHeightConverter)}>
-                                <FE5Icon name='cog' size={25} color={theme.primary} />
+                                <Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -305,7 +305,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>kg </Text>
                             <TouchableOpacity onPress={swapConverter(setWeightConverter)}>
-                                <FE5Icon name='cog' size={25} color={theme.primary} />
+                                <Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -325,7 +325,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>lbs</Text>
                             <TouchableOpacity onPress={swapConverter(setWeightConverter)}>
-                                <FE5Icon name='cog' size={25} color={theme.primary} />
+                                <Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -350,7 +350,7 @@ export default function UnitsConverter() {
                             />
                             <Text style={styles.text}>cm </Text>
                             <TouchableOpacity onPress={swapConverter(setCmCalConverter)}>
-                                <FE5Icon name='cog' size={25} color={theme.primary} />
+                                <Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -372,7 +372,7 @@ export default function UnitsConverter() {
                             />
                             <Text style={styles.text}>cal</Text>
                             <TouchableOpacity onPress={swapConverter(setCmCalConverter)}>
-                                <FE5Icon name='cog' size={25} color={theme.primary} />
+                                <Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -396,7 +396,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>m  </Text>
                             <TouchableOpacity onPress={swapConverter(setMFtConverter)}>
-                                <FE5Icon name='cog' size={25} color={theme.primary} />
+                                <Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -416,7 +416,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>ft </Text>
                             <TouchableOpacity onPress={swapConverter(setMFtConverter)}>
-                                <FE5Icon name='cog' size={25} color={theme.primary} />
+                                <Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -439,7 +439,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>g  </Text>
                             <TouchableOpacity onPress={swapConverter(setGOzConverter)}>
-                                <FE5Icon name='cog' size={25} color={theme.primary} />
+                                <Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
@@ -459,7 +459,7 @@ export default function UnitsConverter() {
                                 keyboardType='numeric' />
                             <Text style={styles.text}>oz </Text>
                             <TouchableOpacity onPress={swapConverter(setGOzConverter)}>
-                                <FE5Icon name='cog' size={25} color={theme.primary} />
+                                <Icon name='cog' size={25} color={theme.primary} />
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.wideInput}
