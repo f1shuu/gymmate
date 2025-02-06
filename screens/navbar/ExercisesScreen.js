@@ -14,8 +14,6 @@ import Modal from '../../components/Modal';
 import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
-import { translateToPolish } from '../../helpers/translations/pl';
-
 export default function ExercisesScreen() {
     const [exercises, setExercises] = useState([]);
     const [isExercises, setIsExercises] = useState(false);
@@ -23,7 +21,7 @@ export default function ExercisesScreen() {
     const [modalData, setModalData] = useState({});
     const [activeId, setActiveId] = useState(null);
 
-    const { settings } = useSettings();
+    const { settings, translate } = useSettings();
     const { theme } = useTheme();
 
     const navigation = useNavigation();
@@ -57,14 +55,14 @@ export default function ExercisesScreen() {
                         {Object.entries(item.data).map(([key, value], id) => (
                             value ? (
                                 <View key={id} style={styles.row}>
-                                    <Text style={styles.text}>{translateToPolish(key)}:</Text>
-                                    <Text style={styles.text}>{value}</Text>
+                                    <Text style={styles.text}>{translate(key)}:</Text>
+                                    <Text style={styles.text}>{translate(value)}</Text>
                                 </View>
                             ) : null
                         ))}
                         <TouchableOpacity style={[styles.row, { marginBottom: -10, marginHorizontal: -10 }]}>
                             <Button onPress={async () => await DataController.update('exercises', item.id, navigation, 'ExerciseCreator')} text={'Edytuj'} />
-                            <Button onPress={() => handleModal(item.id)} text={'Usuń'} type='delete' />
+                            <Button onPress={() => handleModal(item.id)} text={translate('delete')} type='delete' />
                         </TouchableOpacity>
                     </View>
                 ) : null}
@@ -113,12 +111,12 @@ export default function ExercisesScreen() {
                     />
                 </>
             ) : (
-                <Background text={true} content='ćwiczeń' type='feminine' />
+                <Background text={true} content={translate('exercises')} type='feminine' />
             )}
             <AddButton onPress='ExerciseCreator' />
             <Modal
                 isVisible={isModalVisible}
-                text='Czy na pewno chcesz usunąć to ćwiczenie?'
+                text={translate('areYouSure') + translate('thisExercise') + '?'}
                 twoButtons={true}
                 buttonOneText='Tak'
                 buttonOneOnPress={async () => await DataController.delete('exercises', setExercises, setIsExercises, modalData, isModalVisible, setIsModalVisible)}

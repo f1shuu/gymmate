@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import Container from '../../components/Container';
 
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function UnitsConverter() {
@@ -24,6 +25,7 @@ export default function UnitsConverter() {
     const [whichMFtConverter, setMFtConverter] = useState(true);
     const [whichGOzConverter, setGOzConverter] = useState(true);
 
+    const { translate } = useSettings();
     const { theme } = useTheme();
 
     const cmToFeetAndInches = (text) => {
@@ -237,7 +239,7 @@ export default function UnitsConverter() {
     return (
         <Container>
             <View style={styles.container}>
-                <Text style={styles.titleText}>Konwerter wzrostu</Text>
+                <Text style={styles.titleText}>{translate('heightConverter')}</Text>
                 <View style={styles.converter}>
                     {whichHeightConverter ? (
                         <>
@@ -293,7 +295,7 @@ export default function UnitsConverter() {
                         </>
                     )}
                 </View>
-                <Text style={styles.titleText}>Konwerter masy ciała</Text>
+                <Text style={styles.titleText}>{translate('bodyMassConverter')}</Text>
                 <View style={styles.converter}>
                     {whichWeightConverter ? (
                         <>
@@ -337,7 +339,7 @@ export default function UnitsConverter() {
                         </>
                     )}
                 </View>
-                <Text style={styles.titleText}>Pozostałe konwertery</Text>
+                <Text style={styles.titleText}>{translate('otherConverters')}</Text>
                 <View style={styles.converter}>
                     {whichCmCalConverter ? (
                         <>

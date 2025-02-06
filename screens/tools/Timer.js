@@ -31,7 +31,7 @@ export default function Timer() {
         { text: '10:00', minutes: 10, seconds: 0, id: 3 }
     ];
 
-    const { settings } = useSettings();
+    const { settings, translate } = useSettings();
     const { theme } = useTheme();
 
     const setTime = (minutes, seconds, id) => {
@@ -164,8 +164,8 @@ export default function Timer() {
                 <>
                     <View style={{ alignItems: 'center' }}>
                         <View style={styles.labels}>
-                            <Text style={styles.label}>Minuty</Text>
-                            <Text style={styles.label}>Sekundy</Text>
+                            <Text style={styles.label}>{translate('minutes')}</Text>
+                            <Text style={styles.label}>{translate('seconds')}</Text>
                         </View>
                         <TimerPicker
                             key={key}
@@ -223,7 +223,7 @@ export default function Timer() {
                 >
                     {({ remainingTime }) => {
                         if (remainingTime === 0) {
-                            return <Text style={styles.timesUpText}>Czas minął</Text>
+                            return <Text style={styles.timesUpText}>{translate('timeIsUp')}</Text>
                         }
                         const mins = Math.floor(remainingTime / 60);
                         const secs = remainingTime % 60;
@@ -239,12 +239,12 @@ export default function Timer() {
                                 <SetTimerButton key={element.id} active={isActive === element.id} time={element.text} onPress={() => setTime(element.minutes, element.seconds, element.id)} />
                             ))}
                     </View>
-                    <Button onPress={() => start(minutes, seconds)} text='Start' />
+                    <Button onPress={() => start(minutes, seconds)} text={translate('start')} />
                 </>
             ) : (
                 <View style={styles.row}>
-                    <Button onPress={() => restart()} text={completed ? 'Odrzuć' : 'Usuń'} />
-                    <Button onPress={completed ? () => start(minutes, seconds) : () => playOrPause()} text={completed ? 'Uruchom ponownie' : (isPlaying ? 'Wstrzymaj' : 'Wznów')} type='delete' />
+                    <Button onPress={() => restart()} text={completed ? translate('reset') : translate('delete')} />
+                    <Button onPress={completed ? () => start(minutes, seconds) : () => playOrPause()} text={completed ? translate('restart') : (isPlaying ? translate('pause') : translate('resume'))} type='delete' />
                 </View>
             )}
         </Container>

@@ -21,7 +21,7 @@ export default function DataDeletionScreen() {
     const [text, setText] = useState(null);
     const [dataSet, setDataSet] = useState(null);
 
-    const { settings } = useSettings();
+    const { settings, translate } = useSettings();
 
     const fetchData = async () => {
         const exercises = await DataController.getCount('exercises');
@@ -50,25 +50,25 @@ export default function DataDeletionScreen() {
     return (
         <Container>
             <View style={styles.container}>
-                <Setting active={exercisesCount > 0} name='Usuń ćwiczenia' icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'exercises', 'ćwiczenia')} />
-                <Setting active={bodyMeasurementsCount > 0} name='Usuń pomiary' icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'bodyMeasurements', 'pomiary')} />
-                <Setting active={trainingsCount > 0} name='Usuń treningi' icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'trainings', 'treningi')} />
-                <Setting active={dataCount > 0} name='Usuń wszystkie dane' icon={'delete-forever'} color={Colors.red} onPress={() => showModal(isModalVisible, 'all', 'dane')} style={styles.allDataButton} />
+                <Setting active={exercisesCount > 0} name={translate('delete') + ' ' + translate('exercisePlural')} icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'exercises', translate('exercisePlural'))} />
+                <Setting active={bodyMeasurementsCount > 0} name={translate('delete') + ' ' + translate('bodyMeasurementPlural')} icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'bodyMeasurements', translate('measurementPlural'))} />
+                <Setting active={trainingsCount > 0} name={translate('delete') + ' ' + translate('trainingPlural')} icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'trainings', translate('trainingPlural'))} />
+                <Setting active={dataCount > 0} name={translate('delete') + ' ' + translate('allData')} icon={'delete-forever'} color={Colors.red} onPress={() => showModal(isModalVisible, 'all', translate('data'))} style={styles.allDataButton} />
             </View>
             <Modal
                 isVisible={isModalVisible}
-                text={`Czy na pewno chcesz usunąć wszystkie ${text} z aplikacji? Tej operacji nie można cofnąć.`}
+                text={translate('areYouSure') + translate('all') + text + '?' + translate('irreversible')}
                 twoButtons={true}
-                buttonOneText='Tak'
+                buttonOneText={translate('yes')}
                 buttonOneOnPress={async () => DataController.clear(dataSet, isModalVisible, setIsModalVisible, fetchData, isConfirmationModalVisible, setIsConfirmationModalVisible)}
-                buttonTwoText='Anuluj'
+                buttonTwoText={translate('cancel')}
                 buttonTwoOnPress={() => setIsModalVisible(() => !isModalVisible)}
             />
             <Modal
                 isVisible={isConfirmationModalVisible}
-                text={`Wszystkie ${text} zostały pomyślnie usunięte.`}
+                text={translate('deletedSuccessfully1') + text + (text === translate('data') ? ' has' : ' have') + translate('deletedSuccessfully2')}
                 twoButtons={false}
-                buttonOneText='OK'
+                buttonOneText={translate('ok')}
                 buttonOneOnPress={() => setIsConfirmationModalVisible(!isConfirmationModalVisible)}
             />
         </Container>

@@ -21,16 +21,16 @@ export default function BodyMeasurementsScreen() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
 
-    const { settings } = useSettings();
+    const { settings, translate } = useSettings();
     const { theme } = useTheme();
 
     const groupedBodyMeasurements = DataController.groupByCategory(bodyMeasurements);
 
     const imageMapping = {
-        'Masa ciała': require('../../assets/images/measures/body-mass.png'),
-        'Obwód talii': require('../../assets/images/measures/waist-circumference.png'),
-        'Obwód klatki piersiowej': require('../../assets/images/measures/chest-circumference.png'),
-        'Obwód bicepsa': require('../../assets/images/measures/biceps-circumference.png')
+        [translate('bodyMass')]: require('../../assets/images/measures/body-mass.png'),
+        [translate('waistCircumference')]: require('../../assets/images/measures/waist-circumference.png'),
+        [translate('chestCircumference')]: require('../../assets/images/measures/chest-circumference.png'),
+        [translate('bicepsCircumference')]: require('../../assets/images/measures/biceps-circumference.png')
     }
 
     useFocusEffect(
@@ -132,16 +132,16 @@ export default function BodyMeasurementsScreen() {
                     />
                 </>
             ) : (
-                <Background text={true} content='pomiarów' type='masculine' />
+                <Background text={true} content={translate('bodyMeasurements')} type='masculine' />
             )}
             <AddButton onPress='BodyMeasurementsCreator' />
             <Modal
                 isVisible={isModalVisible}
-                text='Czy na pewno chcesz usunąć ten pomiar?'
+                text={translate('areYouSure') + translate('thisBodyMeasurement') + '?'}
                 twoButtons={true}
-                buttonOneText='Tak'
+                buttonOneText={translate('yes')}
                 buttonOneOnPress={async () => await DataController.delete('bodyMeasurements', setBodyMeasurements, setIsBodyMeasurements, modalData, isModalVisible, setIsModalVisible)}
-                buttonTwoText='Nie'
+                buttonTwoText={translate('no')}
                 buttonTwoOnPress={() => setIsModalVisible(!isModalVisible)}
             >
             </Modal>

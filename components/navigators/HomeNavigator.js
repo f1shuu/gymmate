@@ -3,16 +3,18 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../../screens/navbar/HomeScreen';
 import Map from '../../screens/tools/Map';
 
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 const Stack = createStackNavigator();
 
 export default function HomeNavigator() {
+    const { translate } = useSettings();
     const { theme } = useTheme();
 
     const customOptions = {
         headerTintColor: theme.textHeader,
-        headerTitle: 'Siłownie w pobliżu',
+        headerTitle: translate('homeNavigatorHeader'),
         headerStyle: {
             backgroundColor: theme.primary,
             elevation: 0

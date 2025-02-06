@@ -3,16 +3,18 @@ import { createStackNavigator } from '@react-navigation/stack';
 import ExercisesScreen from '../../screens/navbar/ExercisesScreen';
 import ExerciseCreator from '../../screens/tools/ExerciseCreator';
 
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 const Stack = createStackNavigator();
 
 export default function ExercisesNavigator() {
+    const { translate } = useSettings();
     const { theme } = useTheme();
 
     const customOptions = {
         headerTintColor: theme.textHeader,
-        headerTitle: 'Dodawanie nowego ćwiczenia',
+        headerTitle: translate('exercisesNavigatorHeader'),
         headerStyle: {
             backgroundColor: theme.primary,
             elevation: 0

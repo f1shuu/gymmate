@@ -9,7 +9,7 @@ import { useTheme } from '../../providers/ThemeProvider';
 const data = Object.keys(themes);
 
 export default function ThemeSelectionScreen() {
-    const { theme, changeTheme } = useTheme();
+    const { changeTheme } = useTheme();
 
     return (
         <Container>

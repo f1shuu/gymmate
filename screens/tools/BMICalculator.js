@@ -14,10 +14,11 @@ export default function BMICalculator() {
     const [feet, setFeet] = useState();
     const [inches, setInches] = useState();
     const [weight, setWeight] = useState();
-    const [bmiResult, setBMIResult] = useState('Tutaj pojawi się wynik');
 
-    const { settings } = useSettings();
+    const { settings, translate } = useSettings();
     const { theme } = useTheme();
+
+    const [bmiResult, setBMIResult] = useState(translate('result'));
 
     const [textColor, setTextColor] = useState(theme.textSecondary);
 
@@ -29,23 +30,23 @@ export default function BMICalculator() {
         setInches();
         setWeight();
         setTextColor(theme.textSecondary);
-        setBMIResult('Tutaj pojawi się wynik');
+        setBMIResult(translate('result'));
     }
 
     const calculateBMIForMetric = () => {
         if (!centimeters || !weight) {
             if (settings.isHapticsOn) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Error);
             setTextColor(theme.textSecondary);
-            setBMIResult('Najpierw uzupełnij wszystkie pola.');
+            setBMIResult(translate('fillAllFields'));
             return;
         } else if (isNaN(centimeters.replace(',', '.')) || isNaN(weight.replace(',', '.')) || centimeters.replace(',', '.') <= 0 || weight.replace(',', '.') <= 0) {
             setTextColor(theme.textSecondary);
-            setBMIResult('Wprowadzono niepoprawne dane.');
+            setBMIResult(translate('incorrectData'));
             return;
         } else {
             const bmi = weight.replace(',', '.') / ((centimeters.replace(',', '.') / 100) ** 2);
             setTextColor(theme.textPrimary);
-            setBMIResult(`Twoje BMI wynosi ${bmi.toFixed(2)} i oznacza ${getBMIResult(bmi)}.`);
+            setBMIResult(translate('bmiResult') + bmi.toFixed(2) + translate('andMeans') + getBMIResult(bmi) + '.');
         }
     }
 
@@ -53,26 +54,26 @@ export default function BMICalculator() {
         if (!feet || !inches || !weight) {
             if (settings.isHapticsOn) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Error);
             setTextColor(theme.textSecondary);
-            setBMIResult('Najpierw uzupełnij wszystkie pola.');
+            setBMIResult(translate('fillAllFields'));
             return;
         } else if (isNaN(feet) || isNaN(inches) || isNaN(weight.replace(',', '.')) || feet <= 0 || inches < 0 || weight.replace(',', '.') <= 0) {
             setTextColor(theme.textSecondary);
-            setBMIResult('Wprowadzono niepoprawne dane.');
+            setBMIResult(translate('incorrectData'));
             return;
         } else {
             const bmi = (weight * 0.45359237).toFixed(2) / (((feet * 30.48 + inches * 2.54).toFixed(2) / 100) ** 2);
             setTextColor(theme.textPrimary);
-            setBMIResult(`Twoje BMI wynosi ${bmi.toFixed(2)} i oznacza ${getBMIResult(bmi)}.`);
+            setBMIResult(translate('bmiResult') + bmi.toFixed(2) + translate('andMeans') + getBMIResult(bmi) + '.');
         }
     }
 
     const getBMIResult = (bmi) => {
         let result;
-        if (bmi < 18.5) result = 'niedowagę';
-        else if (bmi >= 18.5 && bmi <= 25) result = 'prawidłową masę ciała';
-        else if (bmi > 25 && bmi <= 30) result = 'nadwagę';
-        else if (bmi > 30 && bmi <= 35) result = 'otyłość';
-        else result = 'otyłość kliniczną';
+        if (bmi < 18.5) result = translate('underweight');
+        else if (bmi >= 18.5 && bmi <= 25) result = translate('normalWeight');
+        else if (bmi > 25 && bmi <= 30) result = translate('overweight');
+        else if (bmi > 30 && bmi <= 35) result = translate('obesity');
+        else result = translate('clinicalObesity');
         return result;
     }
 
@@ -126,7 +127,7 @@ export default function BMICalculator() {
                 <TextInput
                     style={[styles.input, { width: '100%' }]}
                     keyboardType='numeric'
-                    placeholder='Wzrost [cm]'
+                    placeholder={translate('height') + ' [cm]'}
                     placeholderTextColor={theme.textSecondary}
                     maxLength={6}
                     fontSize={16}
@@ -139,7 +140,7 @@ export default function BMICalculator() {
                     <TextInput
                         style={[styles.input, { flex: 1 }]}
                         keyboardType='numeric'
-                        placeholder='Wzrost [ft]'
+                        placeholder={translate('height') + ' [ft]'}
                         placeholderTextColor={theme.textSecondary}
                         maxLength={1}
                         fontSize={16}
@@ -150,7 +151,7 @@ export default function BMICalculator() {
                     <TextInput
                         style={[styles.input, { flex: 1 }]}
                         keyboardType='numeric'
-                        placeholder='Wzrost [in]'
+                        placeholder={translate('height') + ' [in]'}
                         placeholderTextColor={theme.textSecondary}
                         maxLength={2}
                         fontSize={16}
@@ -162,7 +163,7 @@ export default function BMICalculator() {
             <TextInput
                 style={styles.input}
                 keyboardType='numeric'
-                placeholder={`Masa ciała [${settings.units === 'metric' ? 'kg' : 'lbs'}]`}
+                placeholder={translate('bodyMass') + ` [${settings.units === 'metric' ? 'kg' : 'lbs'}]`}
                 placeholderTextColor={theme.textSecondary}
                 maxLength={6}
                 fontSize={16}
@@ -171,11 +172,11 @@ export default function BMICalculator() {
                 value={weight} >
             </TextInput>
             <TouchableOpacity onPress={() => navigation.navigate('BMIHelp')}>
-                <Text style={styles.help}>Czym jest wskaźnik BMI?</Text>
+                <Text style={styles.help}>{translate('bmiHelp')}</Text>
             </TouchableOpacity>
             <View style={styles.buttonRow}>
-                <Button onPress={settings.units === 'metric' ? () => calculateBMIForMetric() : () => calculateBMIForImperial()} text='Oblicz' />
-                <Button onPress={() => handleClear()} text='Wyczyść' type='delete' />
+                <Button onPress={settings.units === 'metric' ? () => calculateBMIForMetric() : () => calculateBMIForImperial()} text={translate('calculate')} />
+                <Button onPress={() => handleClear()} text={translate('clear')} type={translate('delete')} />
             </View>
         </Container>
     )

@@ -1,8 +1,10 @@
 import { Text, View } from 'react-native';
 
+import { useSettings } from '../providers/SettingsProvider';
 import { useTheme } from '../providers/ThemeProvider';
 
 export default function Background({ text, content, type }) {
+    const { settings, translate } = useSettings();
     const { theme } = useTheme();
 
     const styles = {
@@ -23,7 +25,7 @@ export default function Background({ text, content, type }) {
 
     return (
         <View style={styles.container}>
-            {text ? (<Text style={styles.text}>Nie masz jeszcze żadnych {content}. Użyj przycisku w prawym dolnym rogu ekranu, aby dodać {type === 'masculine' ? 'swój pierwszy' : 'swoje pierwsze'}.</Text>) : null}
+            {text ? (<Text style={styles.text}>{translate('background1')}{content}{translate('background2')}{settings.language === 'pl' ? (type === 'masculine' ? 'swój pierwszy.' : 'swoje pierwsze.') : ''}</Text>) : null}
         </View>
     )
 }

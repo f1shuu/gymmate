@@ -3,9 +3,11 @@ import { useNavigation } from '@react-navigation/native';
 
 import Container from '../../components/Container';
 
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function HomeScreen() {
+    const { translate } = useSettings();
     const { theme } = useTheme();
 
     const navigation = useNavigation();
@@ -47,7 +49,7 @@ export default function HomeScreen() {
                 <Image source={require('../../assets/images/map.png')} style={styles.map} resizeMode='cover' />
                 <Image source={require('../../assets/images/gymMarker.png')} style={styles.marker} />
                 <View style={styles.textbox}>
-                    <Text style={styles.text}>Znajdź siłownie w pobliżu</Text>
+                    <Text style={styles.text}>{translate('findGymsNearby')}</Text>
                 </View>
             </TouchableOpacity>
         </Container>

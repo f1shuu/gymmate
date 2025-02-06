@@ -7,11 +7,13 @@ import Timer from '../../screens/tools/Timer';
 import ToolsScreen from '../../screens/navbar/ToolsScreen';
 import UnitsConverter from '../../screens/tools/UnitsConverter';
 
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 const Stack = createStackNavigator();
 
 export default function ToolsNavigator() {
+    const { translate } = useSettings();
     const { theme } = useTheme();
 
     const customOptions = {
@@ -37,35 +39,35 @@ export default function ToolsNavigator() {
                 name='Timer'
                 component={Timer}
                 options={{
-                    headerTitle: 'Minutnik',
+                    headerTitle: translate('timerHeader'),
                     ...customOptions
                 }} />
             <Stack.Screen
                 name='BMICalculator'
                 component={BMICalculator}
                 options={{
-                    headerTitle: 'Kalkulator BMI',
+                    headerTitle: translate('bmiCalculatorHeader'),
                     ...customOptions
                 }} />
             <Stack.Screen
                 name='Calculator'
                 component={Calculator}
                 options={{
-                    headerTitle: 'Kalkulator',
+                    headerTitle: translate('calculatorHeader'),
                     ...customOptions
                 }} />
             <Stack.Screen
                 name='UnitsConverter'
                 component={UnitsConverter}
                 options={{
-                    headerTitle: 'Konwerter jednostek',
+                    headerTitle: translate('unitsConverterHeader'),
                     ...customOptions
                 }} />
             <Stack.Screen
                 name='BMIHelp'
                 component={BMIHelp}
                 options={{
-                    headerTitle: 'Czym jest wskaźnik BMI?',
+                    headerTitle: translate('bmiHelpHeader'),
                     ...customOptions
                 }} />
         </Stack.Navigator>

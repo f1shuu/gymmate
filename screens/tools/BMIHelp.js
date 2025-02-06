@@ -2,11 +2,13 @@ import { Text, Image, Dimensions } from 'react-native';
 
 import Container from '../../components/Container';
 
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 const { width } = Dimensions.get('window');
 
 export default function Calculator() {
+    const { translate } = useSettings();
     const { theme } = useTheme();
 
     const styles = {
@@ -37,16 +39,12 @@ export default function Calculator() {
 
     return (
         <Container>
-            <Text style={styles.mainText}>BMI (Body Mass Index - indeks masy ciała) to miara używana do oceny stosunku masy ciała (w kg) do wzrostu (w m).
-                Pozwala na przybliżoną ocenę zdrowia, lecz nie należy jej traktować jako precyzyjnej danej, a jedynie jako przybliżenie -
-                nie uwzględnia ona bowiem rozkładu tkanki tłuszczowej i mięśniowej oraz kilku innych kluczowych czynników.
-            </Text>
+            <Text style={styles.mainText}>{translate('bmiInfo')}</Text>
             <Image
                 source={require('../../assets/images/tools/bmi/graph.png')}
                 style={styles.image}
             />
-            <Text style={styles.text}>Wykres BMI dla zakresu masy ciała od 45 do 135&nbsp;kg oraz zakresu wzrostu od 1,4 m do 2 m
-            </Text>
+            <Text style={styles.text}>{translate('bmiChart')}</Text>
         </Container>
     )
 }

@@ -20,13 +20,13 @@ export default function BodyMeasurementsCreator() {
     const [isFocus, setIsFocus] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const { settings } = useSettings();
+    const { settings, translate } = useSettings();
     const { theme } = useTheme();
 
     const navigation = useNavigation();
 
     const changeCategory = (item) => {
-        if (item.value === 'Masa ciała') {
+        if (item.value === translate('bodyMass')) {
             if (settings.units === 'metric') setUnit('kg');
             else setUnit('lbs')
         }
@@ -68,32 +68,32 @@ export default function BodyMeasurementsCreator() {
 
     return (
         <Container>
-            <Text style={styles.text}>Kategoria pomiaru</Text>
+            <Text style={styles.text}>{translate('bodyMeasurementCategory')}</Text>
             <Dropdown
                 passedStyle={{ borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
-                data={categories}
-                placeholder={isFocus ? '...' : 'Wybierz kategorię...'}
+                data={categories[settings.language]}
+                placeholder={isFocus ? '...' : translate('chooseCategory')}
                 value={category}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={(item) => changeCategory(item)}
             />
-            <Text style={styles.text}>Wartość pomiaru</Text>
+            <Text style={styles.text}>{translate('bodyMeasurementValue')}</Text>
             <TextInput
                 style={styles.input}
                 placeholderTextColor={theme.textSecondary}
                 maxLength={6}
-                placeholder='Wpisz wartość...'
+                placeholder={translate('enterValue')}
                 keyboardType='numeric'
                 onChangeText={(text) => setValue(text)}
             />
-            <Text style={styles.reminder}>Jednostka wartości pomiaru oraz data jego utworzenia zostaną dodane automatycznie.</Text>
-            <Button onPress={category && value ? async () => await DataController.store('bodyMeasurements', null, null, category, navigation, 'BodyMeasurementsScreen', { value, unit }) : () => setIsModalVisible(() => !isModalVisible)} text='Zapisz' />
+            <Text style={styles.reminder}>{translate('unitsReminder')}</Text>
+            <Button onPress={category && value ? async () => await DataController.store('bodyMeasurements', null, null, category, navigation, 'BodyMeasurementsScreen', { value, unit }) : () => setIsModalVisible(() => !isModalVisible)} text={translate('save')} />
             <Modal
                 isVisible={isModalVisible}
-                text='Najpierw uzupełnij wszystkie pola.'
+                text={translate('fillAllFields')}
                 twoButtons={false}
-                buttonOneText='OK'
+                buttonOneText={translate('ok')}
                 buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)}
             />
         </Container>

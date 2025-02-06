@@ -3,6 +3,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
 
 import Colors from '../../Colors';
+
 import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
@@ -34,7 +35,7 @@ export default function Setting({ active, name, icon, color, onPress, type, para
     }
 
     return (
-        <TouchableOpacity onPress={active ? onPress : () => { }} style={[styles.widget, style]} activeOpacity={0.8}>
+        <TouchableOpacity onPress={type === 'toggle' ? () => toggleSetting(!settings[parameter]) : (active ? onPress : () => { })} style={[styles.widget, style]} activeOpacity={0.8} >
             <View style={{ flexDirection: 'row' }}>
                 <Icon name={icon} size={30} color={active ? color : theme.tertiary} />
                 <Text style={[styles.text, { color: active ? color : theme.tertiary }]}>{name}</Text>

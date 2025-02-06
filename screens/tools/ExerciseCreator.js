@@ -10,18 +10,23 @@ import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
 import SegmentedButton from '../../components/buttons/SegmentedButton';
 
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 import { muscleGroups } from '../../constants/muscleGroups';
 import { repsAmounts } from '../../constants/repsAmounts';
 import { setsAmounts } from '../../constants/setsAmounts';
 import { times } from '../../constants/times';
-import { weights } from '../../constants/weights';
+import { kgWeights } from '../../constants/kgWeights';
+import { lbsWeights } from '../../constants/lbsWeights';
 
 export default function ExerciseCreator({ route }) {
     const [id, setId] = useState(route.params?.id || null);
     const [muscleGroup, setMuscleGroup] = useState(route.params?.data.muscleGroup || null);
-    const [type, setType] = useState(route.params?.data.type || 'Powtórzeniowe');
+
+    const { settings, translate } = useSettings();
+
+    const [type, setType] = useState(route.params?.data.type || translate('repsBased'));
     const [setsAmount, setSetsAmount] = useState(route.params?.data.setsAmount || null);
     const [repsAmount, setRepsAmount] = useState(route.params?.data.repsAmount || null);
     const [time, setTime] = useState(route.params?.data.time || null);
@@ -51,7 +56,7 @@ export default function ExerciseCreator({ route }) {
             setIsModalVisible(() => !isModalVisible);
             setErrors(true);
         } else {
-            if (type === 'Powtórzeniowe') setTime(null);
+            if (type === translate('repsBased')) setTime(null);
             else {
                 setSetsAmount(null);
                 setRepsAmount(null);
@@ -112,51 +117,51 @@ export default function ExerciseCreator({ route }) {
                 disabledStepNumColor={theme.background}
             >
                 <ProgressStep
-                    label='Typ'
-                    nextBtnText='Dalej'
+                    label={translate('type')}
+                    nextBtnText={translate('next')}
                     nextBtnStyle={styles.button}
                     nextBtnTextStyle={styles.text}
                     onNext={() => validate(false, muscleGroup)}
                     errors={errors}
                 >
                     <>
-                        <Text style={[styles.text, { color: theme.textPrimary }]}>Wybierz grupę mięśniową</Text>
+                        <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('chooseMuscleGroup')}</Text>
                         <Dropdown
                             passedStyle={{ borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
-                            data={muscleGroups}
-                            placeholder={isFocus ? '...' : 'Wybierz grupę mięśni...'}
+                            data={muscleGroups[settings.language]}
+                            placeholder={isFocus ? '...' : translate('chooseMuscleGroup') + '...'}
                             value={muscleGroup}
                             onFocus={() => setIsFocus(true)}
                             onBlur={() => setIsFocus(false)}
                             onChange={(item) => onDropdownChange(setMuscleGroup, item.value)}
                         />
-                        <Text style={[styles.text, { color: theme.textPrimary }]}>Wybierz typ ćwiczenia</Text>
-                        <SegmentedButton option1='Powtórzeniowe' option2='Czasowe' selectedOption={type} onOptionChange={(selectedOption) => setType(selectedOption)} />
+                        <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('chooseExerciseType')}</Text>
+                        <SegmentedButton option1={translate('repsBased')} option2={translate('timeBased')} selectedOption={type} onOptionChange={(selectedOption) => setType(selectedOption)} />
                         <Modal
                             isVisible={isModalVisible}
-                            text='Najpierw wybierz grupę mięśniową.'
+                            text={translate('fillAllFields')}
                             twoButtons={false}
-                            buttonOneText='Ok'
+                            buttonOneText={translate('ok')}
                             buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)}
                         />
                     </>
                 </ProgressStep>
                 <ProgressStep
-                    label='Szczegóły'
-                    nextBtnText='Dalej'
-                    previousBtnText='Wstecz'
+                    label={translate('details')}
+                    nextBtnText={translate('next')}
+                    previousBtnText={translate('back')}
                     nextBtnStyle={styles.button}
                     nextBtnTextStyle={styles.text}
                     previousBtnStyle={styles.button}
                     previousBtnTextStyle={styles.text}
-                    onNext={() => validate(false, type === 'Powtórzeniowe' ? (setsAmount, repsAmount) : time)}
+                    onNext={() => validate(false, type === translate('repsBased') ? (setsAmount, repsAmount) : time)}
                     errors={errors}
                 >
                     <>
-                        {type === 'Powtórzeniowe' ? (
+                        {type === translate('repsBased') ? (
                             <>
                                 <View style={styles.row}>
-                                    <Text style={[styles.text, { color: theme.textPrimary }]}>Ilość serii</Text>
+                                    <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('setsAmount')}</Text>
                                     <Dropdown
                                         passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                         data={setsAmounts}
@@ -168,7 +173,7 @@ export default function ExerciseCreator({ route }) {
                                     />
                                 </View>
                                 <View style={styles.row}>
-                                    <Text style={[styles.text, { color: theme.textPrimary }]}>Ilość powtórzeń</Text>
+                                    <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('repsAmount')}</Text>
                                     <Dropdown
                                         passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                         data={repsAmounts}
@@ -181,15 +186,15 @@ export default function ExerciseCreator({ route }) {
                                 </View>
                                 <Modal
                                     isVisible={isModalVisible}
-                                    text='Najpierw wybierz ilość serii i powtórzeń.'
+                                    text={translate('fillAllFields')}
                                     twoButtons={false}
-                                    buttonOneText='Ok'
+                                    buttonOneText={translate('ok')}
                                     buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)}
                                 />
                             </>) : (
                             <>
                                 <View style={styles.row}>
-                                    <Text style={[styles.text, { color: theme.textPrimary }]}>Czas</Text>
+                                    <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('time')}</Text>
                                     <Dropdown
                                         passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                         data={times}
@@ -202,17 +207,17 @@ export default function ExerciseCreator({ route }) {
                                 </View>
                                 <Modal
                                     isVisible={isModalVisible}
-                                    text='Najpierw wybierz czas trwania ćwiczenia.'
+                                    text={translate('fillAllFields')}
                                     twoButtons={false}
-                                    buttonOneText='Ok'
+                                    buttonOneText={translate('ok')}
                                     buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)}
                                 />
                             </>)}
                         <View style={styles.row}>
-                            <Text style={[styles.text, { color: theme.textPrimary }]}>Obciążenie (opc.)</Text>
+                            <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('weightOptional')}</Text>
                             <Dropdown
                                 passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
-                                data={weights}
+                                data={settings.units = 'metric' ? kgWeights : lbsWeights}
                                 placeholder={'...'}
                                 value={weight}
                                 onFocus={() => setIsFocus(true)}
@@ -223,9 +228,9 @@ export default function ExerciseCreator({ route }) {
                     </>
                 </ProgressStep>
                 <ProgressStep
-                    label='Nazwa'
-                    previousBtnText='Wstecz'
-                    finishBtnText='Zapisz'
+                    label={translate('name')}
+                    previousBtnText={translate('back')}
+                    finishBtnText={translate('save')}
                     nextBtnStyle={styles.button}
                     nextBtnTextStyle={styles.text}
                     previousBtnStyle={styles.button}
@@ -234,10 +239,10 @@ export default function ExerciseCreator({ route }) {
                     errors={errors}
                 >
                     <>
-                        <Text style={[styles.text, { color: theme.textPrimary }]}>Nadaj swojemu ćwiczeniu nazwę</Text>
+                        <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('nameYourExercise')}</Text>
                         <TextInput
                             style={styles.input}
-                            placeholder='np. Wyciskanie sztangi na ławce'
+                            placeholder={translate('exerciseNameExample')}
                             placeholderTextColor={theme.textSecondary}
                             maxLength={50}
                             fontSize={16}
@@ -247,9 +252,9 @@ export default function ExerciseCreator({ route }) {
                         </TextInput>
                         <Modal
                             isVisible={isModalVisible}
-                            text='Najpierw nazwij swoje ćwiczenie.'
+                            text={translate('fillAllFields')}
                             twoButtons={false}
-                            buttonOneText='Ok'
+                            buttonOneText={translate('ok')}
                             buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)}
                         />
                     </>

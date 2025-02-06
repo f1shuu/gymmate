@@ -8,11 +8,13 @@ import HomeNavigator from './HomeNavigator';
 import SettingsNavigator from './SettingsNavigator';
 import ToolsNavigator from './ToolsNavigator';
 
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 const Tab = createBottomTabNavigator();
 
 export default function NavigationBar() {
+    const { translate } = useSettings();
     const { theme } = useTheme();
 
     const MyDarkTheme = {
@@ -31,7 +33,7 @@ export default function NavigationBar() {
         },
         headerStyle: {
             backgroundColor: theme.primary,
-            height: 80,
+            height: 70,
             elevation: 0
         },
         tabBarStyle: {
@@ -45,9 +47,9 @@ export default function NavigationBar() {
 
     return (
         <NavigationContainer theme={MyDarkTheme}>
-            <Tab.Navigator initialRouteName='Rozpocznij trening' screenOptions={{ animationEnabled: false }}>
+            <Tab.Navigator initialRouteName={translate('homeScreenHeader')} screenOptions={{ animationEnabled: false }}>
                 <Tab.Screen
-                    name='Ćwiczenia'
+                    name={translate('exercisesScreenHeader')}
                     component={ExercisesNavigator}
                     options={() => ({
                         ...customOptions,
@@ -58,7 +60,7 @@ export default function NavigationBar() {
                     }
                 />
                 <Tab.Screen
-                    name='Metryczka'
+                    name={translate('bodyMeasurementsScreenHeader')}
                     component={BodyMeasurementsNavigator}
                     options={() => ({
                         ...customOptions,
@@ -69,7 +71,7 @@ export default function NavigationBar() {
                     }
                 />
                 <Tab.Screen
-                    name='Rozpocznij trening'
+                    name={translate('homeScreenHeader')}
                     component={HomeNavigator}
                     options={() => ({
                         ...customOptions,
@@ -80,7 +82,7 @@ export default function NavigationBar() {
                     }
                 />
                 <Tab.Screen
-                    name='Narzędzia'
+                    name={translate('toolsScreenHeader')}
                     component={ToolsNavigator}
                     options={() => ({
                         ...customOptions,
@@ -91,7 +93,7 @@ export default function NavigationBar() {
                     }
                 />
                 <Tab.Screen
-                    name='Ustawienia'
+                    name={translate('settings')}
                     component={SettingsNavigator}
                     options={() => ({
                         ...customOptions,

@@ -8,6 +8,7 @@ import Colors from '../../Colors';
 import Container from '../../components/Container';
 import Modal from '../../components/Modal';
 
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 const CustomMarker = ({ type, coordinate, title, description }) => {
@@ -49,13 +50,15 @@ const CustomMarker = ({ type, coordinate, title, description }) => {
 }
 
 export default function Map() {
-  const [message, setMessage] = useState('Ładowanie mapy...');
   const [locationAccessGranted, setLocationAccessGranted] = useState(false);
   const [location, setLocation] = useState(null);
   const [gyms, setGyms] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const { translate } = useSettings();
   const { theme } = useTheme();
+
+  const [message, setMessage] = useState(translate('loading'));
 
   const checkForLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -69,10 +72,10 @@ export default function Map() {
 
         let gymsNearby = await fetchNearbyGyms(userLocation.coords.latitude, userLocation.coords.longitude);
         setGyms(gymsNearby);
-      } else setMessage('Usługa lokalizacji urządzenia jest wyłączona');
+      } else setMessage(translate('locationIsOff'));
     } else {
       setLocationAccessGranted(false);
-      setMessage('Aby korzystać z tej funkcji, musisz zezwolić na dostęp do lokalizacji urządzenia.');
+      setMessage(translate('locationPermission'));
     }
   }
 
@@ -134,22 +137,22 @@ export default function Map() {
     return (
       <Container gradient={0.4}>
         <View style={styles.textArea}>
-          <Text style={[styles.text, { color: message === 'Ładowanie mapy...' ? theme.textPrimary : Colors.red }]}>{message}</Text>
+          <Text style={[styles.text, { color: message === translate('loading') ? theme.textPrimary : Colors.red }]}>{message}</Text>
           {!locationAccessGranted ?
             <>
               <TouchableOpacity onPress={() => setIsModalVisible(() => !isModalVisible)}>
-                <Text style={styles.help}>Gdzie mogę to zrobić?</Text>
+                <Text style={styles.help}>{translate('whereCanIDoThat')}</Text>
               </TouchableOpacity>
-              <Button onPress={() => goToSettings()} text='Ustawienia' />
+              <Button onPress={() => goToSettings()} text={translate('settings')} />
               <Modal
                 isVisible={isModalVisible}
-                text='Uprawnienia > Lokalizacja > "Zawsze zezwalaj"'
+                text={translate('permissionInstruction')}
                 twoButtons={false}
-                buttonOneText='OK'
+                buttonOneText={translate('ok')}
                 buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)}
               />
             </> :
-            <Button onPress={() => checkForLocation()} text='Odśwież' />}
+            <Button onPress={() => checkForLocation()} text={translate('refresh')} />}
         </View>
       </Container>
     )
@@ -171,7 +174,7 @@ export default function Map() {
           latitude: location.latitude,
           longitude: location.longitude
         }}
-        title='Twoja lokalizacja'
+        title={translate('yourLocation')}
       >
         <View style={styles.markerContainer}>
           <Image source={require('../../assets/images/userMarker.png')} style={styles.marker} />

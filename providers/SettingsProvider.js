@@ -1,13 +1,16 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { translations } from '../constants/translations';
+
 const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
     const [settings, setSettings] = useState({
         isHapticsOn: true,
         isSoundOn: true,
-        units: 'metric'
+        units: 'metric',
+        language: 'pl'
     })
 
     useEffect(() => {
@@ -32,8 +35,10 @@ export const SettingsProvider = ({ children }) => {
         }
     }
 
+    const translate = (key) => translations[settings.language][key] || key;
+
     return (
-        <SettingsContext.Provider value={{ settings, updateSettings }}>
+        <SettingsContext.Provider value={{ settings, updateSettings, translate }}>
             {children}
         </SettingsContext.Provider>
     )

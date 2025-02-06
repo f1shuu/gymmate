@@ -4,12 +4,14 @@ import { useState } from 'react';
 import Container from '../../components/Container';
 import CalculatorButton from '../../components/buttons/CalculatorButton';
 
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function Calculator() {
     const [input, setInput] = useState('');
     const [output, setOutput] = useState('');
 
+    const { translate } = useSettings();
     const { theme } = useTheme();
 
     const calculate = (value) => {
@@ -18,7 +20,7 @@ export default function Calculator() {
             try {
                 if (input) setOutput(parseFloat(eval(replaceSymbols(input)).toPrecision(8)));
             } catch (error) {
-                setOutput('Błąd');
+                setOutput(translate('error'));
             }
         } else if (value === 'C') {
             setInput('');
@@ -27,7 +29,7 @@ export default function Calculator() {
             try {
                 setOutput(parseFloat(Math.sqrt(eval(replaceSymbols(input))).toPrecision(8)));
             } catch (error) {
-                setOutput('Błąd');
+                setOutput(translate('error'));
             }
         } else if (value === 'backspace') {
             setInput((prevInput) => prevInput.slice(0, -1));

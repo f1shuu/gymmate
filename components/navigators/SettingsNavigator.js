@@ -1,15 +1,18 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
 import DataDeletionScreen from '../../screens/settings/DataDeletionScreen';
+import LanguageSelectionScreen from '../../screens/settings/LanguageSelectionScreen';
 import SettingsScreen from '../../screens/navbar/SettingsScreen';
 import ThemeSelectionScreen from '../../screens/settings/ThemeSelectionScreen';
 import UnitsSelectionScreen from '../../screens/settings/UnitsSelectionScreen';
 
+import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 const Stack = createStackNavigator();
 
 export default function SettingsNavigator() {
+    const { translate } = useSettings();
     const { theme } = useTheme();
 
     const customOptions = {
@@ -35,21 +38,28 @@ export default function SettingsNavigator() {
                 name='DataDeletionScreen'
                 component={DataDeletionScreen}
                 options={{
-                    headerTitle: 'Usuń dane',
+                    headerTitle: translate('dataDeletionScreenHeader'),
                     ...customOptions
                 }} />
             <Stack.Screen
                 name='ThemeSelectionScreen'
                 component={ThemeSelectionScreen}
                 options={{
-                    headerTitle: 'Wybierz motyw',
+                    headerTitle: translate('themeSelectionScreenHeader'),
                     ...customOptions
                 }} />
             <Stack.Screen
                 name='UnitsSelectionScreen'
                 component={UnitsSelectionScreen}
                 options={{
-                    headerTitle: 'Wybierz jednostki',
+                    headerTitle: translate('unitsSelectionScreenHeader'),
+                    ...customOptions
+                }} />
+            <Stack.Screen
+                name='LanguageSelectionScreen'
+                component={LanguageSelectionScreen}
+                options={{
+                    headerTitle: translate('languageSelectionScreenHeader'),
                     ...customOptions
                 }} />
         </Stack.Navigator>
