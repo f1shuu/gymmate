@@ -13,7 +13,7 @@
 // IMPORTANT: no red or green themes are allowed, since they would collide with already declared colors for add and remove buttons/icons (see: Colors.js).
 
 export const Dark = {
-    primary: '#0D3B69',
+    primary: '#3533CD',
     secondary: '#000000',
     tertiary: '#696969',
     background: '#121212',

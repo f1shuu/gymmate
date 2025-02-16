@@ -38,21 +38,22 @@ export default function NavigationBar() {
         },
         tabBarStyle: {
             backgroundColor: theme.secondary,
-            height: 60,
             elevation: 0,
-            borderTopWidth: 0
+            borderTopWidth: 0,
+            marginTop: -15
         },
         tabBarLabel: ''
     }
 
     return (
         <NavigationContainer theme={MyDarkTheme}>
-            <Tab.Navigator initialRouteName={translate('homeScreenHeader')} screenOptions={{ animationEnabled: false }}>
+            <Tab.Navigator initialRouteName='HomeNavigator' screenOptions={{ animationEnabled: false }}>
                 <Tab.Screen
-                    name={translate('exercisesScreenHeader')}
+                    name='ExercisesNavigator'
                     component={ExercisesNavigator}
                     options={() => ({
                         ...customOptions,
+                        title: translate('exercisesScreenHeader'),
                         tabBarIcon: ({ focused }) => (
                             <Icon name="dumbbell" size={25} color={focused ? theme.primary : theme.tertiary} />
                         )
@@ -60,10 +61,11 @@ export default function NavigationBar() {
                     }
                 />
                 <Tab.Screen
-                    name={translate('bodyMeasurementsScreenHeader')}
+                    name='BodyMeasurementsNavigator'
                     component={BodyMeasurementsNavigator}
                     options={() => ({
                         ...customOptions,
+                        title: translate('bodyMeasurementsScreenHeader'),
                         tabBarIcon: ({ focused }) => (
                             <Icon name="ruler-horizontal" size={25} color={focused ? theme.primary : theme.tertiary} />
                         )
@@ -71,10 +73,11 @@ export default function NavigationBar() {
                     }
                 />
                 <Tab.Screen
-                    name={translate('homeScreenHeader')}
+                    name='HomeNavigator'
                     component={HomeNavigator}
                     options={() => ({
                         ...customOptions,
+                        title: translate('homeScreenHeader'),
                         tabBarIcon: ({ focused }) => (
                             <Icon name="home" size={35} color={focused ? theme.primary : theme.tertiary} />
                         )
@@ -82,10 +85,11 @@ export default function NavigationBar() {
                     }
                 />
                 <Tab.Screen
-                    name={translate('toolsScreenHeader')}
+                    name='ToolsNavigator'
                     component={ToolsNavigator}
                     options={() => ({
                         ...customOptions,
+                        title: translate('toolsScreenHeader'),
                         tabBarIcon: ({ focused }) => (
                             <Icon name="calculator" size={25} color={focused ? theme.primary : theme.tertiary} />
                         )
@@ -93,10 +97,11 @@ export default function NavigationBar() {
                     }
                 />
                 <Tab.Screen
-                    name={translate('settings')}
+                    name='SettingsNavigator'
                     component={SettingsNavigator}
                     options={() => ({
                         ...customOptions,
+                        title: translate('settings'),
                         tabBarIcon: ({ focused }) => (
                             <Icon name="cog" size={25} color={focused ? theme.primary : theme.tertiary} />
                         )

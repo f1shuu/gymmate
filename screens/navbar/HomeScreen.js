@@ -45,7 +45,7 @@ export default function HomeScreen() {
 
     return (
         <Container gradient={0.75}>
-            <TouchableOpacity onPress={() => { navigation.navigate('Map') }} style={styles.widget} activeOpacity={0.8}>
+            <TouchableOpacity onPress={() => { navigation.navigate('MapScreen') }} style={styles.widget} activeOpacity={0.8}>
                 <Image source={require('../../assets/images/map.png')} style={styles.map} resizeMode='cover' />
                 <Image source={require('../../assets/images/gymMarker.png')} style={styles.marker} />
                 <View style={styles.textbox}>

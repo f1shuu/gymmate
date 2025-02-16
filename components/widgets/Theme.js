@@ -33,7 +33,7 @@ export default function Theme({ name, primaryColor, secondaryColor, textColor, o
     }
 
     return (
-        <TouchableOpacity style={styles.tile} onPress={onPress}>
+        <TouchableOpacity onPress={onPress} style={styles.tile} activeOpacity={0.8}>
             <LinearGradient
                 colors={[primaryColor, secondaryColor]}
                 start={{ x: 0.5, y: 0 }}

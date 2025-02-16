@@ -37,7 +37,7 @@ export default function CalculatorButton({ type, value, onPress }) {
     }
 
     return (
-        <TouchableOpacity style={styles.button} onPress={onPress}>
+        <TouchableOpacity onPress={onPress} style={styles.button} activeOpacity={0.8}>
             {type === 'backspace' ? (
                 <Icon name='backspace' size={40} color={theme.primary} />
             ) : (

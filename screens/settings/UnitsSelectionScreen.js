@@ -22,8 +22,8 @@ export default function UnitsSelectionScreen() {
     return (
         <Container>
             <View style={{ gap: 5 }}>
-                <Setting active={true} name='kg, cm' color={theme.textPrimary} onPress={() => changeUnits('metric')} type={settings.units === 'metric' ? 'check' : ''} style={{ paddingLeft: -10 }} />
-                <Setting active={true} name='lbs, ft' color={theme.textPrimary} onPress={() => changeUnits('imperial')} type={settings.units === 'imperial' ? 'check' : ''} style={{ paddingLeft: -10 }} />
+                <Setting active={true} name='kg, cm' color={theme.textPrimary} onPress={() => changeUnits('metric')} type={settings.units === 'metric' ? 'check' : null} style={{ paddingLeft: -10 }} />
+                <Setting active={true} name='lbs, ft' color={theme.textPrimary} onPress={() => changeUnits('imperial')} type={settings.units === 'imperial' ? 'check' : null} style={{ paddingLeft: -10 }} />
             </View>
         </Container>
     )

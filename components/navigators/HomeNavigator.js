@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from '../../screens/navbar/HomeScreen';
-import Map from '../../screens/tools/Map';
+import MapScreen from '../../screens/tools/MapScreen';
 
 import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
@@ -33,8 +33,8 @@ export default function HomeNavigator() {
                 component={HomeScreen}
                 options={{ headerShown: false }} />
             <Stack.Screen
-                name='Map'
-                component={Map}
+                name='MapScreen'
+                component={MapScreen}
                 options={{ ...customOptions }} />
         </Stack.Navigator>
     )

@@ -12,7 +12,7 @@ export default function AddButton({ onPress }) {
     const navigation = useNavigation();
 
     return (
-        <TouchableOpacity onPress={() => navigation.navigate(onPress)} style={styles.addButton}>
+        <TouchableOpacity onPress={() => navigation.navigate(onPress)} style={styles.addButton} activeOpacity={0.8}>
             <Icon name='add' size={40} color={theme.textHeader} />
         </TouchableOpacity>
     )
@@ -23,7 +23,7 @@ const styles = {
         position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',
-        bottom: 20,
+        bottom: 40,
         right: 20,
         width: 65,
         height: 65,

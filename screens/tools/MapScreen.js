@@ -135,12 +135,12 @@ export default function Map() {
 
   if (!location) {
     return (
-      <Container gradient={0.4}>
+      <Container>
         <View style={styles.textArea}>
           <Text style={[styles.text, { color: message === translate('loading') ? theme.textPrimary : Colors.red }]}>{message}</Text>
           {!locationAccessGranted ?
             <>
-              <TouchableOpacity onPress={() => setIsModalVisible(() => !isModalVisible)}>
+              <TouchableOpacity onPress={() => setIsModalVisible(() => !isModalVisible)} activeOpacity={0.8}>
                 <Text style={styles.help}>{translate('whereCanIDoThat')}</Text>
               </TouchableOpacity>
               <Button onPress={() => goToSettings()} text={translate('settings')} />

@@ -27,7 +27,7 @@ export default function SetTimerButton({ active, time, onPress }) {
     }
 
     return (
-        <TouchableOpacity style={[styles.presetInactive, active && styles.presetActive]} onPress={onPress}>
+        <TouchableOpacity onPress={onPress} style={[styles.presetInactive, active && styles.presetActive]} activeOpacity={0.8}>
             <Text style={[styles.presetTextInactive, active && { color: theme.primary }]}>{time}</Text>
         </TouchableOpacity>
     )

@@ -1,39 +1,55 @@
+import { useState, useEffect } from 'react';
+import { View, StatusBar } from 'react-native';
 import * as Font from 'expo-font';
-import { View } from 'react-native';
-import { useEffect, useState } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
 
-import Colors from './Colors';
 import NavigationBar from './components/navigators/NavigationBar';
 import { SettingsProvider } from './providers/SettingsProvider';
-import { ThemeProvider } from './providers/ThemeProvider';
+import { ThemeProvider, useTheme } from './providers/ThemeProvider';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadFonts = async () => {
-      await Font.loadAsync({
-        'Nexa': require('./assets/fonts/Nexa-Heavy.ttf')
-      })
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setIsLoading(false);
+    const loadAppResources = async () => {
+      try {
+        await Font.loadAsync({
+          'Nexa': require('./assets/fonts/Nexa-Heavy.ttf')
+        })
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setTimeout(async () => {
+          setIsLoading(false);
+          await SplashScreen.hideAsync();
+        }, 1000)
+      }
     }
-    loadFonts();
+    loadAppResources();
   }, [])
 
+  const AppContent = () => {
+    const { theme } = useTheme();
+
+    return (
+      <>
+        <StatusBar backgroundColor={theme.primary} />
+        <View style={{ flex: 1 }}>
+          <NavigationBar />
+        </View>
+      </>
+    )
+  }
+
   return (
-    <>
-      {isLoading ? (
-        <View />
-      ) : (
-        <SettingsProvider>
-          <ThemeProvider>
-            <View style={{ flex: 1, backgroundColor: Colors.black }}>
-              <NavigationBar />
-            </View>
-          </ThemeProvider>
-        </SettingsProvider>
-      )}
-    </>
+    isLoading ? null : (
+      <SettingsProvider>
+        <ThemeProvider>
+          <AppContent />
+        </ThemeProvider>
+      </SettingsProvider>
+    )
   )
 }

@@ -3,12 +3,9 @@ import * as Haptics from 'expo-haptics';
 
 import Container from '../../components/Container';
 import Setting from '../../components/widgets/Setting';
-import * as themes from '../../Themes';
 
 import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
-
-const data = Object.keys(themes);
 
 export default function LanguageSelectionScreen() {
     const { settings, updateSettings } = useSettings();
@@ -22,8 +19,8 @@ export default function LanguageSelectionScreen() {
     return (
         <Container>
             <View style={{ gap: 5 }}>
-                <Setting active={true} name='Polski' color={theme.textPrimary} onPress={() => changeLanguage('pl')} type={settings.language === 'pl' ? 'check' : ''} style={{ paddingLeft: -10 }} />
-                <Setting active={true} name='English' color={theme.textPrimary} onPress={() => changeLanguage('en')} type={settings.language === 'en' ? 'check' : ''} style={{ paddingLeft: -10 }} />
+                <Setting active={true} name='Polski' color={theme.textPrimary} onPress={() => changeLanguage('pl')} type={settings.language === 'pl' ? 'check' : null} style={{ paddingLeft: -10 }} />
+                <Setting active={true} name='English' color={theme.textPrimary} onPress={() => changeLanguage('en')} type={settings.language === 'en' ? 'check' : null} style={{ paddingLeft: -10 }} />
             </View>
         </Container>
     )

@@ -38,16 +38,18 @@ export default function SegmentedButton({ option1, option2, onOptionChange, sele
     return (
         <View style={styles.container}>
             <TouchableOpacity
-                style={[styles.segment, selectedOption === option1 ? styles.activeSegment : styles.inactiveSegment]}
                 onPress={() => { if (onOptionChange) onOptionChange(option1) }}
+                style={[styles.segment, selectedOption === option1 ? styles.activeSegment : styles.inactiveSegment]}
                 disabled={selectedOption === option1}
+                activeOpacity={0.8}
             >
                 <Text style={selectedOption === option1 ? styles.activeText : styles.inactiveText}>{option1}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                style={[styles.segment, selectedOption === option2 ? styles.activeSegment : styles.inactiveSegment]}
                 onPress={() => { if (onOptionChange) onOptionChange(option2) }}
+                style={[styles.segment, selectedOption === option2 ? styles.activeSegment : styles.inactiveSegment]}
                 disabled={selectedOption === option2}
+                activeOpacity={0.8}
             >
                 <Text style={selectedOption === option2 ? styles.activeText : styles.inactiveText}>{option2}</Text>
             </TouchableOpacity>

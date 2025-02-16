@@ -27,7 +27,7 @@ export default function Button({ onPress, text, type }) {
     }
 
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.button, { backgroundColor: (type == 'delete' ? Colors.red : theme.primary) }]}>
+        <TouchableOpacity onPress={onPress} style={[styles.button, { backgroundColor: (type == 'delete' ? Colors.red : theme.primary) }]} activeOpacity={0.8}>
             <Text style={styles.text}>{text}</Text>
         </TouchableOpacity>
     )

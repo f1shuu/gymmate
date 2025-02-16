@@ -60,7 +60,7 @@ export default function ExercisesScreen() {
                                 </View>
                             ) : null
                         ))}
-                        <TouchableOpacity style={[styles.row, { marginBottom: -10, marginHorizontal: -10 }]}>
+                        <TouchableOpacity style={[styles.row, { marginBottom: -10, marginHorizontal: -10 }]} activeOpacity={0.8}>
                             <Button onPress={async () => await DataController.update('exercises', item.id, navigation, 'ExerciseCreator')} text={'Edytuj'} />
                             <Button onPress={() => handleModal(item.id)} text={translate('delete')} type='delete' />
                         </TouchableOpacity>

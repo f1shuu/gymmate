@@ -119,7 +119,7 @@ export default function BMICalculator() {
     }
 
     return (
-        <Container gradient={0.75}>
+        <Container>
             <View style={styles.resultArea}>
                 <Text style={[styles.result, { color: textColor }]}>{bmiResult}</Text>
             </View>
@@ -171,7 +171,7 @@ export default function BMICalculator() {
                 onChangeText={(text) => setWeight(text)}
                 value={weight} >
             </TextInput>
-            <TouchableOpacity onPress={() => navigation.navigate('BMIHelp')}>
+            <TouchableOpacity onPress={() => navigation.navigate('BMIHelp')} activeOpacity={0.8}>
                 <Text style={styles.help}>{translate('bmiHelp')}</Text>
             </TouchableOpacity>
             <View style={styles.buttonRow}>

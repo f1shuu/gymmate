@@ -60,7 +60,7 @@ export default function BodyMeasurementsScreen() {
 
         return (
             <View>
-                <TouchableOpacity style={styles.header} onPress={() => toggleCategory(category)} activeOpacity={0.8}>
+                <TouchableOpacity onPress={() => toggleCategory(category)} style={styles.header} activeOpacity={0.8}>
                     <Image source={url} style={styles.image} />
                     <Text style={styles.text}>{category}</Text>
                     <Icon name={expandedCategories[category] ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={24} color={theme.textPrimary} />
@@ -76,7 +76,7 @@ export default function BodyMeasurementsScreen() {
                                 <Text style={styles.text}>
                                     {measurement.data.value} {measurement.data.unit}
                                 </Text>
-                                <TouchableOpacity onPress={() => handleModal(measurement.id)}>
+                                <TouchableOpacity onPress={() => handleModal(measurement.id)} activeOpacity={0.8}>
                                     <Icon name='delete' size={30} color={theme.textPrimary} />
                                 </TouchableOpacity>
                             </View>
