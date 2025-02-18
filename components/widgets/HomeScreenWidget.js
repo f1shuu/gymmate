@@ -1,0 +1,70 @@
+import { Text, TouchableOpacity, ImageBackground } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
+import { useSettings } from '../../providers/SettingsProvider';
+import { useTheme } from '../../providers/ThemeProvider';
+
+export default function HomeScreenWidget({ width, textRequired, textOptional, graphics, screen, navigator }) {
+    const { translate } = useSettings();
+    const { theme } = useTheme();
+
+    const navigation = useNavigation();
+
+    const styles = {
+        largeWidget: {
+            width: '100%',
+            borderRadius: 15,
+            height: 150
+        },
+        gradient: {
+            width: '100%',
+            height: '100%'
+        },
+        absoluteText: {
+            fontFamily: 'Nexa',
+            fontSize: 20,
+            color: theme.textPrimary,
+            position: 'absolute',
+            bottom: 20
+        },
+        widget: {
+            height: 150,
+            borderRadius: 15,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: theme.background,
+            justifyContent: 'space-around',
+            paddingHorizontal: 15
+        },
+        text: {
+            fontFamily: 'Nexa',
+            color: theme.textPrimary,
+            textAlign: 'center'
+        }
+    }
+
+    return (width === '100%' ? (
+        <TouchableOpacity onPress={() => { navigation.navigate(navigator, { screen: screen }) }} style={styles.largeWidget} activeOpacity={0.8}>
+            <ImageBackground source={graphics} imageStyle={{ borderRadius: 15 }} style={{ alignItems: 'center' }} resizeMode='cover'>
+                <LinearGradient
+                    colors={['transparent', theme.background]}
+                    start={{ x: 0.5, y: 0 }}
+                    end={{ x: 0.5, y: 1 }}
+                    style={[styles.gradient, { borderRadius: 15 }]}
+                />
+                <Text style={styles.absoluteText}>
+                    {translate(textRequired)}
+                </Text>
+            </ImageBackground>
+        </TouchableOpacity>
+    ) : (
+        <TouchableOpacity onPress={width === '30%' ? () => { } : () => { navigation.navigate(navigator, { screen: screen }) }} style={[styles.widget, { width: width }]} activeOpacity={width === '30%' ? 1 : 0.8}>
+            <Icon name={graphics} size={width === '30%' ? 30 : 60} color={width === '30%' ? theme.primary : theme.tertiary} />
+            {width === '30%' ? <Text style={[styles.text, { fontSize: 24 }]}>{translate(textOptional)}</Text> : null}
+            <Text style={[styles.text, width === '30%' ? { fontSize: 12 } : { fontSize: 16 }]}>{translate(textRequired)}</Text>
+        </TouchableOpacity>
+    )
+    )
+}

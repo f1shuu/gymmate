@@ -1,41 +1,35 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
+import BodyMeasurementsNavigator from './BodyMeasurementsNavigator';
 import HomeScreen from '../../screens/navbar/HomeScreen';
-import MapScreen from '../../screens/tools/MapScreen';
-
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import ToolsNavigator from './ToolsNavigator';
+import TrainingsNavigator from './TrainingsNavigator';
 
 const Stack = createStackNavigator();
 
 export default function HomeNavigator() {
-    const { translate } = useSettings();
-    const { theme } = useTheme();
-
-    const customOptions = {
-        headerTintColor: theme.textHeader,
-        headerTitle: translate('homeNavigatorHeader'),
-        headerStyle: {
-            backgroundColor: theme.primary,
-            elevation: 0
-        },
-        headerTitleStyle: {
-            fontFamily: 'Nexa',
-            fontSize: 18,
-            color: theme.textHeader
-        }
-    }
-
     return (
         <Stack.Navigator>
             <Stack.Screen
                 name='HomeScreen'
                 component={HomeScreen}
-                options={{ headerShown: false }} />
+                options={{ headerShown: false }}
+            />
             <Stack.Screen
-                name='MapScreen'
-                component={MapScreen}
-                options={{ ...customOptions }} />
+                name='BodyMeasurementsNavigator'
+                component={BodyMeasurementsNavigator}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name='ToolsNavigator'
+                component={ToolsNavigator}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name='TrainingsNavigator'
+                component={TrainingsNavigator}
+                options={{ headerShown: false }}
+            />
         </Stack.Navigator>
     )
 }

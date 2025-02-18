@@ -1,11 +1,11 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import BMICalculator from '../../screens/tools/BMICalculator';
-import BMIHelp from '../../screens/tools/BMIHelp';
-import Calculator from '../../screens/tools/Calculator';
-import Timer from '../../screens/tools/Timer';
-import ToolsScreen from '../../screens/navbar/ToolsScreen';
-import UnitsConverter from '../../screens/tools/UnitsConverter';
+import BMICalculatorScreen from '../../screens/tools/BMICalculatorScreen';
+import BMIHelpScreen from '../../screens/tools/BMIHelpScreen';
+import CalculatorScreen from '../../screens/tools/CalculatorScreen';
+import MapScreen from '../../screens/tools/MapScreen';
+import TimerScreen from '../../screens/tools/TimerScreen';
+import UnitsConverterScreen from '../../screens/tools/UnitsConverterScreen';
 
 import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
@@ -32,44 +32,53 @@ export default function ToolsNavigator() {
     return (
         <Stack.Navigator>
             <Stack.Screen
-                name='ToolsScreen'
-                component={ToolsScreen}
-                options={{ headerShown: false }} />
-            <Stack.Screen
-                name='Timer'
-                component={Timer}
+                name='BMICalculatorScreen'
+                component={BMICalculatorScreen}
                 options={{
-                    headerTitle: translate('timerHeader'),
+                    headerTitle: translate('bmiCalculatorScreenHeader'),
                     ...customOptions
-                }} />
+                }}
+            />
             <Stack.Screen
-                name='BMICalculator'
-                component={BMICalculator}
+                name='BMIHelpScreen'
+                component={BMIHelpScreen}
                 options={{
-                    headerTitle: translate('bmiCalculatorHeader'),
+                    headerTitle: translate('bmiHelpScreenHeader'),
                     ...customOptions
-                }} />
+                }}
+            />
             <Stack.Screen
-                name='Calculator'
-                component={Calculator}
+                name='CalculatorScreen'
+                component={CalculatorScreen}
                 options={{
-                    headerTitle: translate('calculatorHeader'),
+                    headerTitle: translate('calculatorScreenHeader'),
                     ...customOptions
-                }} />
+                }}
+            />
             <Stack.Screen
-                name='UnitsConverter'
-                component={UnitsConverter}
+                name='MapScreen'
+                component={MapScreen}
                 options={{
-                    headerTitle: translate('unitsConverterHeader'),
+                    headerTitle: translate('mapScreenHeader'),
                     ...customOptions
-                }} />
+                }}
+            />
             <Stack.Screen
-                name='BMIHelp'
-                component={BMIHelp}
+                name='TimerScreen'
+                component={TimerScreen}
                 options={{
-                    headerTitle: translate('bmiHelpHeader'),
+                    headerTitle: translate('timerScreenHeader'),
                     ...customOptions
-                }} />
+                }}
+            />
+            <Stack.Screen
+                name='UnitsConverterScreen'
+                component={UnitsConverterScreen}
+                options={{
+                    headerTitle: translate('unitsConverterScreenHeader'),
+                    ...customOptions
+                }}
+            />
         </Stack.Navigator>
     )
 }

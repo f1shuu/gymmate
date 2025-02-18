@@ -1,14 +1,14 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import BodyMeasurementsCreator from '../../screens/tools/BodyMeasurementsCreator';
-import BodyMeasurementsScreen from '../../screens/navbar/BodyMeasurementsScreen';
+import TrainingsCreator from '../../screens/tools/TrainingsCreator';
+import TrainingsScreen from '../../screens/navbar/TrainingsScreen';
 
 import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 const Stack = createStackNavigator();
 
-export default function BodyMeasurementsNavigator() {
+export default function TrainingsNavigator() {
     const { translate } = useSettings();
     const { theme } = useTheme();
 
@@ -28,19 +28,19 @@ export default function BodyMeasurementsNavigator() {
     return (
         <Stack.Navigator>
             <Stack.Screen
-                name='BodyMeasurementsCreator'
-                component={BodyMeasurementsCreator}
+                name='TrainingsCreator'
+                component={TrainingsCreator}
                 options={{
-                    ...customOptions,
-                    headerTitle: translate('bodyMeasurementsCreatorHeader')
+                    headerTitle: translate('trainingsCreatorHeader'),
+                    ...customOptions
                 }}
             />
             <Stack.Screen
-                name='BodyMeasurementsScreen'
-                component={BodyMeasurementsScreen}
+                name='TrainingsScreen'
+                component={TrainingsScreen}
                 options={{
-                    ...customOptions,
-                    headerTitle: translate('bodyMeasurementsScreenHeader')
+                    headerTitle: translate('trainingsScreenHeader'),
+                    ...customOptions
                 }}
             />
         </Stack.Navigator>

@@ -56,7 +56,7 @@ export default function SettingsScreen() {
                     {/* <Setting active={false} name={translate('notifications')} icon={'notifications'} color={theme.textPrimary} onPress={() => { }} type='toggle' /> */}
                     <Setting active={true} name={translate('sound')} icon={'volume-up'} color={theme.textPrimary} onPress={() => { }} type='toggle' parameter='isSoundOn' />
                     <Setting active={true} name={translate('vibrations')} icon={'vibration'} color={theme.textPrimary} onPress={() => { }} type='toggle' parameter='isHapticsOn' />
-                    {/* <Setting active={false} name={translate('trainings')} icon={'workspace-premium'} color={theme.textPrimary} type='navigate' onPress={() => { }} /> */}
+                    {/* <Setting active={false} name={translate('trainingsScreenHeader')} icon={'workspace-premium'} color={theme.textPrimary} type='navigate' onPress={() => { }} /> */}
                     {/* <Setting active={false} name={translate('exportAndDataMigration')} icon={'loop'} color={theme.textPrimary} type='navigate' onPress={() => { }} /> */}
                 </View>
                 <View style={styles.container}>

@@ -1,57 +1,82 @@
-import { Text, View, Image, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-
-import Container from '../../components/Container';
+import { Text, View, ImageBackground, ScrollView } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
+
+import HomeScreenWidget from '../../components/widgets/HomeScreenWidget';
 
 export default function HomeScreen() {
     const { translate } = useSettings();
     const { theme } = useTheme();
 
-    const navigation = useNavigation();
-
     const styles = {
-        widget: {
-            height: '25%',
-            backgroundColor: theme.background,
-            borderRadius: 15
+        scrollview: {
+            flexGrow: 1,
+            backgroundColor: theme.secondary,
+            paddingBottom: 30
         },
-        map: {
+        gradient: {
             width: '100%',
-            height: '65%',
-            borderTopLeftRadius: 15,
-            borderTopRightRadius: 15
+            height: '100%'
         },
-        marker: {
-            position: 'absolute',
-            top: '8%',
-            left: '15.5%',
-            width: 75,
-            height: 75
-        },
-        textbox: {
+        container: {
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center'
+            marginTop: -30,
+            paddingHorizontal: 15,
+            backgroundColor: theme.secondary
         },
-        text: {
+        sectionName: {
             fontFamily: 'Nexa',
-            fontSize: 20,
-            color: theme.textPrimary
+            fontSize: 14,
+            color: theme.textSecondary,
+            margin: 15
+        },
+        section: {
+            height: 150,
+            backgroundColor: theme.secondary,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginBottom: 10
         }
     }
 
     return (
-        <Container gradient={0.75}>
-            <TouchableOpacity onPress={() => { navigation.navigate('MapScreen') }} style={styles.widget} activeOpacity={0.8}>
-                <Image source={require('../../assets/images/map.png')} style={styles.map} resizeMode='cover' />
-                <Image source={require('../../assets/images/gymMarker.png')} style={styles.marker} />
-                <View style={styles.textbox}>
-                    <Text style={styles.text}>{translate('findGymsNearby')}</Text>
+        <ScrollView contentContainerStyle={styles.scrollview} showsVerticalScrollIndicator={false}>
+            <View style={{ height: 275 }}>
+                <ImageBackground source={require('../../assets/images/home/start.png')} >
+                    <LinearGradient
+                        colors={[theme.primary, 'transparent', 'transparent', theme.secondary]}
+                        start={{ x: 0.5, y: 0 }}
+                        end={{ x: 0.5, y: 0.85 }}
+                        style={styles.gradient}
+                    />
+                </ImageBackground>
+            </View>
+            <View style={styles.container}>
+                <Text style={styles.sectionName}>{translate('statistics')}</Text>
+                <View style={styles.section}>
+                    <HomeScreenWidget width={'30%'} textRequired={'longestStreak'} textOptional={'2 dni'} graphics={'fire'} />
+                    <HomeScreenWidget width={'30%'} textRequired={'trainingsTotal'} textOptional={'69'} graphics={'dumbbell'} />
+                    <HomeScreenWidget width={'30%'} textRequired={'liftedKgsTotal'} textOptional={'2137'} graphics={'weight-hanging'} />
                 </View>
-            </TouchableOpacity>
-        </Container>
+                <Text style={styles.sectionName}>{translate('quickStart')}</Text>
+                <View style={styles.section}>
+                    <HomeScreenWidget width={'100%'} textRequired={'startATraining'} graphics={require('../../assets/images/home/training.png')} screen={'TrainingsScreen'} navigator={'TrainingsNavigator'} />
+                </View>
+                <View style={styles.section}>
+                    <HomeScreenWidget width={'100%'} textRequired={'bodyMeasurementsScreenHeader'} graphics={require('../../assets/images/home/bodyMeasurements.png')} screen={'BodyMeasurementsScreen'} navigator={'BodyMeasurementsNavigator'} />
+                </View>
+                <Text style={styles.sectionName}>{translate('toolsScreenHeader')}</Text>
+                <View style={styles.section}>
+                    <HomeScreenWidget width={'49%'} textRequired={'timer'} graphics={'clock'} screen={'TimerScreen'} navigator={'ToolsNavigator'} />
+                    <HomeScreenWidget width={'49%'} textRequired={'bmiCalculator'} graphics={'weight'} screen={'BMICalculatorScreen'} navigator={'ToolsNavigator'} />
+                </View>
+                <View style={styles.section}>
+                    <HomeScreenWidget width={'49%'} textRequired={'calculator'} graphics={'calculator'} screen={'CalculatorScreen'} navigator={'ToolsNavigator'} />
+                    <HomeScreenWidget width={'49%'} textRequired={'gymsNearby'} graphics={'map-marker-alt'} screen={'MapScreen'} navigator={'ToolsNavigator'} />
+                </View>
+            </View>
+        </ScrollView>
     )
 }

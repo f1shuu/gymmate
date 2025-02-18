@@ -171,7 +171,7 @@ export default function BMICalculator() {
                 onChangeText={(text) => setWeight(text)}
                 value={weight} >
             </TextInput>
-            <TouchableOpacity onPress={() => navigation.navigate('BMIHelp')} activeOpacity={0.8}>
+            <TouchableOpacity onPress={() => navigation.navigate('BMIHelpScreen')} activeOpacity={0.8}>
                 <Text style={styles.help}>{translate('bmiHelp')}</Text>
             </TouchableOpacity>
             <View style={styles.buttonRow}>

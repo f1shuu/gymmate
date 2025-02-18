@@ -16,12 +16,13 @@ export default function Container({ gradient, children }) {
     }
 
     return <View style={styles.container}>
-        {gradient && gradient > 0 ? (<LinearGradient
-            colors={[theme.primary, theme.secondary]}
-            style={StyleSheet.absoluteFill}
-            start={{ x: 0.5, y: 0 }}
-            end={{ x: 0.5, y: gradient }}
-        />) : null}
+        {gradient && gradient > 0 ? (
+            <LinearGradient
+                colors={[theme.primary, theme.secondary]}
+                style={StyleSheet.absoluteFill}
+                start={{ x: 0.5, y: 0 }}
+                end={{ x: 0.5, y: gradient }}
+            />) : null}
         {children}
     </View>
 }

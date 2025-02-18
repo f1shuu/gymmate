@@ -1,6 +1,8 @@
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { Text, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import MIcon from 'react-native-vector-icons/MaterialIcons';
 
 import ExercisesNavigator from './ExercisesNavigator';
 import BodyMeasurementsNavigator from './BodyMeasurementsNavigator';
@@ -41,8 +43,20 @@ export default function NavigationBar() {
             elevation: 0,
             borderTopWidth: 0,
             marginTop: -15
+        }
+    }
+
+    const styles = {
+        headerText: {
+            fontFamily: 'Nexa',
+            fontSize: 24,
+            color: theme.textHeader,
+            marginLeft: 20
         },
-        tabBarLabel: ''
+        navbarText: {
+            fontFamily: 'Nexa',
+            fontSize: 10
+        }
     }
 
     return (
@@ -55,7 +69,10 @@ export default function NavigationBar() {
                         ...customOptions,
                         title: translate('exercisesScreenHeader'),
                         tabBarIcon: ({ focused }) => (
-                            <Icon name="dumbbell" size={25} color={focused ? theme.primary : theme.tertiary} />
+                            <Icon name='dumbbell' size={25} color={focused ? theme.primary : theme.tertiary} />
+                        ),
+                        tabBarLabel: ({ focused }) => (
+                            <Text style={[styles.navbarText, { color: focused ? theme.primary : theme.tertiary }]}>{translate('exercisesScreenHeader')}</Text>
                         )
                     })
                     }
@@ -66,9 +83,7 @@ export default function NavigationBar() {
                     options={() => ({
                         ...customOptions,
                         title: translate('bodyMeasurementsScreenHeader'),
-                        tabBarIcon: ({ focused }) => (
-                            <Icon name="ruler-horizontal" size={25} color={focused ? theme.primary : theme.tertiary} />
-                        )
+                        tabBarButton: () => null
                     })
                     }
                 />
@@ -77,9 +92,25 @@ export default function NavigationBar() {
                     component={HomeNavigator}
                     options={() => ({
                         ...customOptions,
-                        title: translate('homeScreenHeader'),
+                        headerStyle: {
+                            backgroundColor: theme.primary,
+                            height: 60,
+                            elevation: 0
+                        },
+                        title: '',
+                        headerLeft: () => (
+                            <Text style={styles.headerText}>{translate('greeting') + 'Filip'}</Text>
+                        ),
+                        headerRight: () => (
+                            <TouchableOpacity>
+                                <MIcon name='account-circle' size={25} color={theme.textHeader} style={{ marginRight: 20 }} />
+                            </TouchableOpacity>
+                        ),
                         tabBarIcon: ({ focused }) => (
-                            <Icon name="home" size={35} color={focused ? theme.primary : theme.tertiary} />
+                            <Icon name='home' size={30} color={focused ? theme.primary : theme.tertiary} />
+                        ),
+                        tabBarLabel: ({ focused }) => (
+                            <Text style={[styles.navbarText, { color: focused ? theme.primary : theme.tertiary }]}>{translate('start')}</Text>
                         )
                     })
                     }
@@ -90,9 +121,7 @@ export default function NavigationBar() {
                     options={() => ({
                         ...customOptions,
                         title: translate('toolsScreenHeader'),
-                        tabBarIcon: ({ focused }) => (
-                            <Icon name="calculator" size={25} color={focused ? theme.primary : theme.tertiary} />
-                        )
+                        tabBarButton: () => null
                     })
                     }
                 />
@@ -103,7 +132,7 @@ export default function NavigationBar() {
                         ...customOptions,
                         title: translate('settings'),
                         tabBarIcon: ({ focused }) => (
-                            <Icon name="cog" size={25} color={focused ? theme.primary : theme.tertiary} />
+                            <Icon name='cog' size={25} color={focused ? theme.primary : theme.tertiary} />
                         )
                     })
                     }

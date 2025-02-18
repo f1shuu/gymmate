@@ -41,8 +41,8 @@ const CustomMarker = ({ type, coordinate, title, description }) => {
       tracksViewChanges={tracksViewChanges}>
       <View style={styles.markerContainer}>
         {type === 'user' ?
-          <Image source={require('../../assets/images/userMarker.png')} style={styles.marker} /> :
-          <Image source={require('../../assets/images/gymMarker.png')} style={styles.marker} />
+          <Image source={require('../../assets/images/home/userMarker.png')} style={styles.marker} /> :
+          <Image source={require('../../assets/images/home/gymMarker.png')} style={styles.marker} />
         }
       </View>
     </Marker>
@@ -177,7 +177,7 @@ export default function Map() {
         title={translate('yourLocation')}
       >
         <View style={styles.markerContainer}>
-          <Image source={require('../../assets/images/userMarker.png')} style={styles.marker} />
+          <Image source={require('../../assets/images/home/userMarker.png')} style={styles.marker} />
         </View>
       </CustomMarker>
       {gyms.map((gym, id) => (
