@@ -14,7 +14,7 @@ export default function ExercisesNavigator() {
 
     const customOptions = {
         headerTintColor: theme.textHeader,
-        headerTitle: translate('exercisesNavigatorHeader'),
+        headerTitle: translate('exercisesCreatorHeader'),
         headerStyle: {
             backgroundColor: theme.primary,
             elevation: 0
@@ -31,11 +31,13 @@ export default function ExercisesNavigator() {
             <Stack.Screen
                 name='ExercisesScreen'
                 component={ExercisesScreen}
-                options={{ headerShown: false }} />
+                options={{ headerShown: false }}
+            />
             <Stack.Screen
                 name='ExerciseCreator'
                 component={ExerciseCreator}
-                options={{ ...customOptions }} />
+                options={{ ...customOptions }}
+            />
         </Stack.Navigator>
     )
 }

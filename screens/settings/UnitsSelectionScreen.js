@@ -15,7 +15,7 @@ export default function UnitsSelectionScreen() {
     const { theme } = useTheme();
 
     const changeUnits = (newValue) => {
-        updateSettings('units', newValue);
+        updateSettings({ 'units': newValue });
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
 

@@ -10,7 +10,10 @@ export const SettingsProvider = ({ children }) => {
         isHapticsOn: true,
         isSoundOn: true,
         units: 'metric',
-        language: 'pl'
+        language: 'pl',
+        firstName: '',
+        lastName: '',
+        nickname: ''
     })
 
     useEffect(() => {
@@ -25,11 +28,11 @@ export const SettingsProvider = ({ children }) => {
         loadSettings();
     }, [])
 
-    const updateSettings = async (key, value) => {
-        const newSettings = { ...settings, [key]: value };
-        setSettings(newSettings);
+    const updateSettings = async (newSettings) => {
+        const updatedSettings = { ...settings, ...newSettings };
+        setSettings(updatedSettings);
         try {
-            await AsyncStorage.setItem('settings', JSON.stringify(newSettings));
+            await AsyncStorage.setItem('settings', JSON.stringify(updatedSettings));
         } catch (error) {
             console.error(error);
         }

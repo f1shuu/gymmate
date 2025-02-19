@@ -12,7 +12,7 @@ export default function LanguageSelectionScreen() {
     const { theme } = useTheme();
 
     const changeLanguage = (newValue) => {
-        updateSettings('language', newValue);
+        updateSettings({ 'language': newValue });
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
 

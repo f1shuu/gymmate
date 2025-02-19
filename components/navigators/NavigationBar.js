@@ -16,7 +16,7 @@ import { useTheme } from '../../providers/ThemeProvider';
 const Tab = createBottomTabNavigator();
 
 export default function NavigationBar() {
-    const { translate } = useSettings();
+    const { settings, translate } = useSettings();
     const { theme } = useTheme();
 
     const MyDarkTheme = {
@@ -90,7 +90,7 @@ export default function NavigationBar() {
                 <Tab.Screen
                     name='HomeNavigator'
                     component={HomeNavigator}
-                    options={() => ({
+                    options={({ navigation }) => ({
                         ...customOptions,
                         headerStyle: {
                             backgroundColor: theme.primary,
@@ -99,10 +99,10 @@ export default function NavigationBar() {
                         },
                         title: '',
                         headerLeft: () => (
-                            <Text style={styles.headerText}>{translate('greeting') + 'Filip'}</Text>
+                            <Text style={styles.headerText}>{translate('greeting') + (settings.firstName ? settings.firstName : translate('guest'))}</Text>
                         ),
                         headerRight: () => (
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigation.navigate('SettingsNavigator', { screen: 'NameScreen' })}>
                                 <MIcon name='account-circle' size={25} color={theme.textHeader} style={{ marginRight: 20 }} />
                             </TouchableOpacity>
                         ),
@@ -133,6 +133,9 @@ export default function NavigationBar() {
                         title: translate('settingsScreenHeader'),
                         tabBarIcon: ({ focused }) => (
                             <Icon name='cog' size={25} color={focused ? theme.primary : theme.tertiary} />
+                        ),
+                        tabBarLabel: ({ focused }) => (
+                            <Text style={[styles.navbarText, { color: focused ? theme.primary : theme.tertiary }]}>{translate('settings')}</Text>
                         )
                     })
                     }

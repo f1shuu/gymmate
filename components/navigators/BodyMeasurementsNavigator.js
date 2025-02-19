@@ -28,19 +28,19 @@ export default function BodyMeasurementsNavigator() {
     return (
         <Stack.Navigator>
             <Stack.Screen
-                name='BodyMeasurementsCreator'
-                component={BodyMeasurementsCreator}
-                options={{
-                    ...customOptions,
-                    headerTitle: translate('bodyMeasurementsCreatorHeader')
-                }}
-            />
-            <Stack.Screen
                 name='BodyMeasurementsScreen'
                 component={BodyMeasurementsScreen}
                 options={{
                     ...customOptions,
                     headerTitle: translate('bodyMeasurementsScreenHeader')
+                }}
+            />
+            <Stack.Screen
+                name='BodyMeasurementsCreator'
+                component={BodyMeasurementsCreator}
+                options={{
+                    ...customOptions,
+                    headerTitle: translate('bodyMeasurementsCreatorHeader')
                 }}
             />
         </Stack.Navigator>

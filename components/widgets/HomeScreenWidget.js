@@ -46,7 +46,7 @@ export default function HomeScreenWidget({ width, textRequired, textOptional, gr
     }
 
     return (width === '100%' ? (
-        <TouchableOpacity onPress={() => { navigation.navigate(navigator, { screen: screen }) }} style={styles.largeWidget} activeOpacity={0.8}>
+        <TouchableOpacity onPress={() => navigation.navigate(navigator, { screen: screen })} style={styles.largeWidget} activeOpacity={0.8}>
             <ImageBackground source={graphics} imageStyle={{ borderRadius: 15 }} style={{ alignItems: 'center' }} resizeMode='cover'>
                 <LinearGradient
                     colors={['transparent', theme.background]}
@@ -60,7 +60,7 @@ export default function HomeScreenWidget({ width, textRequired, textOptional, gr
             </ImageBackground>
         </TouchableOpacity>
     ) : (
-        <TouchableOpacity onPress={width === '30%' ? () => { } : () => { navigation.navigate(navigator, { screen: screen }) }} style={[styles.widget, { width: width }]} activeOpacity={width === '30%' ? 1 : 0.8}>
+        <TouchableOpacity onPress={width === '30%' ? () => { } : () => navigation.navigate(navigator, { screen: screen })} style={[styles.widget, { width: width }]} activeOpacity={width === '30%' ? 1 : 0.8}>
             <Icon name={graphics} size={width === '30%' ? 30 : 60} color={width === '30%' ? theme.primary : theme.tertiary} />
             {width === '30%' ? <Text style={[styles.text, { fontSize: 24 }]}>{translate(textOptional)}</Text> : null}
             <Text style={[styles.text, width === '30%' ? { fontSize: 12 } : { fontSize: 16 }]}>{translate(textRequired)}</Text>

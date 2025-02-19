@@ -1,4 +1,4 @@
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -10,7 +10,7 @@ import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function SettingsScreen() {
-    const { translate } = useSettings();
+    const { settings, translate } = useSettings();
     const { theme } = useTheme();
 
     const navigation = useNavigation();
@@ -22,10 +22,17 @@ export default function SettingsScreen() {
             alignItems: 'center',
             marginBottom: 10
         },
+        row: {
+            flexDirection: 'row',
+            gap: 6,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
         name: {
             fontFamily: 'Nexa',
             fontSize: 28,
             color: theme.textHeader,
+            textAlign: 'center',
             alignSelf: 'center',
             justifyContent: 'center',
             marginBottom: 10
@@ -47,10 +54,19 @@ export default function SettingsScreen() {
         <Container gradient={0.5}>
             <ScrollView>
                 <View style={styles.avatar}>
-                    <Icon name={'account-circle'} size={100} color={theme.textHeader} style={styles.icon} />
+                    <Icon name={'account-circle'} size={100} color={theme.textHeader} />
                 </View>
-                <Text style={styles.name}>Filip Szulżycki</Text>
-                <Text style={[styles.name, { fontSize: 16 }]}>@f1shu</Text>
+                <View style={styles.row}>
+                    <Text style={styles.name}>
+                        {settings.firstName ? (settings.lastName ? settings.firstName + ' ' + settings.lastName : settings.firstName) : (settings.lastName ? settings.lastName : translate('guest'))}
+                    </Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('NameScreen')}>
+                        <Icon name={'edit-square'} size={16} color={theme.tertiary} />
+                    </TouchableOpacity>
+                </View>
+                <Text style={[styles.name, { fontSize: 16 }]}>
+                    {settings.nickname ? '@' + settings.nickname : null}
+                </Text>
                 <View style={styles.container}>
                     <Text style={styles.sectionName}>{translate('settings')}</Text>
                     {/* <Setting active={false} name={translate('notifications')} icon={'notifications'} color={theme.textPrimary} onPress={() => { }} type='toggle' /> */}

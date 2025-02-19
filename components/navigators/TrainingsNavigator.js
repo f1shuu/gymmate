@@ -28,18 +28,18 @@ export default function TrainingsNavigator() {
     return (
         <Stack.Navigator>
             <Stack.Screen
-                name='TrainingsCreator'
-                component={TrainingsCreator}
-                options={{
-                    headerTitle: translate('trainingsCreatorHeader'),
-                    ...customOptions
-                }}
-            />
-            <Stack.Screen
                 name='TrainingsScreen'
                 component={TrainingsScreen}
                 options={{
                     headerTitle: translate('trainingsScreenHeader'),
+                    ...customOptions
+                }}
+            />
+            <Stack.Screen
+                name='TrainingsCreator'
+                component={TrainingsCreator}
+                options={{
+                    headerTitle: translate('trainingsCreatorHeader'),
                     ...customOptions
                 }}
             />

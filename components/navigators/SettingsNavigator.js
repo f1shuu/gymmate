@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import DataDeletionScreen from '../../screens/settings/DataDeletionScreen';
 import LanguageSelectionScreen from '../../screens/settings/LanguageSelectionScreen';
+import NameScreen from '../../screens/settings/NameScreen';
 import SettingsScreen from '../../screens/navbar/SettingsScreen';
 import ThemeSelectionScreen from '../../screens/settings/ThemeSelectionScreen';
 import UnitsSelectionScreen from '../../screens/settings/UnitsSelectionScreen';
@@ -33,35 +34,48 @@ export default function SettingsNavigator() {
             <Stack.Screen
                 name='SettingsScreen'
                 component={SettingsScreen}
-                options={{ headerShown: false }} />
+                options={{ headerShown: false }}
+            />
             <Stack.Screen
                 name='DataDeletionScreen'
                 component={DataDeletionScreen}
                 options={{
                     headerTitle: translate('deleteData'),
                     ...customOptions
-                }} />
-            <Stack.Screen
-                name='ThemeSelectionScreen'
-                component={ThemeSelectionScreen}
-                options={{
-                    headerTitle: translate('chooseTheme'),
-                    ...customOptions
-                }} />
-            <Stack.Screen
-                name='UnitsSelectionScreen'
-                component={UnitsSelectionScreen}
-                options={{
-                    headerTitle: translate('chooseUnits'),
-                    ...customOptions
-                }} />
+                }}
+            />
             <Stack.Screen
                 name='LanguageSelectionScreen'
                 component={LanguageSelectionScreen}
                 options={{
                     headerTitle: translate('chooseLanguage'),
                     ...customOptions
-                }} />
+                }}
+            />
+            <Stack.Screen
+                name='NameScreen'
+                component={NameScreen}
+                options={{
+                    headerTitle: translate('editYourData'),
+                    ...customOptions
+                }}
+            />
+            <Stack.Screen
+                name='ThemeSelectionScreen'
+                component={ThemeSelectionScreen}
+                options={{
+                    headerTitle: translate('chooseTheme'),
+                    ...customOptions
+                }}
+            />
+            <Stack.Screen
+                name='UnitsSelectionScreen'
+                component={UnitsSelectionScreen}
+                options={{
+                    headerTitle: translate('chooseUnits'),
+                    ...customOptions
+                }}
+            />
         </Stack.Navigator>
     )
 }

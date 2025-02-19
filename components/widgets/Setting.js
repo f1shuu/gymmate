@@ -30,7 +30,7 @@ export default function Setting({ active, name, icon, color, onPress, type, para
     }
 
     const toggleSetting = (newValue) => {
-        updateSettings(parameter, newValue);
+        updateSettings({ parameter: newValue });
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
 
