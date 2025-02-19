@@ -50,9 +50,9 @@ export default function DataDeletionScreen() {
     return (
         <Container>
             <View style={styles.container}>
-                <Setting active={exercisesCount > 0} name={translate('delete') + ' ' + translate('exercisePlural')} icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'exercises', translate('exercisePlural'))} />
-                <Setting active={bodyMeasurementsCount > 0} name={translate('delete') + ' ' + translate('bodyMeasurementPlural')} icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'bodyMeasurements', translate('measurementPlural'))} />
-                <Setting active={trainingsCount > 0} name={translate('delete') + ' ' + translate('trainingPlural')} icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'trainings', translate('trainingPlural'))} />
+                <Setting active={exercisesCount > 0} name={translate('delete') + ' ' + translate('exercises')} icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'exercises', translate('exercises'))} />
+                <Setting active={bodyMeasurementsCount > 0} name={translate('delete') + ' ' + translate('bodyMeasurements')} icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'bodyMeasurements', translate('bodyMeasurements'))} />
+                <Setting active={trainingsCount > 0} name={translate('delete') + ' ' + translate('trainings')} icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'trainings', translate('trainings'))} />
                 <Setting active={dataCount > 0} name={translate('delete') + ' ' + translate('allData')} icon={'delete-forever'} color={Colors.red} onPress={() => showModal(isModalVisible, 'all', translate('data'))} style={styles.allDataButton} />
             </View>
             <Modal

@@ -38,28 +38,28 @@ export default function SettingsNavigator() {
                 name='DataDeletionScreen'
                 component={DataDeletionScreen}
                 options={{
-                    headerTitle: translate('dataDeletionScreenHeader'),
+                    headerTitle: translate('deleteData'),
                     ...customOptions
                 }} />
             <Stack.Screen
                 name='ThemeSelectionScreen'
                 component={ThemeSelectionScreen}
                 options={{
-                    headerTitle: translate('themeSelectionScreenHeader'),
+                    headerTitle: translate('chooseTheme'),
                     ...customOptions
                 }} />
             <Stack.Screen
                 name='UnitsSelectionScreen'
                 component={UnitsSelectionScreen}
                 options={{
-                    headerTitle: translate('unitsSelectionScreenHeader'),
+                    headerTitle: translate('chooseUnits'),
                     ...customOptions
                 }} />
             <Stack.Screen
                 name='LanguageSelectionScreen'
                 component={LanguageSelectionScreen}
                 options={{
-                    headerTitle: translate('languageSelectionScreenHeader'),
+                    headerTitle: translate('chooseLanguage'),
                     ...customOptions
                 }} />
         </Stack.Navigator>

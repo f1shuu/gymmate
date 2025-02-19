@@ -72,7 +72,7 @@ export default function BodyMeasurementsCreator() {
             <Dropdown
                 passedStyle={{ borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                 data={categories[settings.language]}
-                placeholder={isFocus ? '...' : translate('chooseCategory')}
+                placeholder={isFocus ? '...' : translate('chooseCategory') + '...'}
                 value={category}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
@@ -83,7 +83,7 @@ export default function BodyMeasurementsCreator() {
                 style={styles.input}
                 placeholderTextColor={theme.textSecondary}
                 maxLength={6}
-                placeholder={translate('enterValue')}
+                placeholder={translate('enterValue') + '...'}
                 keyboardType='numeric'
                 onChangeText={(text) => setValue(text)}
             />

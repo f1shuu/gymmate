@@ -35,7 +35,7 @@ export default function ToolsNavigator() {
                 name='BMICalculatorScreen'
                 component={BMICalculatorScreen}
                 options={{
-                    headerTitle: translate('bmiCalculatorScreenHeader'),
+                    headerTitle: translate('bmiCalculator'),
                     ...customOptions
                 }}
             />
@@ -43,7 +43,7 @@ export default function ToolsNavigator() {
                 name='BMIHelpScreen'
                 component={BMIHelpScreen}
                 options={{
-                    headerTitle: translate('bmiHelpScreenHeader'),
+                    headerTitle: translate('bmiHelp'),
                     ...customOptions
                 }}
             />
@@ -51,7 +51,7 @@ export default function ToolsNavigator() {
                 name='CalculatorScreen'
                 component={CalculatorScreen}
                 options={{
-                    headerTitle: translate('calculatorScreenHeader'),
+                    headerTitle: translate('calculator'),
                     ...customOptions
                 }}
             />
@@ -59,7 +59,7 @@ export default function ToolsNavigator() {
                 name='MapScreen'
                 component={MapScreen}
                 options={{
-                    headerTitle: translate('mapScreenHeader'),
+                    headerTitle: translate('gymsNearby'),
                     ...customOptions
                 }}
             />
@@ -67,7 +67,7 @@ export default function ToolsNavigator() {
                 name='TimerScreen'
                 component={TimerScreen}
                 options={{
-                    headerTitle: translate('timerScreenHeader'),
+                    headerTitle: translate('timer'),
                     ...customOptions
                 }}
             />
@@ -75,7 +75,7 @@ export default function ToolsNavigator() {
                 name='UnitsConverterScreen'
                 component={UnitsConverterScreen}
                 options={{
-                    headerTitle: translate('unitsConverterScreenHeader'),
+                    headerTitle: translate('unitsConverter'),
                     ...customOptions
                 }}
             />

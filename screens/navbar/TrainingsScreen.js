@@ -9,7 +9,7 @@ export default function TrainingsScreen() {
 
     return (
         <Container gradient={0.75}>
-            <Background text={true} content={translate('trainings')} type='masculine' />
+            <Background text={true} content={translate('trainingsDeclined')} type='masculine' />
             <AddButton onPress='TrainingsCreator' />
         </Container>
     )

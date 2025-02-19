@@ -111,7 +111,7 @@ export default function ExercisesScreen() {
                     />
                 </>
             ) : (
-                <Background text={true} content={translate('exercises')} type='feminine' />
+                <Background text={true} content={translate('exercisesDeclined')} type='feminine' />
             )}
             <AddButton onPress='ExerciseCreator' />
             <Modal

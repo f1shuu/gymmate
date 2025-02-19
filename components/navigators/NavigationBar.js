@@ -94,7 +94,7 @@ export default function NavigationBar() {
                         ...customOptions,
                         headerStyle: {
                             backgroundColor: theme.primary,
-                            height: 60,
+                            height: 70,
                             elevation: 0
                         },
                         title: '',
@@ -130,7 +130,7 @@ export default function NavigationBar() {
                     component={SettingsNavigator}
                     options={() => ({
                         ...customOptions,
-                        title: translate('settings'),
+                        title: translate('settingsScreenHeader'),
                         tabBarIcon: ({ focused }) => (
                             <Icon name='cog' size={25} color={focused ? theme.primary : theme.tertiary} />
                         )

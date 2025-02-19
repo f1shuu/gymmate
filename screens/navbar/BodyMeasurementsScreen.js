@@ -132,7 +132,7 @@ export default function BodyMeasurementsScreen() {
                     />
                 </>
             ) : (
-                <Background text={true} content={translate('bodyMeasurements')} type='masculine' />
+                <Background text={true} content={translate('bodyMeasurementsDeclined')} type='masculine' />
             )}
             <AddButton onPress='BodyMeasurementsCreator' />
             <Modal

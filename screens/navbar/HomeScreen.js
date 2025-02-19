@@ -30,20 +30,21 @@ export default function HomeScreen() {
             fontFamily: 'Nexa',
             fontSize: 14,
             color: theme.textSecondary,
-            margin: 15
+            marginLeft: 15,
+            marginBottom: 15
         },
         section: {
             height: 150,
             backgroundColor: theme.secondary,
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginBottom: 10
+            marginBottom: 20
         }
     }
 
     return (
         <ScrollView contentContainerStyle={styles.scrollview} showsVerticalScrollIndicator={false}>
-            <View style={{ height: 275 }}>
+            <View style={{ height: 300 }}>
                 <ImageBackground source={require('../../assets/images/home/start.png')} >
                     <LinearGradient
                         colors={[theme.primary, 'transparent', 'transparent', theme.secondary]}
@@ -68,7 +69,7 @@ export default function HomeScreen() {
                     <HomeScreenWidget width={'100%'} textRequired={'bodyMeasurementsScreenHeader'} graphics={require('../../assets/images/home/bodyMeasurements.png')} screen={'BodyMeasurementsScreen'} navigator={'BodyMeasurementsNavigator'} />
                 </View>
                 <Text style={styles.sectionName}>{translate('toolsScreenHeader')}</Text>
-                <View style={styles.section}>
+                <View style={[styles.section, { marginBottom: 10 }]}>
                     <HomeScreenWidget width={'49%'} textRequired={'timer'} graphics={'clock'} screen={'TimerScreen'} navigator={'ToolsNavigator'} />
                     <HomeScreenWidget width={'49%'} textRequired={'bmiCalculator'} graphics={'weight'} screen={'BMICalculatorScreen'} navigator={'ToolsNavigator'} />
                 </View>
