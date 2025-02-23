@@ -3,7 +3,7 @@ import { View, StatusBar } from 'react-native';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
-import NavigationBar from './components/navigators/NavigationBar';
+import IntroNavigator from './screens/intro/IntroNavigator';
 import { SettingsProvider } from './providers/SettingsProvider';
 import { ThemeProvider, useTheme } from './providers/ThemeProvider';
 
@@ -37,7 +37,7 @@ export default function App() {
       <>
         <StatusBar backgroundColor={theme.primary} />
         <View style={{ flex: 1 }}>
-          <NavigationBar />
+          <IntroNavigator />
         </View>
       </>
     )

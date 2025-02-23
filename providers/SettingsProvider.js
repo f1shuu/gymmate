@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Localization from "expo-localization";
 
 import { translations } from '../constants/translations';
 
@@ -7,10 +8,11 @@ const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
     const [settings, setSettings] = useState({
+        firstLaunch: true,
         isHapticsOn: true,
         isSoundOn: true,
         units: 'metric',
-        language: 'pl',
+        language: Localization.getLocales()[0].languageCode,
         firstName: '',
         lastName: '',
         nickname: ''
@@ -29,10 +31,9 @@ export const SettingsProvider = ({ children }) => {
     }, [])
 
     const updateSettings = async (newSettings) => {
-        const updatedSettings = { ...settings, ...newSettings };
-        setSettings(updatedSettings);
+        setSettings({ ...settings, ...newSettings });
         try {
-            await AsyncStorage.setItem('settings', JSON.stringify(updatedSettings));
+            await AsyncStorage.setItem('settings', JSON.stringify({ ...settings, ...newSettings }));
         } catch (error) {
             console.error(error);
         }
