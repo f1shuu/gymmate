@@ -10,7 +10,7 @@ import { useSettings } from '../../providers/SettingsProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function SettingsScreen() {
-    const { settings, translate } = useSettings();
+    const { settings, restoreDefault, translate } = useSettings();
     const { theme } = useTheme();
 
     const navigation = useNavigation();
@@ -93,6 +93,8 @@ export default function SettingsScreen() {
                 <View style={styles.container}>
                     <Text style={styles.sectionName}>{translate('dangerZone')}</Text>
                     <Setting active={true} name={translate('dataDeletion')} icon={'delete'} color={Colors.red} type='navigate' onPress={() => navigation.navigate('DataDeletionScreen')} />
+                    <Setting active={true} name={translate('restoreDefaultSettings')} icon={'restart-alt'} color={Colors.red} type='navigate' onPress={() => restoreDefault()} />
+                    <Setting active={true} name={translate('developerOptions')} icon={'code'} color={Colors.red} type='navigate' onPress={() => navigation.navigate('DeveloperOptionsScreen')} />
                 </View>
             </ScrollView>
         </Container>

@@ -24,19 +24,18 @@ export default function IntroNavigator() {
     return (
         <NavigationContainer theme={MyDarkTheme}>
             <Stack.Navigator>
-                {settings.firstLaunch ? (
+                {settings.firstLaunch && (
                     <Stack.Screen
                         name='WelcomeScreen'
                         component={WelcomeScreen}
                         options={{ headerShown: false }}
                     />
-                ) : (
-                    <Stack.Screen
-                        name='NavigationBar'
-                        component={NavigationBar}
-                        options={{ headerShown: false }}
-                    />
                 )}
+                <Stack.Screen
+                    name='NavigationBar'
+                    component={NavigationBar}
+                    options={{ headerShown: false }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     )
