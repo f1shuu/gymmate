@@ -1,10 +1,10 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function SegmentedButton({ option1, option2, onOptionChange, selectedOption }) {
-    const { theme } = useTheme();
-
+    const { theme } = useSettings();
+    
     const styles = {
         container: {
             flexDirection: 'row',

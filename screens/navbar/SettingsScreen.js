@@ -6,12 +6,10 @@ import Colors from '../../Colors';
 import Container from '../../components/Container';
 import Setting from '../../components/widgets/Setting';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function SettingsScreen() {
-    const { settings, restoreDefault, translate } = useSettings();
-    const { theme } = useTheme();
+    const { settings, restoreDefault, theme, translate } = useSettings();
 
     const navigation = useNavigation();
 

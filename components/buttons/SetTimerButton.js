@@ -1,9 +1,9 @@
 import { Text, TouchableOpacity } from 'react-native';
 
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function SetTimerButton({ active, time, onPress }) {
-    const { theme } = useTheme();
+    const { theme } = useSettings();
 
     const styles = {
         presetInactive: {

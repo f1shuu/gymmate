@@ -4,8 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import Container from '../../components/Container';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function UnitsConverter() {
     const [centimeters1, setCentimeters1] = useState('');
@@ -25,8 +24,7 @@ export default function UnitsConverter() {
     const [whichMFtConverter, setMFtConverter] = useState(true);
     const [whichGOzConverter, setGOzConverter] = useState(true);
 
-    const { translate } = useSettings();
-    const { theme } = useTheme();
+    const { theme, translate } = useSettings();
 
     const cmToFeetAndInches = (text) => {
         updateFeetAndInches(text);

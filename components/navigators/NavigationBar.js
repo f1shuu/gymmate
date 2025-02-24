@@ -9,14 +9,12 @@ import HomeNavigator from './HomeNavigator';
 import SettingsNavigator from './SettingsNavigator';
 import ToolsNavigator from './ToolsNavigator';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 const Tab = createBottomTabNavigator();
 
 export default function NavigationBar() {
-    const { settings, translate } = useSettings();
-    const { theme } = useTheme();
+    const { settings, theme, translate } = useSettings();
 
     const customOptions = {
         headerTitleStyle: {

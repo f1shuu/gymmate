@@ -1,11 +1,11 @@
 import { Text, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function Theme({ name, primaryColor, secondaryColor, textColor, onPress }) {
-    const { theme } = useTheme();
-
+    const { theme } = useSettings();
+    
     const styles = {
         tile: {
             width: '30%',

@@ -12,7 +12,7 @@
 
 // IMPORTANT: no red or green themes are allowed, since they would collide with already declared colors for add and remove buttons/icons (see: Colors.js).
 
-export const Dark = {
+export const GymMate = {
     primary: '#3533CD',
     secondary: '#000000',
     tertiary: '#696969',
@@ -22,7 +22,7 @@ export const Dark = {
     textSecondary: '#777777'
 }
 
-export const Light = {
+export const Sky = {
     primary: '#376DEC',
     secondary: '#CCCCCC',
     tertiary: '#696969',

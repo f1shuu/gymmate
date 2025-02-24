@@ -5,15 +5,13 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import IntroNavigator from './screens/intro/IntroNavigator';
 
-import { useSettings } from './providers/SettingsProvider';
-import { useTheme } from './providers/ThemeProvider';
+import { useSettings } from './helpers/SettingsProvider';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function Loader() {
     const [isLoading, setIsLoading] = useState(true);
-    const { loadSettings } = useSettings();
-    const { theme } = useTheme();
+    const { loadSettings, restoreDefault, theme } = useSettings();
 
     useEffect(() => {
         const loadAppResources = async () => {
@@ -21,6 +19,7 @@ export default function Loader() {
                 await Font.loadAsync({
                     'Nexa': require('./assets/fonts/Nexa-Heavy.ttf')
                 })
+                restoreDefault();
                 loadSettings();
             } catch (error) {
                 console.error(error);

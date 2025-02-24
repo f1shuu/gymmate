@@ -11,8 +11,7 @@ import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function BodyMeasurementsScreen() {
     const [bodyMeasurements, setBodyMeasurements] = useState([]);
@@ -21,8 +20,7 @@ export default function BodyMeasurementsScreen() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
 
-    const { settings, translate } = useSettings();
-    const { theme } = useTheme();
+    const { settings, theme, translate } = useSettings();
 
     const groupedBodyMeasurements = DataController.groupByCategory(bodyMeasurements);
 

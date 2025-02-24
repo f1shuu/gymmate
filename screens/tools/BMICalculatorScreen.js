@@ -6,8 +6,7 @@ import * as Haptics from 'expo-haptics';
 import Container from '../../components/Container';
 import Button from '../../components/buttons/Button';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function BMICalculator() {
     const [centimeters, setCentimeters] = useState();
@@ -15,8 +14,7 @@ export default function BMICalculator() {
     const [inches, setInches] = useState();
     const [weight, setWeight] = useState();
 
-    const { settings, translate } = useSettings();
-    const { theme } = useTheme();
+    const { settings, theme, translate } = useSettings();
 
     const [bmiResult, setBMIResult] = useState(translate('result'));
 

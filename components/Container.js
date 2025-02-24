@@ -1,10 +1,10 @@
 import { View, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { useTheme } from '../providers/ThemeProvider';
+import { useSettings } from '../helpers/SettingsProvider';
 
 export default function Container({ gradient, children }) {
-    const { theme } = useTheme();
+    const { theme } = useSettings();
 
     const styles = {
         container: {

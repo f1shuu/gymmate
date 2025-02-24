@@ -4,12 +4,10 @@ import * as Haptics from 'expo-haptics';
 
 import Colors from '../../Colors';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function Setting({ active, name, icon, color, onPress, type, parameter, style }) {
-    const { settings, updateSettings } = useSettings();
-    const { theme } = useTheme();
+    const { settings, theme, updateSettings } = useSettings();
 
     const styles = {
         widget: {

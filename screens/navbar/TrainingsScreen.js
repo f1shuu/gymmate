@@ -2,7 +2,7 @@ import AddButton from '../../components/buttons/AddButton';
 import Background from '../../components/Background';
 import Container from '../../components/Container';
 
-import { useSettings } from '../../providers/SettingsProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function TrainingsScreen() {
     const { translate } = useSettings();

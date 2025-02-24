@@ -9,7 +9,7 @@ import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
 import Setting from '../../components/widgets/Setting';
 
-import { useSettings } from '../../providers/SettingsProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function DataDeletionScreen() {
     const [exercisesCount, setExercisesCount] = useState(0);
@@ -47,6 +47,18 @@ export default function DataDeletionScreen() {
         setText(text);
     }
 
+    const styles = {
+        container: {
+            gap: 10,
+            borderRadius: 15,
+            overflow: 'hidden'
+        },
+        allDataButton: {
+            borderWidth: 2,
+            borderColor: Colors.red
+        }
+    }
+
     return (
         <Container>
             <View style={styles.container}>
@@ -73,16 +85,4 @@ export default function DataDeletionScreen() {
             />
         </Container>
     )
-}
-
-const styles = {
-    container: {
-        gap: 10,
-        borderRadius: 15,
-        overflow: 'hidden'
-    },
-    allDataButton: {
-        borderWidth: 2,
-        borderColor: Colors.red
-    }
 }

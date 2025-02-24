@@ -4,12 +4,12 @@ import Container from '../../components/Container';
 import Theme from '../../components/widgets/Theme';
 import * as themes from '../../Themes';
 
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 const data = Object.keys(themes);
 
 export default function ThemeSelectionScreen() {
-    const { changeTheme } = useTheme();
+    const { changeTheme } = useSettings();
 
     return (
         <Container>

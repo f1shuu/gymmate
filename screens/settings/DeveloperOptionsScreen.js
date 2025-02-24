@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import Colors from '../../Colors';
 import Container from '../../components/Container';
 
-import { useSettings } from '../../providers/SettingsProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function LanguageSelectionScreen() {
     const { settings } = useSettings();

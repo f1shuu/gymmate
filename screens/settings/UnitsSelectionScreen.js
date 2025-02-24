@@ -5,14 +5,12 @@ import Container from '../../components/Container';
 import Setting from '../../components/widgets/Setting';
 import * as themes from '../../Themes';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 const data = Object.keys(themes);
 
 export default function UnitsSelectionScreen() {
-    const { settings, updateSettings } = useSettings();
-    const { theme } = useTheme();
+    const { settings, theme, updateSettings } = useSettings();
 
     const changeUnits = (newValue) => {
         updateSettings({ 'units': newValue });

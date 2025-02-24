@@ -2,10 +2,10 @@ import { Text, TouchableOpacity } from 'react-native';
 
 import Colors from '../../Colors';
 
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function Button({ onPress, text, type }) {
-    const { theme } = useTheme();
+    const { theme } = useSettings();
 
     const styles = {
         button: {

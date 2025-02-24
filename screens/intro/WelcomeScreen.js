@@ -3,14 +3,12 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { useTheme } from '../../providers/ThemeProvider';
 import appConfig from '../../app.config';
 import Colors from '../../Colors';
-import { useSettings } from '../../providers/SettingsProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function WelcomeScreen() {
-    const { translate, updateSettings } = useSettings();
-    const { theme } = useTheme();
+    const { theme, translate, updateSettings } = useSettings();
 
     const navigation = useNavigation();
 

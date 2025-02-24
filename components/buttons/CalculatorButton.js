@@ -3,10 +3,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Colors from '../../Colors';
 
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function CalculatorButton({ type, value, onPress }) {
-    const { theme } = useTheme();
+    const { theme } = useSettings();
 
     const styles = {
         button: {

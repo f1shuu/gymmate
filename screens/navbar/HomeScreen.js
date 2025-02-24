@@ -1,14 +1,12 @@
 import { Text, View, ImageBackground, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 import HomeScreenWidget from '../../components/widgets/HomeScreenWidget';
 
 export default function HomeScreen() {
-    const { translate } = useSettings();
-    const { theme } = useTheme();
+    const { theme, translate } = useSettings();
 
     const styles = {
         scrollview: {

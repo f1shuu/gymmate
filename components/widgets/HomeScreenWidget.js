@@ -3,12 +3,10 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function HomeScreenWidget({ width, textRequired, textOptional, graphics, screen, navigator }) {
-    const { translate } = useSettings();
-    const { theme } = useTheme();
+    const { theme, translate } = useSettings();
 
     const navigation = useNavigation();
 

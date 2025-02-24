@@ -3,11 +3,11 @@ import Modal from 'react-native-modal';
 
 import Button from './buttons/Button';
 
-import { useTheme } from '../providers/ThemeProvider';
+import { useSettings } from '../helpers/SettingsProvider';
 
 export default function CustomModal({ isVisible, text, twoButtons, buttonOneText, buttonOneOnPress, buttonTwoText, buttonTwoOnPress }) {
-    const { theme } = useTheme();
-
+    const { theme } = useSettings();
+    
     const styles = {
         modal: {
             backgroundColor: theme.background,

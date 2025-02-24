@@ -2,14 +2,12 @@ import { Text, Image, Dimensions } from 'react-native';
 
 import Container from '../../components/Container';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 const { width } = Dimensions.get('window');
 
 export default function Calculator() {
-    const { translate } = useSettings();
-    const { theme } = useTheme();
+    const { theme, translate } = useSettings();
 
     const styles = {
         mainText: {

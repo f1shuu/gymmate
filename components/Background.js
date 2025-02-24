@@ -1,11 +1,9 @@
 import { Text, View } from 'react-native';
 
-import { useSettings } from '../providers/SettingsProvider';
-import { useTheme } from '../providers/ThemeProvider';
+import { useSettings } from '../helpers/SettingsProvider';
 
 export default function Background({ text, content, type }) {
-    const { settings, translate } = useSettings();
-    const { theme } = useTheme();
+    const { settings, theme, translate } = useSettings();
 
     const styles = {
         container: {
@@ -29,4 +27,3 @@ export default function Background({ text, content, type }) {
         </View>
     )
 }
-

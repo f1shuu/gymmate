@@ -10,8 +10,7 @@ import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
 import SegmentedButton from '../../components/buttons/SegmentedButton';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 import { muscleGroups } from '../../constants/muscleGroups';
 import { repsAmounts } from '../../constants/repsAmounts';
@@ -23,21 +22,19 @@ import { lbsWeights } from '../../constants/lbsWeights';
 export default function ExerciseCreator({ route }) {
     const [id, setId] = useState(route.params?.id || null);
     const [muscleGroup, setMuscleGroup] = useState(route.params?.data.muscleGroup || null);
-
-    const { settings, translate } = useSettings();
-
+    
     const [type, setType] = useState(route.params?.data.type || translate('repsBased'));
     const [setsAmount, setSetsAmount] = useState(route.params?.data.setsAmount || null);
     const [repsAmount, setRepsAmount] = useState(route.params?.data.repsAmount || null);
     const [time, setTime] = useState(route.params?.data.time || null);
     const [weight, setWeight] = useState(route.params?.data.weight || null);
     const [name, setName] = useState(route.params?.name || null);
-
+    
     const [isFocus, setIsFocus] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [errors, setErrors] = useState(false);
-
-    const { theme } = useTheme();
+    
+    const { settings, theme, translate } = useSettings();
 
     const navigation = useNavigation();
 

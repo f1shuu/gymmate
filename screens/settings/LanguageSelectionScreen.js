@@ -4,12 +4,10 @@ import * as Haptics from 'expo-haptics';
 import Container from '../../components/Container';
 import Setting from '../../components/widgets/Setting';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function LanguageSelectionScreen() {
-    const { settings, updateSettings } = useSettings();
-    const { theme } = useTheme();
+    const { settings, theme, updateSettings } = useSettings();
 
     const changeLanguage = (newValue) => {
         updateSettings({ 'language': newValue });

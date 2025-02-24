@@ -4,15 +4,13 @@ import { useState } from 'react';
 import Container from '../../components/Container';
 import CalculatorButton from '../../components/buttons/CalculatorButton';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function Calculator() {
     const [input, setInput] = useState('');
     const [output, setOutput] = useState('');
 
-    const { translate } = useSettings();
-    const { theme } = useTheme();
+    const { theme, translate } = useSettings();
 
     const calculate = (value) => {
         const replaceSymbols = (expr) => expr.replace(/x/g, '*').replace(/÷/g, '/').replace(/\^/g, '**');

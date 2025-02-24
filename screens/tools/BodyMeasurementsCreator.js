@@ -8,8 +8,7 @@ import DataController from '../../helpers/dataController';
 import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 import { categories } from '../../constants/categories';
 
@@ -20,8 +19,7 @@ export default function BodyMeasurementsCreator() {
     const [isFocus, setIsFocus] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const { settings, translate } = useSettings();
-    const { theme } = useTheme();
+    const { settings, theme, translate } = useSettings();
 
     const navigation = useNavigation();
 

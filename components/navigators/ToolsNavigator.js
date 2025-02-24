@@ -7,14 +7,12 @@ import MapScreen from '../../screens/tools/MapScreen';
 import TimerScreen from '../../screens/tools/TimerScreen';
 import UnitsConverterScreen from '../../screens/tools/UnitsConverterScreen';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 const Stack = createStackNavigator();
 
 export default function ToolsNavigator() {
-    const { translate } = useSettings();
-    const { theme } = useTheme();
+    const { theme, translate } = useSettings();
 
     const customOptions = {
         headerTintColor: theme.textHeader,

@@ -11,8 +11,7 @@ import Container from '../../components/Container';
 import Button from '../../components/buttons/Button';
 import SetTimerButton from '../../components/buttons/SetTimerButton';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function Timer() {
     const [showPicker, setShowPicker] = useState(true);
@@ -31,8 +30,7 @@ export default function Timer() {
         { text: '10:00', minutes: 10, seconds: 0, id: 3 }
     ];
 
-    const { settings, translate } = useSettings();
-    const { theme } = useTheme();
+    const { settings, theme, translate } = useSettings();
 
     const setTime = (minutes, seconds, id) => {
         setIsActive(prevId => prevId === id ? null : id);

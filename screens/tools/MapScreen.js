@@ -8,8 +8,7 @@ import Colors from '../../Colors';
 import Container from '../../components/Container';
 import Modal from '../../components/Modal';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 const CustomMarker = ({ type, coordinate, title, description }) => {
   const [tracksViewChanges, setTracksViewChanges] = useState(true);
@@ -55,8 +54,7 @@ export default function Map() {
   const [gyms, setGyms] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const { translate } = useSettings();
-  const { theme } = useTheme();
+  const { theme, translate } = useSettings();
 
   const [message, setMessage] = useState(translate('loading'));
 

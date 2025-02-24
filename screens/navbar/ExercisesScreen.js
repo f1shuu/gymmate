@@ -11,8 +11,7 @@ import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function ExercisesScreen() {
     const [exercises, setExercises] = useState([]);
@@ -21,8 +20,7 @@ export default function ExercisesScreen() {
     const [modalData, setModalData] = useState({});
     const [activeId, setActiveId] = useState(null);
 
-    const { settings, translate } = useSettings();
-    const { theme } = useTheme();
+    const { settings, theme, translate } = useSettings();
 
     const navigation = useNavigation();
 

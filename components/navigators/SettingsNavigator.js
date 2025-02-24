@@ -8,14 +8,12 @@ import SettingsScreen from '../../screens/navbar/SettingsScreen';
 import ThemeSelectionScreen from '../../screens/settings/ThemeSelectionScreen';
 import UnitsSelectionScreen from '../../screens/settings/UnitsSelectionScreen';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 const Stack = createStackNavigator();
 
 export default function SettingsNavigator() {
-    const { translate } = useSettings();
-    const { theme } = useTheme();
+    const { theme, translate } = useSettings();
 
     const customOptions = {
         headerTintColor: theme.textHeader,

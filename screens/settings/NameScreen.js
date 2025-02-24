@@ -5,18 +5,25 @@ import { useNavigation } from '@react-navigation/native';
 import Button from '../../components/buttons/Button';
 import Container from '../../components/Container';
 
-import { useSettings } from '../../providers/SettingsProvider';
-import { useTheme } from '../../providers/ThemeProvider';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function NameScreen() {
-    const { settings, translate, updateSettings } = useSettings();
-    const { theme } = useTheme();
+    const { settings, theme, translate, updateSettings } = useSettings();
 
     const [firstName, setFirstName] = useState(settings.firstName);
     const [lastName, setLastName] = useState(settings.lastName);
     const [nickname, setNickname] = useState(settings.nickname);
 
     const navigation = useNavigation();
+
+    const saveAndReturn = (firstName, lastName, nickname) => {
+        updateSettings({
+            'firstName': firstName,
+            'lastName': lastName,
+            'nickname': nickname
+        });
+        navigation.navigate('SettingsScreen');
+    }
 
     const styles = {
         text: {
@@ -36,15 +43,6 @@ export default function NameScreen() {
             padding: 15,
             marginVertical: 10
         }
-    }
-
-    const saveAndReturn = (firstName, lastName, nickname) => {
-        updateSettings({
-            'firstName': firstName,
-            'lastName': lastName,
-            'nickname': nickname
-        });
-        navigation.navigate('SettingsScreen');
     }
 
     return (

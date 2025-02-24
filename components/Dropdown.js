@@ -1,10 +1,10 @@
 import { Dropdown } from 'react-native-element-dropdown';
 
-import { useTheme } from '../providers/ThemeProvider';
+import { useSettings } from '../helpers/SettingsProvider';
 
 export default function CustomDropdown({ passedStyle, data, placeholder, value, onFocus, onBlur, onChange }) {
-    const { theme } = useTheme();
-
+    const { theme } = useSettings();
+    
     const styles = {
         dropdown: {
             width: '100%',
