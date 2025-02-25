@@ -67,32 +67,26 @@ export default function SettingsScreen() {
                 </Text>
                 <View style={styles.container}>
                     <Text style={styles.sectionName}>{translate('settings')}</Text>
-                    {/* <Setting active={false} name={translate('notifications')} icon={'notifications'} color={theme.textPrimary} onPress={() => { }} type='toggle' /> */}
-                    <Setting active={true} name={translate('sound')} icon={'volume-up'} color={theme.textPrimary} onPress={() => { }} type='toggle' parameter='isSoundOn' />
-                    <Setting active={true} name={translate('vibrations')} icon={'vibration'} color={theme.textPrimary} onPress={() => { }} type='toggle' parameter='isHapticsOn' />
-                    {/* <Setting active={false} name={translate('trainingsScreenHeader')} icon={'workspace-premium'} color={theme.textPrimary} type='navigate' onPress={() => { }} /> */}
-                    {/* <Setting active={false} name={translate('exportAndDataMigration')} icon={'loop'} color={theme.textPrimary} type='navigate' onPress={() => { }} /> */}
+                    <Setting name={translate('sound')} icon={'volume-up'} color={theme.textPrimary} onPress={() => { }} type='toggle' parameter='isSoundOn' />
+                    <Setting name={translate('vibrations')} icon={'vibration'} color={theme.textPrimary} onPress={() => { }} type='toggle' parameter='isHapticsOn' />
+                    <Setting name={translate('trainingsScreenHeader')} icon={'workspace-premium'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('TrainingsSettingsScreen')} />
                 </View>
                 <View style={styles.container}>
                     <Text style={styles.sectionName}>{translate('personalization')}</Text>
-                    <Setting active={true} name={translate('theme')} icon={'palette'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('ThemeSelectionScreen')} />
-                    <Setting active={true} name={translate('language')} icon={'translate'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('LanguageSelectionScreen')} />
-                    <Setting active={true} name={translate('units')} icon={'swap-horiz'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('UnitsSelectionScreen')} />
+                    <Setting name={translate('theme')} icon={'palette'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('ThemeSelectionScreen')} />
+                    <Setting name={translate('language')} icon={'translate'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('LanguageSelectionScreen')} />
+                    <Setting name={translate('units')} icon={'swap-horiz'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('UnitsSelectionScreen')} />
                 </View>
-                {/* <View style={styles.container}>
+                <View style={styles.container}>
                     <Text style={styles.sectionName}>{translate('help')}</Text>
-                    <Setting active={false} name={translate('appInfo')} icon={'info'} color={theme.textPrimary} type='navigate' onPress={() => { }} />
-                    <Setting active={false} name={translate('rateApp')} icon={'star'} color={theme.textPrimary} type='navigate' onPress={() => { }} />
-                    <Setting active={false} name={translate('privacyPolicy')} icon={'text-snippet'} color={theme.textPrimary} type='navigate' onPress={() => { }} />
-                    <Setting active={false} name={translate('termsAndConditions')} icon={'menu-book'} color={theme.textPrimary} type='navigate' onPress={() => { }} />
-                    <Setting active={false} name={translate('contact')} icon={'mail'} color={theme.textPrimary} type='navigate' onPress={() => { }} />
-                    <Setting active={false} name={translate('changelog')} icon={'list-alt'} color={theme.textPrimary} type='navigate' onPress={() => { }} />
-                </View> */}
+                    <Setting name={translate('contact')} icon={'mail'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('ContactScreen')} />
+                    <Setting name={translate('changelog')} icon={'list-alt'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('ChangelogScreen')} />
+                </View>
                 <View style={styles.container}>
                     <Text style={styles.sectionName}>{translate('dangerZone')}</Text>
-                    <Setting active={true} name={translate('dataDeletion')} icon={'delete'} color={Colors.red} type='navigate' onPress={() => navigation.navigate('DataDeletionScreen')} />
-                    <Setting active={true} name={translate('restoreDefaultSettings')} icon={'restart-alt'} color={Colors.red} type='navigate' onPress={() => restoreDefault()} />
-                    <Setting active={true} name={translate('developerOptions')} icon={'code'} color={Colors.red} type='navigate' onPress={() => navigation.navigate('DeveloperOptionsScreen')} />
+                    <Setting name={translate('dataDeletion')} icon={'delete'} color={Colors.red} type='navigate' onPress={() => navigation.navigate('DataDeletionScreen')} />
+                    <Setting name={translate('restoreDefaultSettings')} icon={'restart-alt'} color={Colors.red} type='navigate' onPress={() => restoreDefault()} />
+                    <Setting name={translate('developerOptions')} icon={'code'} color={Colors.red} type='navigate' onPress={() => navigation.navigate('DeveloperOptionsScreen')} />
                 </View>
             </ScrollView>
         </Container>

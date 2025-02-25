@@ -6,7 +6,7 @@ import { useSettings } from '../../helpers/SettingsProvider';
 import HomeScreenWidget from '../../components/widgets/HomeScreenWidget';
 
 export default function HomeScreen() {
-    const { theme, translate } = useSettings();
+    const { settings, theme, translate } = useSettings();
 
     const styles = {
         scrollview: {
@@ -55,9 +55,9 @@ export default function HomeScreen() {
             <View style={styles.container}>
                 <Text style={styles.sectionName}>{translate('statistics')}</Text>
                 <View style={styles.section}>
-                    <HomeScreenWidget width={'30%'} textRequired={'longestStreak'} textOptional={'2 dni'} graphics={'fire'} />
-                    <HomeScreenWidget width={'30%'} textRequired={'trainingsTotal'} textOptional={'69'} graphics={'dumbbell'} />
-                    <HomeScreenWidget width={'30%'} textRequired={'liftedKgsTotal'} textOptional={'2137'} graphics={'weight-hanging'} />
+                    <HomeScreenWidget width={'30%'} textRequired={'longestStreak'} textOptional={settings.longestStreak + ' ' + (settings.longestStreak === 1 ? translate('day') : translate('days'))} graphics={'fire'} />
+                    <HomeScreenWidget width={'30%'} textRequired={'trainingsTotal'} textOptional={settings.trainingsTotal} graphics={'dumbbell'} />
+                    <HomeScreenWidget width={'30%'} textRequired={'liftedKgsTotal'} textOptional={settings.liftedKgsTotal} graphics={'weight-hanging'} />
                 </View>
                 <Text style={styles.sectionName}>{translate('quickStart')}</Text>
                 <View style={styles.section}>

@@ -6,7 +6,7 @@ import Colors from '../../Colors';
 
 import { useSettings } from '../../helpers/SettingsProvider';
 
-export default function Setting({ active, name, icon, color, onPress, type, parameter, style }) {
+export default function Setting({ name, icon, color, onPress, type, parameter, style }) {
     const { settings, theme, updateSettings } = useSettings();
 
     const styles = {
@@ -33,10 +33,10 @@ export default function Setting({ active, name, icon, color, onPress, type, para
     }
 
     return (
-        <TouchableOpacity onPress={type === 'toggle' ? () => toggleSetting(!settings[parameter]) : (active ? onPress : () => { })} style={[styles.widget, style]} activeOpacity={0.8} >
+        <TouchableOpacity onPress={type === 'toggle' ? () => toggleSetting(!settings[parameter]) : onPress} style={[styles.widget, style]} activeOpacity={0.8} >
             <View style={{ flexDirection: 'row' }}>
-                <Icon name={icon} size={30} color={active ? color : theme.tertiary} />
-                <Text style={[styles.text, { color: active ? color : theme.tertiary }]}>{name}</Text>
+                <Icon name={icon} size={30} color={color} />
+                <Text style={[styles.text, { color }]}>{name}</Text>
             </View>
             {type === 'toggle' ? (
                 <Switch
@@ -46,7 +46,7 @@ export default function Setting({ active, name, icon, color, onPress, type, para
                     value={settings[parameter]}
                 />
             ) : type === 'navigate' ? (
-                <Icon name='keyboard-arrow-right' size={24} color={active ? color : theme.tertiary} />
+                <Icon name='keyboard-arrow-right' size={24} color={color} />
             ) : type === 'check' ? (
                 <Icon name='check' size={32} color={Colors.green} />
             ) : null}

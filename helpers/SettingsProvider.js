@@ -20,7 +20,10 @@ export const SettingsProvider = ({ children }) => {
         language: Localization.getLocales()[0].languageCode,
         firstName: null,
         lastName: null,
-        nickname: null
+        nickname: null,
+        longestStreak: 0,
+        trainingsTotal: 0,
+        liftedKgsTotal: 0
     }
 
     const loadSettings = async () => {
