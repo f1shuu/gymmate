@@ -11,7 +11,7 @@ export default function Button({ onPress, text, type }) {
         button: {
             width: 150,
             height: 60,
-            borderRadius: 15,
+            borderRadius: 10,
             justifyContent: 'center',
             alignItems: 'center',
             margin: 10,

@@ -1,5 +1,5 @@
 import { Text, View, TouchableOpacity, Switch } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from '@expo/vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
 
 import Colors from '../../Colors';
@@ -17,7 +17,7 @@ export default function Setting({ name, icon, color, onPress, type, parameter, s
             backgroundColor: theme.background,
             paddingHorizontal: 20,
             height: 65,
-            borderRadius: 15
+            borderRadius: 10
         },
         text: {
             fontFamily: 'Nexa',

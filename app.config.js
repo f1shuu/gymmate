@@ -25,7 +25,7 @@ export default {
                 projectId: 'e5304711-7af6-4e07-9af3-2c40c094c484'
             }
         },
-        plugins: ['expo-font'],
+        plugins: ['expo-font', 'expo-audio', 'expo-asset', 'expo-localization'],
         newArchEnabled: true
     }
 }

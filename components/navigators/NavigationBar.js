@@ -1,7 +1,6 @@
 import { Text, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import MIcon from 'react-native-vector-icons/MaterialIcons';
 
 import ExercisesNavigator from './ExercisesNavigator';
 import BodyMeasurementsNavigator from './BodyMeasurementsNavigator';
@@ -19,19 +18,22 @@ export default function NavigationBar() {
     const customOptions = {
         headerTitleStyle: {
             fontFamily: 'Nexa',
-            fontSize: 22,
-            color: theme.textHeader
+            fontSize: 24,
+            color: theme.textHeader,
+            marginTop: 10
         },
         headerStyle: {
             backgroundColor: theme.primary,
-            height: 70,
+            height: 80,
             elevation: 0
         },
         tabBarStyle: {
             backgroundColor: theme.secondary,
+            height: 80,
+            paddingTop: 5,
+            paddingHorizontal: 20,
             elevation: 0,
-            borderTopWidth: 0,
-            marginTop: -15
+            borderTopWidth: 0
         }
     }
 
@@ -40,11 +42,17 @@ export default function NavigationBar() {
             fontFamily: 'Nexa',
             fontSize: 24,
             color: theme.textHeader,
+            marginTop: 10,
             marginLeft: 20
         },
         navbarText: {
             fontFamily: 'Nexa',
-            fontSize: 10
+            fontSize: 10,
+            marginTop: 5
+        },
+        avatar: {
+            marginTop: 10,
+            marginRight: 20
         }
     }
 
@@ -82,8 +90,8 @@ export default function NavigationBar() {
                     ...customOptions,
                     headerStyle: {
                         backgroundColor: theme.primary,
-                        height: 70,
-                        elevation: 0
+                        height: 100,
+                        elevation: 0,
                     },
                     title: '',
                     headerLeft: () => (
@@ -91,7 +99,7 @@ export default function NavigationBar() {
                     ),
                     headerRight: () => (
                         <TouchableOpacity onPress={() => navigation.navigate('SettingsNavigator', { screen: 'NameScreen' })}>
-                            <MIcon name='account-circle' size={25} color={theme.textHeader} style={{ marginRight: 20 }} />
+                            <Icon name='user-circle' size={25} color={theme.textHeader} style={styles.avatar} />
                         </TouchableOpacity>
                     ),
                     tabBarIcon: ({ focused }) => (

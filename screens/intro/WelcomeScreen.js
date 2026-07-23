@@ -40,7 +40,7 @@ export default function WelcomeScreen() {
             width: '75%',
             height: 60,
             backgroundColor: theme.primary,
-            borderRadius: 15,
+            borderRadius: 10,
             justifyContent: 'center',
             alignItems: 'center',
             alignSelf: 'center'

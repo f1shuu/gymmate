@@ -1,7 +1,7 @@
 import { Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { useState, useCallback } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from '@expo/vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
 
 import AddButton from '../../components/buttons/AddButton';
@@ -59,7 +59,7 @@ export default function ExercisesScreen() {
                             ) : null
                         ))}
                         <TouchableOpacity style={[styles.row, { marginBottom: -10, marginHorizontal: -10 }]} activeOpacity={0.8}>
-                            <Button onPress={async () => await DataController.update('exercises', item.id, navigation, 'ExerciseCreator')} text={'Edytuj'} />
+                            <Button onPress={async () => await DataController.update('exercises', item.id, navigation, 'ExerciseCreator')} text={translate('edit')} />
                             <Button onPress={() => handleModal(item.id)} text={translate('delete')} type='delete' />
                         </TouchableOpacity>
                     </View>
@@ -74,7 +74,7 @@ export default function ExercisesScreen() {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            borderRadius: 15,
+            borderRadius: 10,
             paddingVertical: 10,
             paddingHorizontal: 20,
             marginBottom: 5
@@ -89,7 +89,7 @@ export default function ExercisesScreen() {
             marginBottom: 5,
             backgroundColor: theme.background,
             padding: 15,
-            borderRadius: 15
+            borderRadius: 10
         },
         row: {
             flexDirection: 'row',
@@ -116,9 +116,9 @@ export default function ExercisesScreen() {
                 isVisible={isModalVisible}
                 text={translate('areYouSure') + translate('thisExercise') + '?'}
                 twoButtons={true}
-                buttonOneText='Tak'
+                buttonOneText={translate('yes')}
                 buttonOneOnPress={async () => await DataController.delete('exercises', setExercises, setIsExercises, modalData, isModalVisible, setIsModalVisible)}
-                buttonTwoText='Nie'
+                buttonTwoText={translate('no')}
                 buttonTwoOnPress={() => setIsModalVisible(!isModalVisible)}
             >
             </Modal>

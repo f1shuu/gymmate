@@ -23,7 +23,7 @@ export default function Calculator() {
             width: width * 0.9,
             height: (width * (814 / 1130)) * 0.9,
             resizeMode: 'contain',
-            borderRadius: 15,
+            borderRadius: 10,
             marginBottom: 10
         },
         text: {

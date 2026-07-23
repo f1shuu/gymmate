@@ -11,7 +11,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function Loader() {
     const [isLoading, setIsLoading] = useState(true);
-    const { loadSettings, restoreDefault, theme } = useSettings();
+    const { loadSettings, theme } = useSettings();
 
     useEffect(() => {
         const loadAppResources = async () => {
@@ -19,15 +19,12 @@ export default function Loader() {
                 await Font.loadAsync({
                     'Nexa': require('./assets/fonts/Nexa-Heavy.ttf')
                 })
-                restoreDefault();
-                loadSettings();
+                await loadSettings();
             } catch (error) {
                 console.error(error);
             } finally {
-                setTimeout(async () => {
-                    setIsLoading(false);
-                    await SplashScreen.hideAsync();
-                }, 1000)
+                setIsLoading(false);
+                await SplashScreen.hideAsync();
             }
         }
         loadAppResources();

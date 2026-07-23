@@ -1,7 +1,7 @@
 import { Text, View, Image, TouchableOpacity, FlatList } from 'react-native';
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from '@expo/vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
 
 import AddButton from '../../components/buttons/AddButton';
@@ -67,7 +67,7 @@ export default function BodyMeasurementsScreen() {
                 {expandedCategories[category] && (
                     <View style={styles.itemsContainer}>
                         {items.slice().reverse().map((measurement, index) => (
-                            <View key={measurement.id} style={[styles.measurement, index === 0 ? { backgroundColor: Colors.green } : '']}>
+                            <View key={measurement.id} style={[styles.measurement, index === 0 ? { backgroundColor: Colors.green } : null]}>
                                 <Text style={styles.text}>
                                     {measurement.date}
                                 </Text>
@@ -91,7 +91,7 @@ export default function BodyMeasurementsScreen() {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            borderRadius: 15,
+            borderRadius: 10,
             paddingVertical: 10,
             paddingHorizontal: 20,
             marginBottom: 5
@@ -115,7 +115,7 @@ export default function BodyMeasurementsScreen() {
             backgroundColor: theme.background,
             paddingVertical: 10,
             paddingHorizontal: 30,
-            borderRadius: 15
+            borderRadius: 10
         }
     }
 

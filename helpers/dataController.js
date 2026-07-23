@@ -12,8 +12,6 @@ const getFormattedDate = () => {
 }
 
 export default new class DataController {
-    constructor() { }
-
     groupByCategory(data) {
         return data.reduce((acc, measurement) => {
             const { category } = measurement;
@@ -30,8 +28,7 @@ export default new class DataController {
             if (storedData) {
                 const parsedData = JSON.parse(storedData);
                 setData(parsedData);
-                if (parsedData.length === 0) setIsData(false);
-                else setIsData(true);
+                setIsData(parsedData.length > 0);
             } else {
                 setData([]);
                 setIsData(false);
@@ -46,10 +43,10 @@ export default new class DataController {
             const storedData = await AsyncStorage.getItem(dataSet);
             const parsedData = storedData ? JSON.parse(storedData) : [];
 
-            if (parsedData) return parsedData.length;
-            else return 0;
+            return parsedData.length;
         } catch (error) {
             console.error(error);
+            return 0;
         }
     }
 
@@ -63,6 +60,7 @@ export default new class DataController {
 
             if (id) {
                 const existingElementId = parsedData.findIndex(item => item.id === id);
+                if (existingElementId === -1) throw new Error('Cannot update a missing data record');
                 parsedData[existingElementId] = { ...parsedData[existingElementId], name, category, data: { ...parsedData[existingElementId].data, ...data } };
             } else {
                 id = uuidv4();
@@ -103,7 +101,7 @@ export default new class DataController {
 
     async clear(dataSet, isModalVisible, setIsModalVisible, fetchData, isConfirmationModalVisible, setIsConfirmationModalVisible) {
         try {
-            if (dataSet === 'all') await AsyncStorage.clear();
+            if (dataSet === 'all') await AsyncStorage.multiRemove(['exercises', 'bodyMeasurements', 'trainings']);
             else await AsyncStorage.removeItem(dataSet);
             setIsModalVisible(!isModalVisible);
             fetchData();

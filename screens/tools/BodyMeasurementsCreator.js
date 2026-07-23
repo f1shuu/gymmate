@@ -50,7 +50,7 @@ export default function BodyMeasurementsCreator() {
             fontFamily: 'Nexa',
             fontSize: 16,
             color: theme.textPrimary,
-            borderRadius: 15,
+            borderRadius: 10,
             padding: 15,
             marginVertical: 10
         },

@@ -20,21 +20,20 @@ import { kgWeights } from '../../constants/kgWeights';
 import { lbsWeights } from '../../constants/lbsWeights';
 
 export default function ExerciseCreator({ route }) {
-    const [id, setId] = useState(route.params?.id || null);
-    const [muscleGroup, setMuscleGroup] = useState(route.params?.data.muscleGroup || null);
-    
-    const [type, setType] = useState(route.params?.data.type || translate('repsBased'));
-    const [setsAmount, setSetsAmount] = useState(route.params?.data.setsAmount || null);
-    const [repsAmount, setRepsAmount] = useState(route.params?.data.repsAmount || null);
-    const [time, setTime] = useState(route.params?.data.time || null);
-    const [weight, setWeight] = useState(route.params?.data.weight || null);
+    const { settings, theme, translate } = useSettings();
+    const id = route.params?.id || null;
+    const [muscleGroup, setMuscleGroup] = useState(route.params?.data?.muscleGroup || null);
+
+    const [type, setType] = useState(route.params?.data?.type || translate('repsBased'));
+    const [setsAmount, setSetsAmount] = useState(route.params?.data?.setsAmount || null);
+    const [repsAmount, setRepsAmount] = useState(route.params?.data?.repsAmount || null);
+    const [time, setTime] = useState(route.params?.data?.time || null);
+    const [weight, setWeight] = useState(route.params?.data?.weight || null);
     const [name, setName] = useState(route.params?.name || null);
-    
+
     const [isFocus, setIsFocus] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [errors, setErrors] = useState(false);
-    
-    const { settings, theme, translate } = useSettings();
 
     const navigation = useNavigation();
 
@@ -48,18 +47,25 @@ export default function ExerciseCreator({ route }) {
     }
 
     const validate = async (isLast, ...params) => {
-        const result = Object.values(params).some(param => param === null);
-        if (result) {
-            setIsModalVisible(() => !isModalVisible);
+        const hasMissingValue = params.some(param => param === null || param === '');
+        if (hasMissingValue) {
+            setIsModalVisible(true);
             setErrors(true);
-        } else {
-            if (type === translate('repsBased')) setTime(null);
-            else {
-                setSetsAmount(null);
-                setRepsAmount(null);
-            }
-            setErrors(false);
-            if (isLast) await DataController.store('exercises', id, name, 'exercises', navigation, 'ExercisesScreen', { muscleGroup, type, setsAmount, repsAmount, time, weight });
+            return;
+        }
+
+        setErrors(false);
+        if (isLast) {
+            const isRepsBased = type === translate('repsBased');
+            const exerciseData = {
+                muscleGroup,
+                type,
+                setsAmount: isRepsBased ? setsAmount : null,
+                repsAmount: isRepsBased ? repsAmount : null,
+                time: isRepsBased ? null : time,
+                weight
+            };
+            await DataController.store('exercises', id, name, 'exercises', navigation, 'ExercisesScreen', exerciseData);
         }
     }
 
@@ -68,7 +74,7 @@ export default function ExerciseCreator({ route }) {
             backgroundColor: theme.primary,
             width: 100,
             height: 60,
-            borderRadius: 15,
+            borderRadius: 10,
             justifyContent: 'center'
         },
         text: {
@@ -91,7 +97,7 @@ export default function ExerciseCreator({ route }) {
             fontFamily: 'Nexa',
             fontSize: 16,
             color: theme.textPrimary,
-            borderRadius: 15,
+            borderRadius: 10,
             padding: 15,
             marginVertical: 10
         }
@@ -151,7 +157,7 @@ export default function ExerciseCreator({ route }) {
                     nextBtnTextStyle={styles.text}
                     previousBtnStyle={styles.button}
                     previousBtnTextStyle={styles.text}
-                    onNext={() => validate(false, type === translate('repsBased') ? (setsAmount, repsAmount) : time)}
+                    onNext={() => type === translate('repsBased') ? validate(false, setsAmount, repsAmount) : validate(false, time)}
                     errors={errors}
                 >
                     <>
@@ -214,7 +220,7 @@ export default function ExerciseCreator({ route }) {
                             <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('weightOptional')}</Text>
                             <Dropdown
                                 passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
-                                data={settings.units = 'metric' ? kgWeights : lbsWeights}
+                                data={settings.units === 'metric' ? kgWeights : lbsWeights}
                                 placeholder={'...'}
                                 value={weight}
                                 onFocus={() => setIsFocus(true)}

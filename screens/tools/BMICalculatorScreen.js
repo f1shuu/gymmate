@@ -99,7 +99,7 @@ export default function BMICalculator() {
             fontFamily: 'Nexa',
             fontSize: 16,
             color: theme.textPrimary,
-            borderRadius: 15,
+            borderRadius: 10,
             padding: 15,
             marginVertical: 10
         },
@@ -174,7 +174,7 @@ export default function BMICalculator() {
             </TouchableOpacity>
             <View style={styles.buttonRow}>
                 <Button onPress={settings.units === 'metric' ? () => calculateBMIForMetric() : () => calculateBMIForImperial()} text={translate('calculate')} />
-                <Button onPress={() => handleClear()} text={translate('clear')} type={translate('delete')} />
+                <Button onPress={() => handleClear()} text={translate('clear')} type='delete' />
             </View>
         </Container>
     )

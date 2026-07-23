@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from '@expo/vector-icons/MaterialIcons';
 
 import Colors from '../../Colors';
 
@@ -15,7 +15,7 @@ export default function CalculatorButton({ type, value, onPress }) {
             justifyContent: 'center',
             alignItems: 'center',
             marginHorizontal: 5,
-            borderRadius: 15
+            borderRadius: 10
         },
         text: {
             fontFamily: 'Nexa',

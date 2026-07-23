@@ -5,7 +5,6 @@ import BMIHelpScreen from '../../screens/tools/BMIHelpScreen';
 import CalculatorScreen from '../../screens/tools/CalculatorScreen';
 import MapScreen from '../../screens/tools/MapScreen';
 import TimerScreen from '../../screens/tools/TimerScreen';
-import UnitsConverterScreen from '../../screens/tools/UnitsConverterScreen';
 
 import { useSettings } from '../../helpers/SettingsProvider';
 
@@ -66,14 +65,6 @@ export default function ToolsNavigator() {
                 component={TimerScreen}
                 options={{
                     headerTitle: translate('timer'),
-                    ...customOptions
-                }}
-            />
-            <Stack.Screen
-                name='UnitsConverterScreen'
-                component={UnitsConverterScreen}
-                options={{
-                    headerTitle: translate('unitsConverter'),
                     ...customOptions
                 }}
             />

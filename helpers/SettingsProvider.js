@@ -17,7 +17,7 @@ export const SettingsProvider = ({ children }) => {
         isHapticsOn: true,
         isSoundOn: true,
         units: 'metric',
-        language: Localization.getLocales()[0].languageCode,
+        language: Localization.getLocales()[0]?.languageCode === 'pl' ? 'pl' : 'en',
         firstName: null,
         lastName: null,
         nickname: null,
@@ -28,16 +28,18 @@ export const SettingsProvider = ({ children }) => {
 
     const loadSettings = async () => {
         const savedSettings = await AsyncStorage.getItem('settings');
+        const savedTheme = await AsyncStorage.getItem('theme');
+        const parsedSettings = savedSettings ? JSON.parse(savedSettings) : {};
+        const loadedSettings = { ...defaultSettings, ...parsedSettings };
+        if (!translations[loadedSettings.language]) loadedSettings.language = 'en';
+        const themeName = savedTheme || loadedSettings.theme;
 
-        if (!savedSettings) setSettings(defaultSettings);
-        else {
-            setSettings(JSON.parse(savedSettings));
-            if (themes[theme]) setTheme(themes[theme]);
-        }
+        setSettings(loadedSettings);
+        if (themes[themeName]) setTheme(themes[themeName]);
     }
 
     const updateSettings = async (newSettings) => {
-        const updatedSettings = { ...settings, ...newSettings };
+        const updatedSettings = { ...(settings || defaultSettings), ...newSettings };
         setSettings(updatedSettings);
         try {
             await AsyncStorage.setItem('settings', JSON.stringify(updatedSettings));
@@ -47,11 +49,12 @@ export const SettingsProvider = ({ children }) => {
     }
 
     const restoreDefault = async () => {
-        await AsyncStorage.removeItem('settings');
+        await AsyncStorage.multiRemove(['settings', 'theme']);
         setSettings(defaultSettings);
+        setTheme(themes.GymMate);
     }
 
-    const translate = (key) => translations[settings.language][key] || key;
+    const translate = (key) => translations[settings?.language]?.[key] || translations.en[key] || key;
 
     const changeTheme = async (themeName) => {
         if (themes[themeName]) {

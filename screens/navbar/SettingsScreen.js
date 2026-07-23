@@ -1,6 +1,6 @@
 import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from '@expo/vector-icons/MaterialIcons';
 
 import Colors from '../../Colors';
 import Container from '../../components/Container';
@@ -86,7 +86,6 @@ export default function SettingsScreen() {
                     <Text style={styles.sectionName}>{translate('dangerZone')}</Text>
                     <Setting name={translate('dataDeletion')} icon={'delete'} color={Colors.red} type='navigate' onPress={() => navigation.navigate('DataDeletionScreen')} />
                     <Setting name={translate('restoreDefaultSettings')} icon={'restart-alt'} color={Colors.red} type='navigate' onPress={() => restoreDefault()} />
-                    <Setting name={translate('developerOptions')} icon={'code'} color={Colors.red} type='navigate' onPress={() => navigation.navigate('DeveloperOptionsScreen')} />
                 </View>
             </ScrollView>
         </Container>

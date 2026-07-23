@@ -4,7 +4,7 @@ import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { TimerPicker } from 'react-native-timer-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
-import { Audio } from 'expo-av';
+import { useAudioPlayer } from 'expo-audio';
 
 import Colors from '../../Colors';
 import Container from '../../components/Container';
@@ -19,7 +19,6 @@ export default function Timer() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
-    const [initialValue, setInitialValue] = useState({ minutes: 0, seconds: 0 });
     const [key, setKey] = useState(0);
     const [completed, setCompleted] = useState(false);
     const [isVibrating, setIsVibrating] = useState(false);
@@ -31,10 +30,10 @@ export default function Timer() {
     ];
 
     const { settings, theme, translate } = useSettings();
+    const alarmPlayer = useAudioPlayer(require('../../assets/sounds/alarm.wav'));
 
     const setTime = (minutes, seconds, id) => {
         setIsActive(prevId => prevId === id ? null : id);
-        setInitialValue({ minutes, seconds });
         setKey(prevKey => prevKey + 1);
         setMinutes(minutes);
         setSeconds(seconds);
@@ -44,7 +43,6 @@ export default function Timer() {
         if (minutes === 0 && seconds === 0) { return; }
         else {
             setCompleted(false);
-            setInitialValue({ minutes, seconds });
             setKey(prevKey => prevKey + 1);
             setShowPicker(false);
             setIsPlaying(true);
@@ -102,25 +100,18 @@ export default function Timer() {
     }, [isVibrating]);
 
     useEffect(() => {
-        let soundObject;
+        alarmPlayer.loop = true;
 
-        const playSound = async () => {
-            const { sound } = await Audio.Sound.createAsync(
-                require('../../assets/sounds/alarm.wav'),
-                { shouldPlay: true, isLooping: true }
-            )
-            soundObject = sound;
+        if (settings.isSoundOn && isSoundPlaying) {
+            alarmPlayer.seekTo(0);
+            alarmPlayer.play();
+        } else {
+            alarmPlayer.pause();
+            alarmPlayer.seekTo(0);
         }
 
-        if (settings.isSoundOn && isSoundPlaying) playSound();
-
-        return () => {
-            if (soundObject) {
-                soundObject.stopAsync();
-                soundObject.unloadAsync();
-            }
-        }
-    }, [isSoundPlaying])
+        return () => alarmPlayer.pause();
+    }, [isSoundPlaying, settings.isSoundOn, alarmPlayer])
 
     const styles = {
         labels: {

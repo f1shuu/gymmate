@@ -10,7 +10,7 @@ export default function CustomDropdown({ passedStyle, data, placeholder, value, 
             width: '100%',
             backgroundColor: theme.background,
             height: 60,
-            borderRadius: 15,
+            borderRadius: 10,
             padding: 15,
             marginVertical: 10
         },

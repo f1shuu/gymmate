@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import ChangelogScreen from '../../screens/settings/ChangelogScreen';
 import ContactScreen from '../../screens/settings/ContactScreen';
 import DataDeletionScreen from '../../screens/settings/DataDeletionScreen';
-import DeveloperOptionsScreen from '../../screens/settings/DeveloperOptionsScreen';
 import LanguageSelectionScreen from '../../screens/settings/LanguageSelectionScreen';
 import NameScreen from '../../screens/settings/NameScreen';
 import SettingsScreen from '../../screens/navbar/SettingsScreen';
@@ -59,14 +58,6 @@ export default function SettingsNavigator() {
                 component={DataDeletionScreen}
                 options={{
                     headerTitle: translate('deleteData'),
-                    ...customOptions
-                }}
-            />
-            <Stack.Screen
-                name='DeveloperOptionsScreen'
-                component={DeveloperOptionsScreen}
-                options={{
-                    headerTitle: translate('developerOptions'),
                     ...customOptions
                 }}
             />

@@ -5,7 +5,7 @@ import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function Theme({ name, primaryColor, secondaryColor, textColor, onPress }) {
     const { theme } = useSettings();
-    
+
     const styles = {
         tile: {
             width: '30%',
@@ -20,7 +20,7 @@ export default function Theme({ name, primaryColor, secondaryColor, textColor, o
         gradient: {
             width: '100%',
             height: '100%',
-            borderRadius: 15,
+            borderRadius: 10,
             justifyContent: 'flex-end',
             alignItems: 'center'
         },

@@ -50,7 +50,7 @@ export default function DataDeletionScreen() {
     const styles = {
         container: {
             gap: 10,
-            borderRadius: 15,
+            borderRadius: 10,
             overflow: 'hidden'
         },
         allDataButton: {

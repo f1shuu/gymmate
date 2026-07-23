@@ -4,11 +4,11 @@ import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function SegmentedButton({ option1, option2, onOptionChange, selectedOption }) {
     const { theme } = useSettings();
-    
+
     const styles = {
         container: {
             flexDirection: 'row',
-            borderRadius: 15,
+            borderRadius: 10,
             overflow: 'hidden',
             marginVertical: 10
         },
