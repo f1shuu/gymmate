@@ -1,29 +1,29 @@
 export const muscleGroups = {
     pl: [
-        { value: 'Barki' },
-        { value: 'Bicepsy' },
-        { value: 'Brzuch (ABS)' },
-        { value: 'Klatka piersiowa' },
-        { value: 'Łydki' },
-        { value: 'Plecy' },
-        { value: 'Pośladki' },
-        { value: 'Przedramiona' },
-        { value: 'Szyja i kark' },
-        { value: 'Tricepsy' },
-        { value: 'Uda' }
+        { value: 'shoulders', label: 'Barki' },
+        { value: 'biceps', label: 'Bicepsy' },
+        { value: 'abs', label: 'Brzuch (ABS)' },
+        { value: 'chest', label: 'Klatka piersiowa' },
+        { value: 'calves', label: 'Łydki' },
+        { value: 'back', label: 'Plecy' },
+        { value: 'glutes', label: 'Pośladki' },
+        { value: 'forearms', label: 'Przedramiona' },
+        { value: 'neck_and_traps', label: 'Szyja i kark' },
+        { value: 'triceps', label: 'Tricepsy' },
+        { value: 'thighs', label: 'Uda' }
     ],
 
     en: [
-        { value: 'Shoulders' },
-        { value: 'Biceps' },
-        { value: 'Abs' },
-        { value: 'Chest' },
-        { value: 'Calves' },
-        { value: 'Back' },
-        { value: 'Glutes' },
-        { value: 'Forearms' },
-        { value: 'Neck and Traps' },
-        { value: 'Triceps' },
-        { value: 'Thighs' }
+        { value: 'shoulders', label: 'Shoulders' },
+        { value: 'biceps', label: 'Biceps' },
+        { value: 'abs', label: 'Abs' },
+        { value: 'chest', label: 'Chest' },
+        { value: 'calves', label: 'Calves' },
+        { value: 'back', label: 'Back' },
+        { value: 'glutes', label: 'Glutes' },
+        { value: 'forearms', label: 'Forearms' },
+        { value: 'neck_and_traps', label: 'Neck and Traps' },
+        { value: 'triceps', label: 'Triceps' },
+        { value: 'thighs', label: 'Thighs' }
     ]
 }

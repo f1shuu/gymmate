@@ -25,10 +25,17 @@ export default function BodyMeasurementsScreen() {
     const groupedBodyMeasurements = DataController.groupByCategory(bodyMeasurements);
 
     const imageMapping = {
-        [translate('bodyMass')]: require('../../assets/images/measures/body-mass.png'),
-        [translate('waistCircumference')]: require('../../assets/images/measures/waist-circumference.png'),
-        [translate('chestCircumference')]: require('../../assets/images/measures/chest-circumference.png'),
-        [translate('bicepsCircumference')]: require('../../assets/images/measures/biceps-circumference.png')
+        body_mass: require('../../assets/images/measures/body-mass.png'),
+        waist_circumference: require('../../assets/images/measures/waist-circumference.png'),
+        chest_circumference: require('../../assets/images/measures/chest-circumference.png'),
+        biceps_circumference: require('../../assets/images/measures/biceps-circumference.png')
+    }
+
+    const categoryLabels = {
+        body_mass: translate('bodyMass'),
+        waist_circumference: translate('waistCircumference'),
+        chest_circumference: translate('chestCircumference'),
+        biceps_circumference: translate('bicepsCircumference')
     }
 
     useFocusEffect(
@@ -60,16 +67,16 @@ export default function BodyMeasurementsScreen() {
             <View>
                 <TouchableOpacity onPress={() => toggleCategory(category)} style={styles.header} activeOpacity={0.8}>
                     <Image source={url} style={styles.image} />
-                    <Text style={styles.text}>{category}</Text>
+                    <Text style={styles.text}>{categoryLabels[category] || category}</Text>
                     <Icon name={expandedCategories[category] ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={24} color={theme.textPrimary} />
                 </TouchableOpacity>
 
                 {expandedCategories[category] && (
                     <View style={styles.itemsContainer}>
-                        {items.slice().reverse().map((measurement, index) => (
+                        {items.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((measurement, index) => (
                             <View key={measurement.id} style={[styles.measurement, index === 0 ? { backgroundColor: Colors.green } : null]}>
                                 <Text style={styles.text}>
-                                    {measurement.date}
+                                    {new Intl.DateTimeFormat(settings.language, { dateStyle: 'medium' }).format(new Date(measurement.createdAt))}
                                 </Text>
                                 <Text style={styles.text}>
                                     {measurement.data.value} {measurement.data.unit}

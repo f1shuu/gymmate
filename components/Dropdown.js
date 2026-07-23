@@ -2,7 +2,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 
 import { useSettings } from '../helpers/SettingsProvider';
 
-export default function CustomDropdown({ passedStyle, data, placeholder, value, onFocus, onBlur, onChange }) {
+export default function CustomDropdown({ passedStyle, data, labelField = 'value', placeholder, value, onFocus, onBlur, onChange }) {
     const { theme } = useSettings();
     
     const styles = {
@@ -18,8 +18,8 @@ export default function CustomDropdown({ passedStyle, data, placeholder, value, 
             marginTop: -2,
             marginLeft: 1,
             backgroundColor: theme.background,
-            borderBottomLeftRadius: 15,
-            borderBottomRightRadius: 15,
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
             borderWidth: 0
         },
         itemText: {
@@ -41,7 +41,7 @@ export default function CustomDropdown({ passedStyle, data, placeholder, value, 
             selectedTextStyle={styles.itemText}
             activeColor={theme.primary}
             data={data}
-            labelField='value'
+            labelField={labelField}
             valueField='value'
             placeholder={placeholder}
             value={value}

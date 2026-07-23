@@ -10,7 +10,6 @@ export default function Container({ gradient, children }) {
         container: {
             flex: 1,
             padding: 15,
-            paddingBottom: 30,
             backgroundColor: theme.secondary
         }
     }

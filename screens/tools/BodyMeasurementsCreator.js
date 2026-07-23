@@ -24,7 +24,7 @@ export default function BodyMeasurementsCreator() {
     const navigation = useNavigation();
 
     const changeCategory = (item) => {
-        if (item.value === translate('bodyMass')) {
+        if (item.value === 'body_mass') {
             if (settings.units === 'metric') setUnit('kg');
             else setUnit('lbs')
         }
@@ -70,6 +70,7 @@ export default function BodyMeasurementsCreator() {
             <Dropdown
                 passedStyle={{ borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                 data={categories[settings.language]}
+                labelField='label'
                 placeholder={isFocus ? '...' : translate('chooseCategory') + '...'}
                 value={category}
                 onFocus={() => setIsFocus(true)}

@@ -1,17 +1,25 @@
 import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 
 import Colors from '../../Colors';
 import Container from '../../components/Container';
+import Modal from '../../components/Modal';
 import Setting from '../../components/widgets/Setting';
 
 import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function SettingsScreen() {
+    const [isRestoreModalVisible, setIsRestoreModalVisible] = useState(false);
     const { settings, restoreDefault, theme, translate } = useSettings();
 
     const navigation = useNavigation();
+
+    const confirmRestore = async () => {
+        await restoreDefault();
+        setIsRestoreModalVisible(false);
+    }
 
     const styles = {
         avatar: {
@@ -85,9 +93,18 @@ export default function SettingsScreen() {
                 <View style={styles.container}>
                     <Text style={styles.sectionName}>{translate('dangerZone')}</Text>
                     <Setting name={translate('dataDeletion')} icon={'delete'} color={Colors.red} type='navigate' onPress={() => navigation.navigate('DataDeletionScreen')} />
-                    <Setting name={translate('restoreDefaultSettings')} icon={'restart-alt'} color={Colors.red} type='navigate' onPress={() => restoreDefault()} />
+                    <Setting name={translate('restoreDefaultSettings')} icon={'restart-alt'} color={Colors.red} type='navigate' onPress={() => setIsRestoreModalVisible(true)} />
                 </View>
             </ScrollView>
+            <Modal
+                isVisible={isRestoreModalVisible}
+                text={translate('restoreDefaultConfirmation')}
+                twoButtons={true}
+                buttonOneText={translate('yes')}
+                buttonOneOnPress={confirmRestore}
+                buttonTwoText={translate('no')}
+                buttonTwoOnPress={() => setIsRestoreModalVisible(false)}
+            />
         </Container>
     )
 }

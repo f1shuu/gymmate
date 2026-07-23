@@ -11,13 +11,7 @@ export default {
         },
         assetBundlePatterns: ['assets/*'],
         android: {
-            config: {
-                googleMaps: {
-                    apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY
-                }
-            },
             package: 'com.f1shu.gymmate',
-            permissions: ['ACCESS_FINE_LOCATION'],
             softwareKeyboardLayoutMode: 'pan'
         },
         extra: {

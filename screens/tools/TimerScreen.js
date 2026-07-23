@@ -1,10 +1,11 @@
 import { Text, View } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { TimerPicker } from 'react-native-timer-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
-import { useAudioPlayer } from 'expo-audio';
+import { createAudioPlayer } from 'expo-audio';
 
 import Colors from '../../Colors';
 import Container from '../../components/Container';
@@ -30,7 +31,7 @@ export default function Timer() {
     ];
 
     const { settings, theme, translate } = useSettings();
-    const alarmPlayer = useAudioPlayer(require('../../assets/sounds/alarm.wav'));
+    const alarmPlayer = useMemo(() => createAudioPlayer(require('../../assets/sounds/alarm.wav')), []);
 
     const setTime = (minutes, seconds, id) => {
         setIsActive(prevId => prevId === id ? null : id);
@@ -78,40 +79,58 @@ export default function Timer() {
     }
 
     useEffect(() => {
-        if (settings.isHapticsOn) {
-            let seriesInterval;
+        if (!settings.isHapticsOn || !isVibrating) return;
 
-            const startVibrationSeries = () => {
-                let vibrationCount = 0;
-                const vibrationInterval = setInterval(() => {
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                    vibrationCount++;
-                    if (vibrationCount >= 4) clearInterval(vibrationInterval);
-                }, 100)
+        const vibrationTimeouts = new Set();
+        const startVibrationSeries = () => {
+            for (let index = 0; index < 4; index += 1) {
+                const timeout = setTimeout(() => {
+                    vibrationTimeouts.delete(timeout);
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(console.error);
+                }, index * 100);
+                vibrationTimeouts.add(timeout);
             }
-
-            if (isVibrating) {
-                startVibrationSeries();
-                seriesInterval = setInterval(startVibrationSeries, 1000);
-            } else clearInterval(seriesInterval);
-
-            return () => clearInterval(seriesInterval);
         }
-    }, [isVibrating]);
+
+        startVibrationSeries();
+        const seriesInterval = setInterval(startVibrationSeries, 1000);
+
+        return () => {
+            clearInterval(seriesInterval);
+            vibrationTimeouts.forEach(clearTimeout);
+            vibrationTimeouts.clear();
+        }
+    }, [isVibrating, settings.isHapticsOn])
 
     useEffect(() => {
-        alarmPlayer.loop = true;
-
-        if (settings.isSoundOn && isSoundPlaying) {
-            alarmPlayer.seekTo(0);
-            alarmPlayer.play();
-        } else {
+        let cancelled = false;
+        const synchronizeAlarm = async () => {
+            alarmPlayer.loop = true;
             alarmPlayer.pause();
-            alarmPlayer.seekTo(0);
+            await alarmPlayer.seekTo(0);
+            if (!cancelled && settings.isSoundOn && isSoundPlaying) alarmPlayer.play();
         }
 
-        return () => alarmPlayer.pause();
+        synchronizeAlarm().catch(console.error);
+        return () => {
+            cancelled = true;
+            alarmPlayer.pause();
+        }
     }, [isSoundPlaying, settings.isSoundOn, alarmPlayer])
+
+    useFocusEffect(
+        useCallback(() => () => {
+            alarmPlayer.pause();
+            setIsSoundPlaying(false);
+            setIsVibrating(false);
+            setIsPlaying(false);
+        }, [alarmPlayer])
+    )
+
+    useEffect(() => () => {
+        alarmPlayer.pause();
+        alarmPlayer.release();
+    }, [alarmPlayer])
 
     const styles = {
         labels: {

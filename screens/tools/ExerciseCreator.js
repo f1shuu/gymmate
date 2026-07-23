@@ -1,5 +1,5 @@
-import { Text, View, TextInput } from 'react-native';
-import { useEffect, useState } from 'react';
+import { Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 
@@ -19,63 +19,76 @@ import { times } from '../../constants/times';
 import { kgWeights } from '../../constants/kgWeights';
 import { lbsWeights } from '../../constants/lbsWeights';
 
+const isMissing = (value) => value === null || value === undefined || (typeof value === 'string' && value.trim() === '');
+
 export default function ExerciseCreator({ route }) {
     const { settings, theme, translate } = useSettings();
     const id = route.params?.id || null;
+    const [activeStep, setActiveStep] = useState(0);
     const [muscleGroup, setMuscleGroup] = useState(route.params?.data?.muscleGroup || null);
-
-    const [type, setType] = useState(route.params?.data?.type || translate('repsBased'));
+    const [type, setType] = useState(route.params?.data?.type || 'reps_based');
     const [setsAmount, setSetsAmount] = useState(route.params?.data?.setsAmount || null);
     const [repsAmount, setRepsAmount] = useState(route.params?.data?.repsAmount || null);
     const [time, setTime] = useState(route.params?.data?.time || null);
-    const [weight, setWeight] = useState(route.params?.data?.weight || null);
-    const [name, setName] = useState(route.params?.name || null);
-
+    const [weight, setWeight] = useState(route.params?.data?.weight ?? null);
+    const [name, setName] = useState(route.params?.name || '');
     const [isFocus, setIsFocus] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [errors, setErrors] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     const navigation = useNavigation();
 
-    useEffect(() => {
-        if (route.params && route.params.type) setType(route.params.type);
-    }, [route.params])
-
-    const onDropdownChange = (setData, item) => {
-        setData(item);
+    const onDropdownChange = (setData, value) => {
+        setData(value);
         setIsFocus(false);
     }
 
-    const validate = async (isLast, ...params) => {
-        const hasMissingValue = params.some(param => param === null || param === '');
-        if (hasMissingValue) {
-            setIsModalVisible(true);
-            setErrors(true);
-            return;
+    const showValidationErrorIfNeeded = (...values) => {
+        const hasMissingValue = values.some(isMissing);
+        if (hasMissingValue) setIsModalVisible(true);
+        return hasMissingValue;
+    }
+
+    const goToDetails = () => {
+        if (!showValidationErrorIfNeeded(muscleGroup)) setActiveStep(1);
+    }
+
+    const goToName = () => {
+        const hasErrors = type === 'reps_based'
+            ? showValidationErrorIfNeeded(setsAmount, repsAmount)
+            : showValidationErrorIfNeeded(time);
+        if (!hasErrors) setActiveStep(2);
+    }
+
+    const saveExercise = async () => {
+        if (showValidationErrorIfNeeded(name) || isSaving) return;
+
+        const isRepsBased = type === 'reps_based';
+        const exerciseData = {
+            muscleGroup,
+            type,
+            setsAmount: isRepsBased ? setsAmount : null,
+            repsAmount: isRepsBased ? repsAmount : null,
+            time: isRepsBased ? null : time,
+            weight
         }
 
-        setErrors(false);
-        if (isLast) {
-            const isRepsBased = type === translate('repsBased');
-            const exerciseData = {
-                muscleGroup,
-                type,
-                setsAmount: isRepsBased ? setsAmount : null,
-                repsAmount: isRepsBased ? repsAmount : null,
-                time: isRepsBased ? null : time,
-                weight
-            };
-            await DataController.store('exercises', id, name, 'exercises', navigation, 'ExercisesScreen', exerciseData);
-        }
+        setIsSaving(true);
+        await DataController.store(
+            'exercises',
+            id,
+            name.trim(),
+            'exercises',
+            navigation,
+            'ExercisesScreen',
+            exerciseData
+        );
+        setIsSaving(false);
     }
 
     const styles = {
-        button: {
-            backgroundColor: theme.primary,
-            width: 100,
-            height: 60,
-            borderRadius: 10,
-            justifyContent: 'center'
+        stepContent: {
+            flexGrow: 1
         },
         text: {
             fontFamily: 'Nexa',
@@ -100,12 +113,75 @@ export default function ExerciseCreator({ route }) {
             borderRadius: 10,
             padding: 15,
             marginVertical: 10
+        },
+        navigationRow: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 'auto',
+            paddingTop: 20,
+            paddingBottom: 20,
+            marginHorizontal: 10
+        },
+        navigationButton: {
+            minWidth: 120,
+            height: 48,
+            borderRadius: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingHorizontal: 16
+        },
+        primaryButton: {
+            backgroundColor: theme.primary
+        },
+        previousButton: {
+            borderWidth: 1,
+            borderColor: theme.primary
+        },
+        disabledButton: {
+            opacity: 0.55
+        },
+        navigationButtonText: {
+            fontFamily: 'Nexa',
+            fontSize: 16,
+            color: theme.textHeader
+        },
+        previousButtonText: {
+            color: theme.primary
         }
+    }
+
+    const navigationButtons = (previousStep, onNext, nextText, disabled = false) => (
+        <View style={styles.navigationRow}>
+            {previousStep === null ? <View /> : (
+                <TouchableOpacity
+                    style={[styles.navigationButton, styles.previousButton]}
+                    activeOpacity={0.8}
+                    onPress={() => setActiveStep(previousStep)}
+                >
+                    <Text style={[styles.navigationButtonText, styles.previousButtonText]}>{translate('back')}</Text>
+                </TouchableOpacity>
+            )}
+            <TouchableOpacity
+                style={[styles.navigationButton, styles.primaryButton, disabled && styles.disabledButton]}
+                activeOpacity={0.8}
+                onPress={onNext}
+                disabled={disabled}
+            >
+                <Text style={styles.navigationButtonText}>{nextText}</Text>
+            </TouchableOpacity>
+        </View>
+    )
+
+    const progressStepProps = {
+        removeBtnRow: true,
+        scrollViewProps: { contentContainerStyle: styles.stepContent }
     }
 
     return (
         <Container>
             <ProgressSteps
+                activeStep={activeStep}
                 activeStepIconBorderColor={theme.primary}
                 progressBarColor={theme.tertiary}
                 completedProgressBarColor={Colors.green}
@@ -119,19 +195,13 @@ export default function ExerciseCreator({ route }) {
                 completedStepNumColor={Colors.green}
                 disabledStepNumColor={theme.background}
             >
-                <ProgressStep
-                    label={translate('type')}
-                    nextBtnText={translate('next')}
-                    nextBtnStyle={styles.button}
-                    nextBtnTextStyle={styles.text}
-                    onNext={() => validate(false, muscleGroup)}
-                    errors={errors}
-                >
+                <ProgressStep label={translate('type')} {...progressStepProps}>
                     <>
                         <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('chooseMuscleGroup')}</Text>
                         <Dropdown
                             passedStyle={{ borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                             data={muscleGroups[settings.language]}
+                            labelField='label'
                             placeholder={isFocus ? '...' : translate('chooseMuscleGroup') + '...'}
                             value={muscleGroup}
                             onFocus={() => setIsFocus(true)}
@@ -139,36 +209,27 @@ export default function ExerciseCreator({ route }) {
                             onChange={(item) => onDropdownChange(setMuscleGroup, item.value)}
                         />
                         <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('chooseExerciseType')}</Text>
-                        <SegmentedButton option1={translate('repsBased')} option2={translate('timeBased')} selectedOption={type} onOptionChange={(selectedOption) => setType(selectedOption)} />
-                        <Modal
-                            isVisible={isModalVisible}
-                            text={translate('fillAllFields')}
-                            twoButtons={false}
-                            buttonOneText={translate('ok')}
-                            buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)}
+                        <SegmentedButton
+                            option1='reps_based'
+                            option2='time_based'
+                            option1Label={translate('repsBased')}
+                            option2Label={translate('timeBased')}
+                            selectedOption={type}
+                            onOptionChange={setType}
                         />
+                        {navigationButtons(null, goToDetails, translate('next'))}
                     </>
                 </ProgressStep>
-                <ProgressStep
-                    label={translate('details')}
-                    nextBtnText={translate('next')}
-                    previousBtnText={translate('back')}
-                    nextBtnStyle={styles.button}
-                    nextBtnTextStyle={styles.text}
-                    previousBtnStyle={styles.button}
-                    previousBtnTextStyle={styles.text}
-                    onNext={() => type === translate('repsBased') ? validate(false, setsAmount, repsAmount) : validate(false, time)}
-                    errors={errors}
-                >
+                <ProgressStep label={translate('details')} {...progressStepProps}>
                     <>
-                        {type === translate('repsBased') ? (
+                        {type === 'reps_based' ? (
                             <>
                                 <View style={styles.row}>
                                     <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('setsAmount')}</Text>
                                     <Dropdown
                                         passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                         data={setsAmounts}
-                                        placeholder={'...'}
+                                        placeholder='...'
                                         value={setsAmount}
                                         onFocus={() => setIsFocus(true)}
                                         onBlur={() => setIsFocus(false)}
@@ -180,67 +241,44 @@ export default function ExerciseCreator({ route }) {
                                     <Dropdown
                                         passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                         data={repsAmounts}
-                                        placeholder={'...'}
+                                        placeholder='...'
                                         value={repsAmount}
                                         onFocus={() => setIsFocus(true)}
                                         onBlur={() => setIsFocus(false)}
-                                        onChange={item => onDropdownChange(setRepsAmount, item.value)}
+                                        onChange={(item) => onDropdownChange(setRepsAmount, item.value)}
                                     />
                                 </View>
-                                <Modal
-                                    isVisible={isModalVisible}
-                                    text={translate('fillAllFields')}
-                                    twoButtons={false}
-                                    buttonOneText={translate('ok')}
-                                    buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)}
+                            </>
+                        ) : (
+                            <View style={styles.row}>
+                                <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('time')}</Text>
+                                <Dropdown
+                                    passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
+                                    data={times}
+                                    placeholder='...'
+                                    value={time}
+                                    onFocus={() => setIsFocus(true)}
+                                    onBlur={() => setIsFocus(false)}
+                                    onChange={(item) => onDropdownChange(setTime, item.value)}
                                 />
-                            </>) : (
-                            <>
-                                <View style={styles.row}>
-                                    <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('time')}</Text>
-                                    <Dropdown
-                                        passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
-                                        data={times}
-                                        placeholder={'...'}
-                                        value={time}
-                                        onFocus={() => setIsFocus(true)}
-                                        onBlur={() => setIsFocus(false)}
-                                        onChange={(item) => onDropdownChange(setTime, item.value)}
-                                    />
-                                </View>
-                                <Modal
-                                    isVisible={isModalVisible}
-                                    text={translate('fillAllFields')}
-                                    twoButtons={false}
-                                    buttonOneText={translate('ok')}
-                                    buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)}
-                                />
-                            </>)}
+                            </View>
+                        )}
                         <View style={styles.row}>
                             <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('weightOptional')}</Text>
                             <Dropdown
-                                passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
+                                passedStyle={{ width: '42%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                                 data={settings.units === 'metric' ? kgWeights : lbsWeights}
-                                placeholder={'...'}
+                                placeholder='...'
                                 value={weight}
                                 onFocus={() => setIsFocus(true)}
                                 onBlur={() => setIsFocus(false)}
                                 onChange={(item) => onDropdownChange(setWeight, item.value)}
                             />
                         </View>
+                        {navigationButtons(0, goToName, translate('next'))}
                     </>
                 </ProgressStep>
-                <ProgressStep
-                    label={translate('name')}
-                    previousBtnText={translate('back')}
-                    finishBtnText={translate('save')}
-                    nextBtnStyle={styles.button}
-                    nextBtnTextStyle={styles.text}
-                    previousBtnStyle={styles.button}
-                    previousBtnTextStyle={styles.text}
-                    onSubmit={() => validate(true, name)}
-                    errors={errors}
-                >
+                <ProgressStep label={translate('name')} {...progressStepProps}>
                     <>
                         <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('nameYourExercise')}</Text>
                         <TextInput
@@ -248,21 +286,20 @@ export default function ExerciseCreator({ route }) {
                             placeholder={translate('exerciseNameExample')}
                             placeholderTextColor={theme.textSecondary}
                             maxLength={50}
-                            fontSize={16}
-                            color={theme.textPrimary}
-                            onChangeText={(text) => setName(text)}
-                            value={name} >
-                        </TextInput>
-                        <Modal
-                            isVisible={isModalVisible}
-                            text={translate('fillAllFields')}
-                            twoButtons={false}
-                            buttonOneText={translate('ok')}
-                            buttonOneOnPress={() => setIsModalVisible(() => !isModalVisible)}
+                            onChangeText={setName}
+                            value={name}
                         />
+                        {navigationButtons(1, saveExercise, translate('save'), isSaving)}
                     </>
                 </ProgressStep>
             </ProgressSteps>
+            <Modal
+                isVisible={isModalVisible}
+                text={translate('fillAllFields')}
+                twoButtons={false}
+                buttonOneText={translate('ok')}
+                buttonOneOnPress={() => setIsModalVisible(false)}
+            />
         </Container>
     )
 }

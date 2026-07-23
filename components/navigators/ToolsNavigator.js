@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import BMICalculatorScreen from '../../screens/tools/BMICalculatorScreen';
 import BMIHelpScreen from '../../screens/tools/BMIHelpScreen';
 import CalculatorScreen from '../../screens/tools/CalculatorScreen';
-import MapScreen from '../../screens/tools/MapScreen';
+import StopwatchScreen from '../../screens/tools/StopwatchScreen';
 import TimerScreen from '../../screens/tools/TimerScreen';
 
 import { useSettings } from '../../helpers/SettingsProvider';
@@ -53,18 +53,18 @@ export default function ToolsNavigator() {
                 }}
             />
             <Stack.Screen
-                name='MapScreen'
-                component={MapScreen}
-                options={{
-                    headerTitle: translate('gymsNearby'),
-                    ...customOptions
-                }}
-            />
-            <Stack.Screen
                 name='TimerScreen'
                 component={TimerScreen}
                 options={{
                     headerTitle: translate('timer'),
+                    ...customOptions
+                }}
+            />
+            <Stack.Screen
+                name='StopwatchScreen'
+                component={StopwatchScreen}
+                options={{
+                    headerTitle: translate('stopwatch'),
                     ...customOptions
                 }}
             />

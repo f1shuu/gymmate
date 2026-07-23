@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 
 import { useSettings } from '../../helpers/SettingsProvider';
 
-export default function SegmentedButton({ option1, option2, onOptionChange, selectedOption }) {
+export default function SegmentedButton({ option1, option2, option1Label = option1, option2Label = option2, onOptionChange, selectedOption }) {
     const { theme } = useSettings();
 
     const styles = {
@@ -43,7 +43,7 @@ export default function SegmentedButton({ option1, option2, onOptionChange, sele
                 disabled={selectedOption === option1}
                 activeOpacity={0.8}
             >
-                <Text style={selectedOption === option1 ? styles.activeText : styles.inactiveText}>{option1}</Text>
+                <Text style={selectedOption === option1 ? styles.activeText : styles.inactiveText}>{option1Label}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => { if (onOptionChange) onOptionChange(option2) }}
@@ -51,7 +51,7 @@ export default function SegmentedButton({ option1, option2, onOptionChange, sele
                 disabled={selectedOption === option2}
                 activeOpacity={0.8}
             >
-                <Text style={selectedOption === option2 ? styles.activeText : styles.inactiveText}>{option2}</Text>
+                <Text style={selectedOption === option2 ? styles.activeText : styles.inactiveText}>{option2Label}</Text>
             </TouchableOpacity>
         </View>
     )

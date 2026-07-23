@@ -13,6 +13,8 @@ import Modal from '../../components/Modal';
 
 import { useSettings } from '../../helpers/SettingsProvider';
 
+import { muscleGroups } from '../../constants/muscleGroups';
+
 export default function ExercisesScreen() {
     const [exercises, setExercises] = useState([]);
     const [isExercises, setIsExercises] = useState(false);
@@ -23,6 +25,12 @@ export default function ExercisesScreen() {
     const { settings, theme, translate } = useSettings();
 
     const navigation = useNavigation();
+    const translateDomainValue = (value) => {
+        if (value === 'reps_based') return translate('repsBased');
+        if (value === 'time_based') return translate('timeBased');
+        return muscleGroups[settings.language].find(group => group.value === value)?.label || translate(value);
+    }
+
 
     useFocusEffect(
         useCallback(() => {
@@ -54,7 +62,7 @@ export default function ExercisesScreen() {
                             value ? (
                                 <View key={id} style={styles.row}>
                                     <Text style={styles.text}>{translate(key)}:</Text>
-                                    <Text style={styles.text}>{translate(value)}</Text>
+                                    <Text style={styles.text}>{translateDomainValue(value)}</Text>
                                 </View>
                             ) : null
                         ))}

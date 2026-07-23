@@ -10,7 +10,7 @@ export default function Button({ onPress, text, type }) {
     const styles = {
         button: {
             width: 150,
-            height: 60,
+            height: 50,
             borderRadius: 10,
             justifyContent: 'center',
             alignItems: 'center',

@@ -58,10 +58,10 @@ export default function HomeScreenWidget({ width, textRequired, textOptional, gr
             </ImageBackground>
         </TouchableOpacity>
     ) : (
-        <TouchableOpacity onPress={width === '32%' ? () => { } : () => navigation.navigate(navigator, { screen: screen })} style={[styles.widget, { width: width }]} activeOpacity={width === '32%' ? 1 : 0.8}>
-            <Icon name={graphics} size={width === '32%' ? 30 : 60} color={width === '32%' ? theme.primary : theme.tertiary} />
-            {width === '32%' ? <Text style={[styles.text, { fontSize: 24 }]}>{translate(textOptional)}</Text> : null}
-            <Text style={[styles.text, width === '32%' ? { fontSize: 12 } : { fontSize: 16 }]}>{translate(textRequired)}</Text>
+        <TouchableOpacity onPress={width === '31.5%' ? () => { } : () => navigation.navigate(navigator, { screen: screen })} style={[styles.widget, { width: width }]} activeOpacity={width === '31.5%' ? 1 : 0.8}>
+            <Icon name={graphics} size={width === '31.5%' ? 30 : 60} color={width === '31.5%' ? theme.primary : theme.tertiary} />
+            {width === '31.5%' ? <Text style={[styles.text, { fontSize: 24 }]}>{translate(textOptional)}</Text> : null}
+            <Text style={[styles.text, width === '31.5%' ? { fontSize: 12 } : { fontSize: 16 }]}>{translate(textRequired)}</Text>
         </TouchableOpacity>
     )
     )

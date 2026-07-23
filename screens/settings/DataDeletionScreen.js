@@ -69,7 +69,7 @@ export default function DataDeletionScreen() {
             </View>
             <Modal
                 isVisible={isModalVisible}
-                text={translate('areYouSure') + translate('all') + text + '?' + translate('irreversible')}
+                text={translate('areYouSure') + translate('all') + text + '? ' + translate('irreversible')}
                 twoButtons={true}
                 buttonOneText={translate('yes')}
                 buttonOneOnPress={async () => DataController.clear(dataSet, isModalVisible, setIsModalVisible, fetchData, isConfirmationModalVisible, setIsConfirmationModalVisible)}

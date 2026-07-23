@@ -29,21 +29,21 @@ export default function HomeScreen() {
             fontSize: 14,
             color: theme.textSecondary,
             marginLeft: 15,
-            marginBottom: 15
+            marginVertical: 15
         },
         section: {
             height: 150,
             backgroundColor: theme.secondary,
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginBottom: 20
+            marginBottom: 10
         }
     }
 
     return (
         <ScrollView contentContainerStyle={styles.scrollview} showsVerticalScrollIndicator={false}>
-            <View style={{ height: 280 }}>
-                <ImageBackground source={require('../../assets/images/home/start.png')} >
+            <View style={{ height: 270 }}>
+                <ImageBackground source={require('../../assets/images/home/start.png')}>
                     <LinearGradient
                         colors={[theme.primary, 'transparent', 'transparent', theme.secondary]}
                         start={{ x: 0.5, y: 0 }}
@@ -55,9 +55,9 @@ export default function HomeScreen() {
             <View style={styles.container}>
                 <Text style={styles.sectionName}>{translate('statistics')}</Text>
                 <View style={styles.section}>
-                    <HomeScreenWidget width={'32%'} textRequired={'longestStreak'} textOptional={settings.longestStreak + ' ' + (settings.longestStreak === 1 ? translate('day') : translate('days'))} graphics={'fire'} />
-                    <HomeScreenWidget width={'32%'} textRequired={'trainingsTotal'} textOptional={settings.trainingsTotal} graphics={'dumbbell'} />
-                    <HomeScreenWidget width={'32%'} textRequired={'liftedKgsTotal'} textOptional={settings.liftedKgsTotal} graphics={'weight-hanging'} />
+                    <HomeScreenWidget width={'31.5%'} textRequired={'longestStreak'} textOptional={settings.longestStreak + ' ' + (settings.longestStreak === 1 ? translate('day') : translate('days'))} graphics={'fire'} />
+                    <HomeScreenWidget width={'31.5%'} textRequired={'trainingsTotal'} textOptional={settings.trainingsTotal} graphics={'dumbbell'} />
+                    <HomeScreenWidget width={'31.5%'} textRequired={'liftedKgsTotal'} textOptional={settings.liftedKgsTotal} graphics={'weight-hanging'} />
                 </View>
                 <Text style={styles.sectionName}>{translate('quickStart')}</Text>
                 <View style={styles.section}>
@@ -68,12 +68,12 @@ export default function HomeScreen() {
                 </View>
                 <Text style={styles.sectionName}>{translate('toolsScreenHeader')}</Text>
                 <View style={[styles.section, { marginBottom: 10 }]}>
-                    <HomeScreenWidget width={'49%'} textRequired={'timer'} graphics={'clock'} screen={'TimerScreen'} navigator={'ToolsNavigator'} />
-                    <HomeScreenWidget width={'49%'} textRequired={'bmiCalculator'} graphics={'weight'} screen={'BMICalculatorScreen'} navigator={'ToolsNavigator'} />
+                    <HomeScreenWidget width={'48.5%'} textRequired={'timer'} graphics={'clock'} screen={'TimerScreen'} navigator={'ToolsNavigator'} />
+                    <HomeScreenWidget width={'48.5%'} textRequired={'bmiCalculator'} graphics={'weight'} screen={'BMICalculatorScreen'} navigator={'ToolsNavigator'} />
                 </View>
                 <View style={styles.section}>
-                    <HomeScreenWidget width={'49%'} textRequired={'calculator'} graphics={'calculator'} screen={'CalculatorScreen'} navigator={'ToolsNavigator'} />
-                    <HomeScreenWidget width={'49%'} textRequired={'gymsNearby'} graphics={'map-marker-alt'} screen={'MapScreen'} navigator={'ToolsNavigator'} />
+                    <HomeScreenWidget width={'48.5%'} textRequired={'calculator'} graphics={'calculator'} screen={'CalculatorScreen'} navigator={'ToolsNavigator'} />
+                    <HomeScreenWidget width={'48.5%'} textRequired={'stopwatch'} graphics={'stopwatch'} screen={'StopwatchScreen'} navigator={'ToolsNavigator'} />
                 </View>
             </View>
         </ScrollView>

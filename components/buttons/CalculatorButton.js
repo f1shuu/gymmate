@@ -1,12 +1,13 @@
 import { Text, TouchableOpacity } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialIcons';
+import * as Haptics from 'expo-haptics';
 
 import Colors from '../../Colors';
 
 import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function CalculatorButton({ type, value, onPress }) {
-    const { theme } = useSettings();
+    const { settings, theme } = useSettings();
 
     const styles = {
         button: {
@@ -14,12 +15,13 @@ export default function CalculatorButton({ type, value, onPress }) {
             backgroundColor: theme.background,
             justifyContent: 'center',
             alignItems: 'center',
-            marginHorizontal: 5,
-            borderRadius: 10
+            borderRadius: 100,
+            aspectRatio: 1,
+            margin: 5
         },
         text: {
             fontFamily: 'Nexa',
-            fontSize: 36,
+            fontSize: 32
         }
     }
 
@@ -36,8 +38,15 @@ export default function CalculatorButton({ type, value, onPress }) {
         }
     }
 
+    const handlePress = () => {
+        if (settings.isHapticsOn) {
+            Haptics.selectionAsync().catch(console.error);
+        }
+        onPress?.();
+    }
+
     return (
-        <TouchableOpacity onPress={onPress} style={styles.button} activeOpacity={0.8}>
+        <TouchableOpacity onPress={handlePress} style={styles.button} activeOpacity={0.8}>
             {type === 'backspace' ? (
                 <Icon name='backspace' size={40} color={theme.primary} />
             ) : (

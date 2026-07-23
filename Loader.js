@@ -16,10 +16,10 @@ export default function Loader() {
     useEffect(() => {
         const loadAppResources = async () => {
             try {
-                await Font.loadAsync({
-                    'Nexa': require('./assets/fonts/Nexa-Heavy.ttf')
-                })
-                await loadSettings();
+                await Promise.all([
+                    Font.loadAsync({ Nexa: require('./assets/fonts/Nexa-Heavy.ttf') }),
+                    loadSettings()
+                ])
             } catch (error) {
                 console.error(error);
             } finally {
