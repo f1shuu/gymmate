@@ -105,9 +105,6 @@ export default function TrainingsScreen() {
             justifyContent: 'center',
             marginRight: 13
         },
-        headerInfo: {
-            flex: 1
-        },
         name: {
             fontFamily: 'Nexa',
             fontSize: 17,
@@ -153,9 +150,6 @@ export default function TrainingsScreen() {
             justifyContent: 'space-between',
             marginTop: 15,
             gap: 15
-        },
-        list: {
-            paddingBottom: 120
         }
     }
 
@@ -175,7 +169,7 @@ export default function TrainingsScreen() {
                     <View style={styles.headerIcon}>
                         <Icon name='format-list-numbered' size={24} color={theme.textHeader} />
                     </View>
-                    <View style={styles.headerInfo}>
+                    <View style={{ flex: 1 }}>
                         <Text style={styles.name}>{item.name}</Text>
                         <Text style={styles.subtitle}>
                             {translate('exercisesCount')}: {resolvedExercises.length}
@@ -232,7 +226,7 @@ export default function TrainingsScreen() {
                     data={trainings}
                     renderItem={({ item }) => <Training item={item} />}
                     keyExtractor={item => item.id}
-                    contentContainerStyle={styles.list}
+                    contentContainerStyle={{ paddingBottom: 120 }}
                     showsVerticalScrollIndicator={false}
                 />
             ) : (
