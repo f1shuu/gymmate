@@ -38,7 +38,8 @@ export default function CustomModal({ isVisible, text, twoButtons, buttonOneText
         row: {
             flexDirection: 'row',
             justifyContent: 'space-around',
-            marginTop: 20
+            marginTop: 15,
+            gap: 15
         }
     }
 

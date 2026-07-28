@@ -87,7 +87,7 @@ export default function BodyMeasurementsCreator() {
                 onChangeText={(text) => setValue(text)}
             />
             <Text style={styles.reminder}>{translate('unitsReminder')}</Text>
-            <Button onPress={category && value ? async () => await DataController.store('bodyMeasurements', null, null, category, navigation, 'BodyMeasurementsScreen', { value, unit }) : () => setIsModalVisible(() => !isModalVisible)} text={translate('save')} />
+            <Button onPress={category && value ? async () => await DataController.store('bodyMeasurements', null, null, category, navigation, 'BodyMeasurementsScreen', { value, unit }) : () => setIsModalVisible(() => !isModalVisible)} text={translate('save')} type='small' />
             <Modal
                 isVisible={isModalVisible}
                 text={translate('fillAllFields')}

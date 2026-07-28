@@ -9,6 +9,7 @@ export default function HomeScreenWidget({ width, textRequired, textOptional, gr
     const { theme, translate } = useSettings();
 
     const navigation = useNavigation();
+    const isStatistic = textOptional !== undefined;
 
     const styles = {
         largeWidget: {
@@ -34,7 +35,7 @@ export default function HomeScreenWidget({ width, textRequired, textOptional, gr
             alignItems: 'center',
             backgroundColor: theme.background,
             justifyContent: 'space-around',
-            paddingHorizontal: 15
+            padding: 15
         },
         text: {
             fontFamily: 'Nexa',
@@ -58,10 +59,10 @@ export default function HomeScreenWidget({ width, textRequired, textOptional, gr
             </ImageBackground>
         </TouchableOpacity>
     ) : (
-        <TouchableOpacity onPress={width === '31.5%' ? () => { } : () => navigation.navigate(navigator, { screen: screen })} style={[styles.widget, { width: width }]} activeOpacity={width === '31.5%' ? 1 : 0.8}>
-            <Icon name={graphics} size={width === '31.5%' ? 30 : 60} color={width === '31.5%' ? theme.primary : theme.tertiary} />
-            {width === '31.5%' ? <Text style={[styles.text, { fontSize: 24 }]}>{translate(textOptional)}</Text> : null}
-            <Text style={[styles.text, width === '31.5%' ? { fontSize: 12 } : { fontSize: 16 }]}>{translate(textRequired)}</Text>
+        <TouchableOpacity onPress={isStatistic ? () => { } : () => navigation.navigate(navigator, { screen: screen })} style={[styles.widget, { width: width }]} activeOpacity={isStatistic ? 1 : 0.8}>
+            <Icon name={graphics} size={isStatistic ? 40 : 60} color={isStatistic ? theme.primary : theme.tertiary} />
+            {isStatistic ? <Text style={[styles.text, { fontSize: 24 }]}>{textOptional}</Text> : null}
+            <Text style={[styles.text, isStatistic ? { fontSize: 12 } : { fontSize: 16 }]}>{translate(textRequired)}</Text>
         </TouchableOpacity>
     )
     )

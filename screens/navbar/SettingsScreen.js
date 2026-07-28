@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 
 import Colors from '../../Colors';
+
 import Container from '../../components/Container';
 import Modal from '../../components/Modal';
 import Setting from '../../components/widgets/Setting';
@@ -77,7 +78,6 @@ export default function SettingsScreen() {
                     <Text style={styles.sectionName}>{translate('settings')}</Text>
                     <Setting name={translate('sound')} icon={'volume-up'} color={theme.textPrimary} onPress={() => { }} type='toggle' parameter='isSoundOn' />
                     <Setting name={translate('vibrations')} icon={'vibration'} color={theme.textPrimary} onPress={() => { }} type='toggle' parameter='isHapticsOn' />
-                    <Setting name={translate('trainingsScreenHeader')} icon={'workspace-premium'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('TrainingsSettingsScreen')} />
                 </View>
                 <View style={styles.container}>
                     <Text style={styles.sectionName}>{translate('personalization')}</Text>

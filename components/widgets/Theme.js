@@ -1,21 +1,18 @@
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import Icon from '@expo/vector-icons/MaterialIcons';
 
-import { useSettings } from '../../helpers/SettingsProvider';
+import Colors from '../../Colors';
 
-export default function Theme({ name, primaryColor, secondaryColor, textColor, onPress }) {
-    const { theme } = useSettings();
-
+export default function Theme({ name, primaryColor, secondaryColor, textColor, selected, onPress }) {
     const styles = {
         tile: {
             width: '30%',
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: 'center',
+            justifyContent: 'center',
             height: 180,
             margin: 5,
-            borderRadius: 16,
-            borderWidth: 1,
-            borderColor: theme.tertiary
+            borderRadius: 10
         },
         gradient: {
             width: '100%',
@@ -23,6 +20,15 @@ export default function Theme({ name, primaryColor, secondaryColor, textColor, o
             borderRadius: 10,
             justifyContent: 'flex-end',
             alignItems: 'center'
+        },
+        checkmark: {
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            alignItems: 'center',
+            justifyContent: 'center'
         },
         text: {
             fontFamily: 'Nexa',
@@ -40,6 +46,11 @@ export default function Theme({ name, primaryColor, secondaryColor, textColor, o
                 style={styles.gradient}
                 end={{ x: 0.5, y: 0.75 }}
             >
+                {selected ? (
+                    <View style={styles.checkmark} pointerEvents='none'>
+                        <Icon name='check-circle' size={46} color={Colors.green} />
+                    </View>
+                ) : null}
                 <Text style={styles.text}>{name}</Text>
             </LinearGradient>
         </TouchableOpacity>

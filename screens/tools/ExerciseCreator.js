@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 
 import Colors from '../../Colors';
+
 import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';
 import Dropdown from '../../components/Dropdown';

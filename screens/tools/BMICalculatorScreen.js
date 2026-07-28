@@ -112,7 +112,8 @@ export default function BMICalculator() {
         buttonRow: {
             flexDirection: 'row',
             justifyContent: 'space-around',
-            marginTop: 15
+            marginTop: 15,
+            gap: 15
         }
     }
 

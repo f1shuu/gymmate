@@ -1,5 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
+import ActiveTrainingScreen from '../../screens/tools/ActiveTrainingScreen';
 import TrainingsCreator from '../../screens/tools/TrainingsCreator';
 import TrainingsScreen from '../../screens/navbar/TrainingsScreen';
 
@@ -38,6 +39,14 @@ export default function TrainingsNavigator() {
                 component={TrainingsCreator}
                 options={{
                     headerTitle: translate('trainingsCreatorHeader'),
+                    ...customOptions
+                }}
+            />
+            <Stack.Screen
+                name='ActiveTrainingScreen'
+                component={ActiveTrainingScreen}
+                options={{
+                    headerTitle: translate('activeTraining'),
                     ...customOptions
                 }}
             />

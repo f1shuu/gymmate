@@ -3,8 +3,9 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import appConfig from '../../app.config';
 import Colors from '../../Colors';
+
+import appConfig from '../../app.config';
 import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function WelcomeScreen() {

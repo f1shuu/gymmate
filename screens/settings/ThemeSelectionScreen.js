@@ -9,7 +9,7 @@ import { useSettings } from '../../helpers/SettingsProvider';
 const data = Object.keys(themes);
 
 export default function ThemeSelectionScreen() {
-    const { changeTheme } = useSettings();
+    const { changeTheme, theme } = useSettings();
 
     return (
         <Container>
@@ -19,9 +19,9 @@ export default function ThemeSelectionScreen() {
                 keyExtractor={(item) => item}
                 numColumns={3}
                 renderItem={({ item }) => (
-                    <Theme name={item} primaryColor={themes[item].primary} secondaryColor={themes[item].secondary} textColor={themes[item].textPrimary} onPress={() => changeTheme(item)} />
+                    <Theme name={item} primaryColor={themes[item].primary} secondaryColor={themes[item].secondary} textColor={themes[item].textPrimary} selected={theme === themes[item]} onPress={() => changeTheme(item)} />
                 )}
             />
         </Container>
-    );
-};
+    )
+}

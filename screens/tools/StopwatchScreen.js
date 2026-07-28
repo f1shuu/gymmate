@@ -77,13 +77,13 @@ export default function StopwatchScreen() {
         setElapsedTime(0);
         setLaps([]);
         setIsRunning(false);
-    };
+    }
 
     const addLap = () => {
         if (!isRunning || elapsedTimeRef.current === 0) return;
         provideHapticFeedback();
         setLaps(currentLaps => [elapsedTimeRef.current, ...currentLaps]);
-    };
+    }
 
     const styles = {
         content: {
@@ -111,7 +111,8 @@ export default function StopwatchScreen() {
         controls: {
             flexDirection: 'row',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            gap: 15
         },
         lapHeader: {
             fontFamily: 'Nexa',
@@ -141,7 +142,7 @@ export default function StopwatchScreen() {
             fontSize: 15,
             color: theme.textPrimary
         }
-    };
+    }
 
     return (
         <Container>

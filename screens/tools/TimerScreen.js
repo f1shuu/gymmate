@@ -8,6 +8,7 @@ import * as Haptics from 'expo-haptics';
 import { createAudioPlayer } from 'expo-audio';
 
 import Colors from '../../Colors';
+
 import Container from '../../components/Container';
 import Button from '../../components/buttons/Button';
 import SetTimerButton from '../../components/buttons/SetTimerButton';
@@ -32,6 +33,10 @@ export default function Timer() {
 
     const { settings, theme, translate } = useSettings();
     const alarmPlayer = useMemo(() => createAudioPlayer(require('../../assets/sounds/alarm.wav')), []);
+    const pickerFeedback = useCallback(() => {
+        if (!settings.isHapticsOn) return;
+        return Haptics.selectionAsync().catch(console.error);
+    }, [settings.isHapticsOn])
 
     const setTime = (minutes, seconds, id) => {
         setIsActive(prevId => prevId === id ? null : id);
@@ -133,14 +138,18 @@ export default function Timer() {
     }, [alarmPlayer])
 
     const styles = {
+        pickerSection: {
+            alignItems: 'center'
+        },
         labels: {
-            flexDirection: 'row'
+            width: 200,
+            flexDirection: 'row',
+            justifyContent: 'space-around'
         },
         label: {
             fontFamily: 'Nexa',
             fontSize: 20,
             color: theme.textPrimary,
-            marginHorizontal: 25,
             marginVertical: 10
         },
         timer: {
@@ -170,48 +179,42 @@ export default function Timer() {
         <Container>
             {showPicker ? (
                 <>
-                    <View style={{ alignItems: 'center' }}>
-                        <View style={styles.labels}>
-                            <Text style={styles.label}>{translate('minutes')}</Text>
-                            <Text style={styles.label}>{translate('seconds')}</Text>
-                        </View>
+                    <View style={styles.pickerSection}>
                         <TimerPicker
                             key={key}
                             initialValue={{ minutes, seconds }}
                             hideHours={true}
-                            minuteLabel=':'
-                            secondLabel=''
+                            minuteLabel={translate('minutes')}
+                            secondLabel={translate('seconds')}
                             minutes={minutes}
                             seconds={seconds}
                             onDurationChange={(duration) => onDurationChange(duration)}
                             LinearGradient={LinearGradient}
-                            Haptics={Haptics}
+                            pickerFeedback={pickerFeedback}
                             styles={{
                                 pickerContainer: {
-                                    backgroundColor: theme.secondary
+                                    backgroundColor: theme.secondary,
+                                    justifyContent: 'center',
+                                    gap: 15
                                 },
+                                pickerColumnWidth: 100,
                                 pickerItem: {
                                     fontFamily: 'Nexa',
                                     fontSize: 64,
                                     color: theme.primary
                                 },
                                 pickerLabel: {
-                                    backgroundColor: theme.secondary,
                                     fontFamily: 'Nexa',
-                                    fontSize: 64,
+                                    fontSize: 14,
                                     color: theme.primary
                                 },
                                 pickerItemContainer: {
                                     width: 100,
                                     height: 80,
-                                    marginHorizontal: 10,
-                                    backgroundColor: theme.secondary,
-                                    right: -15
+                                    backgroundColor: theme.secondary
                                 },
                                 pickerLabelContainer: {
-                                    top: -20,
-                                    right: -35,
-                                    alignItems: 'center'
+                                    top: -10
                                 }
                             }}
                         />
@@ -247,7 +250,7 @@ export default function Timer() {
                                 <SetTimerButton key={element.id} active={isActive === element.id} time={element.text} onPress={() => setTime(element.minutes, element.seconds, element.id)} />
                             ))}
                     </View>
-                    <Button onPress={() => start(minutes, seconds)} text={translate('start')} />
+                    <Button onPress={() => start(minutes, seconds)} text={translate('start')} type='small' />
                 </>
             ) : (
                 <View style={styles.row}>

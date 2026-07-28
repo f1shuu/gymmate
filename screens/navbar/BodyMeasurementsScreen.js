@@ -4,9 +4,10 @@ import { useFocusEffect } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
 
+import Colors from '../../Colors';
+
 import AddButton from '../../components/buttons/AddButton';
 import Background from '../../components/Background';
-import Colors from '../../Colors';
 import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';

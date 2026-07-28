@@ -31,7 +31,6 @@ export default function ExercisesScreen() {
         return muscleGroups[settings.language].find(group => group.value === value)?.label || translate(value);
     }
 
-
     useFocusEffect(
         useCallback(() => {
             const fetchExercises = async () => {
@@ -66,10 +65,10 @@ export default function ExercisesScreen() {
                                 </View>
                             ) : null
                         ))}
-                        <TouchableOpacity style={[styles.row, { marginBottom: -10, marginHorizontal: -10 }]} activeOpacity={0.8}>
-                            <Button onPress={async () => await DataController.update('exercises', item.id, navigation, 'ExerciseCreator')} text={translate('edit')} />
+                        <View style={[styles.row, { marginTop: 15 }]}>
+                            <Button onPress={async () => await DataController.update('exercises', item.id, navigation, 'ExerciseCreator')} text={translate('edit')}/>
                             <Button onPress={() => handleModal(item.id)} text={translate('delete')} type='delete' />
-                        </TouchableOpacity>
+                        </View>
                     </View>
                 ) : null}
             </TouchableOpacity>
@@ -102,7 +101,8 @@ export default function ExercisesScreen() {
         row: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingVertical: 2
+            paddingVertical: 2,
+            gap: 15
         }
     }
 

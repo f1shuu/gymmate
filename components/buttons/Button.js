@@ -9,13 +9,16 @@ export default function Button({ onPress, text, type }) {
 
     const styles = {
         button: {
-            width: 150,
+            flex: 1,
+            minWidth: 150,
             height: 50,
             borderRadius: 10,
             justifyContent: 'center',
             alignItems: 'center',
-            margin: 10,
-            alignSelf: 'center'
+            flex: type === 'small' ? 0 : 1,
+            alignSelf: type === 'small' ? 'center' : 'stretch',
+            backgroundColor: type === 'delete' ? Colors.red : theme.primary,
+            marginTop: type === 'small' ? 15 : 0
         },
         text: {
             fontFamily: 'Nexa',
@@ -27,7 +30,7 @@ export default function Button({ onPress, text, type }) {
     }
 
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.button, { backgroundColor: (type == 'delete' ? Colors.red : theme.primary) }]} activeOpacity={0.8}>
+        <TouchableOpacity onPress={onPress} style={styles.button} activeOpacity={0.8}>
             <Text style={styles.text}>{text}</Text>
         </TouchableOpacity>
     )
