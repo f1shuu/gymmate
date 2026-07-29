@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, TextView, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput, TextView, ScrollView } from 'react-native';
 import { useState, useCallback, useMemo, useRef } from 'react';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/MaterialIcons';
