@@ -15,11 +15,11 @@ export default function ContactScreen() {
             flexGrow: 1,
             paddingTop: 12,
             paddingBottom: 24,
-            gap: 16
+            gap: 15
         },
         hero: {
             backgroundColor: theme.background,
-            borderRadius: 18,
+            borderRadius: 10,
             paddingHorizontal: 24,
             paddingVertical: 30,
             alignItems: 'center'
@@ -46,17 +46,16 @@ export default function ContactScreen() {
             lineHeight: 24,
             color: theme.textHeader,
             textAlign: 'center',
-            marginTop: 14,
-            opacity: 0.9
+            marginTop: 15
         },
         emailCard: {
-            minHeight: 86,
-            borderRadius: 16,
+            minHeight: 80,
+            borderRadius: 10,
             backgroundColor: theme.background,
             flexDirection: 'row',
             alignItems: 'center',
-            paddingHorizontal: 20,
-            gap: 14
+            paddingHorizontal: 15,
+            gap: 15
         },
         emailIcon: {
             width: 48,
@@ -77,7 +76,7 @@ export default function ContactScreen() {
             minHeight: 130,
             alignItems: 'center',
             justifyContent: 'flex-end',
-            paddingHorizontal: 20,
+            paddingHorizontal: 15,
             paddingBottom: 10
         },
         thankYou: {
