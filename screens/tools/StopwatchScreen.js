@@ -12,10 +12,9 @@ const formatElapsedTime = (milliseconds) => {
     const centiseconds = Math.floor((milliseconds % 1000) / 10);
     const totalSeconds = Math.floor(milliseconds / 1000);
     const seconds = totalSeconds % 60;
-    const minutes = Math.floor(totalSeconds / 60) % 60;
-    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor(totalSeconds / 60);
 
-    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(centiseconds).padStart(2, '0')}`;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(centiseconds).padStart(2, '0')}`;
 }
 
 export default function StopwatchScreen() {
@@ -88,7 +87,8 @@ export default function StopwatchScreen() {
     const styles = {
         content: {
             flex: 1,
-            justifyContent: 'center'
+            justifyContent: 'flex-start',
+            paddingTop: 8
         },
         dial: {
             width: 310,
@@ -100,7 +100,8 @@ export default function StopwatchScreen() {
             alignSelf: 'center',
             alignItems: 'center',
             justifyContent: 'center',
-            marginVertical: 30
+            marginTop: 14,
+            marginBottom: 24
         },
         time: {
             fontFamily: 'Nexa',
@@ -119,14 +120,15 @@ export default function StopwatchScreen() {
             fontSize: 16,
             color: theme.textSecondary,
             marginHorizontal: 20,
-            marginTop: 12,
+            marginTop: 30,
             marginBottom: 8
         },
         laps: {
-            maxHeight: 150,
-            marginHorizontal: 20,
-            borderRadius: 10,
-            backgroundColor: theme.background
+            maxHeight: 170,
+            marginHorizontal: 20
+        },
+        lapsContent: {
+            paddingBottom: 4
         },
         lapRow: {
             minHeight: 42,
@@ -134,8 +136,9 @@ export default function StopwatchScreen() {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            borderBottomWidth: 1,
-            borderBottomColor: theme.secondary
+            borderRadius: 10,
+            backgroundColor: theme.background,
+            marginBottom: 6
         },
         lapText: {
             fontFamily: 'Nexa',
@@ -155,18 +158,19 @@ export default function StopwatchScreen() {
                     <Button
                         onPress={elapsedTime > 0 && !isRunning ? resetStopwatch : addLap}
                         text={elapsedTime > 0 && !isRunning ? translate('resetStopwatch') : translate('lap')}
-                        type='delete'
+                        type={elapsedTime > 0 && !isRunning ? 'delete' : ''}
                     />
                     <Button
                         onPress={toggleStopwatch}
                         text={isRunning ? translate('pause') : (elapsedTime > 0 ? translate('resume') : translate('start'))}
+                        type={isRunning ? 'delete' : ''}
                     />
                 </View>
 
                 {laps.length > 0 ? (
                     <>
                         <Text style={styles.lapHeader}>{translate('laps')}</Text>
-                        <ScrollView style={styles.laps}>
+                        <ScrollView style={styles.laps} contentContainerStyle={styles.lapsContent}>
                             {laps.map((lap, index) => (
                                 <View key={`${lap}-${laps.length - index}`} style={styles.lapRow}>
                                     <Text style={styles.lapText}>{translate('lap')} {laps.length - index}</Text>

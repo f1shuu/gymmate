@@ -26,10 +26,13 @@ export default function ExercisesScreen() {
 
     const navigation = useNavigation();
     const translateDomainValue = (value) => {
+        if (Array.isArray(value)) return value.map(translateDomainValue).join(', ');
         if (value === 'reps_based') return translate('repsBased');
         if (value === 'time_based') return translate('timeBased');
         return muscleGroups[settings.language].find(group => group.value === value)?.label || translate(value);
     }
+
+    const hasDisplayValue = (value) => Array.isArray(value) ? value.length > 0 : Boolean(value);
 
     useFocusEffect(
         useCallback(() => {
@@ -58,8 +61,8 @@ export default function ExercisesScreen() {
                 {isActive ? (
                     <View style={styles.exercise}>
                         {Object.entries(item.data).map(([key, value], id) => (
-                            value ? (
-                                <View key={id} style={styles.row}>
+                            hasDisplayValue(value) ? (
+                                <View key={key} style={styles.row}>
                                     <Text style={styles.text}>{translate(key)}:</Text>
                                     <Text style={styles.text}>{translateDomainValue(value)}</Text>
                                 </View>

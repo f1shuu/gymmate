@@ -181,7 +181,7 @@ export default function TrainingsScreen() {
                 {isActive ? (
                     <View style={styles.details}>
                         {resolvedExercises.map((exercise, index) => (
-                            <View key={exercise.id} style={styles.exerciseRow}>
+                            <View key={`${exercise.id}-${index}`} style={styles.exerciseRow}>
                                 <Text style={styles.order}>{index + 1}.</Text>
                                 <Text style={styles.exerciseName}>{exercise.name}</Text>
                             </View>

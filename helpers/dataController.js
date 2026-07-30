@@ -30,7 +30,14 @@ const MUSCLE_GROUP_ALIASES = {
     Przedramiona: 'forearms', Forearms: 'forearms',
     'Szyja i kark': 'neck_and_traps', 'Neck and Traps': 'neck_and_traps',
     Tricepsy: 'triceps', Triceps: 'triceps',
-    Uda: 'thighs', Thighs: 'thighs'
+    Uda: 'thighs', Thighs: 'thighs',
+    'Całe ciało': 'full_body', 'Full body': 'full_body',
+    'Czworogłowe uda': 'quadriceps', Quadriceps: 'quadriceps',
+    'Dolna część pleców': 'lower_back', 'Lower back': 'lower_back',
+    'Głębokie mięśnie tułowia (core)': 'core', Core: 'core',
+    'Mięśnie dwugłowe uda': 'hamstrings', Hamstrings: 'hamstrings',
+    Przywodziciele: 'adductors', Adductors: 'adductors',
+    'Zginacze bioder': 'hip_flexors', 'Hip flexors': 'hip_flexors'
 }
 
 const EXERCISE_TYPE_ALIASES = {
@@ -63,8 +70,22 @@ const migrateRecord = (record) => {
     const recordData = record.data && typeof record.data === 'object' ? record.data : {};
     const data = {
         ...recordData,
-        muscleGroup: MUSCLE_GROUP_ALIASES[recordData.muscleGroup] || recordData.muscleGroup,
         type: EXERCISE_TYPE_ALIASES[recordData.type] || recordData.type
+    }
+    const hasMuscleGroupData = category === 'exercises'
+        || recordData.muscleGroup
+        || Array.isArray(recordData.muscleGroups)
+
+    if (hasMuscleGroupData) {
+        const sourceGroups = Array.isArray(recordData.muscleGroups)
+            ? recordData.muscleGroups
+            : (recordData.muscleGroup ? [recordData.muscleGroup] : [])
+        data.muscleGroups = [...new Set(
+            sourceGroups
+                .map(group => MUSCLE_GROUP_ALIASES[group] || group)
+                .filter(Boolean)
+        )]
+        delete data.muscleGroup;
     }
 
     return { ...recordWithoutLegacyDate, createdAt, category, data };

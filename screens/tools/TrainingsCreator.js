@@ -1,6 +1,6 @@
-import { Text, View, TouchableOpacity, TextInput, TextView, ScrollView } from 'react-native';
-import { useState, useCallback, useMemo, useRef } from 'react';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { Animated, PanResponder, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
 
@@ -13,12 +13,75 @@ import Modal from '../../components/Modal';
 
 import { useSettings } from '../../helpers/SettingsProvider';
 
+const MAX_EXERCISES = 20;
+const EXERCISE_ROW_HEIGHT = 75;
+let selectionSequence = 0;
+
+const createSelection = (exerciseId) => ({
+    entryId: `${exerciseId}-${Date.now()}-${selectionSequence++}`,
+    exerciseId
+})
+
+function DraggableExerciseCard({ entry, exercise, index, itemCount, onMove, onRemove, styles, theme, summary }) {
+    const dragY = useRef(new Animated.Value(0)).current;
+    const [isDragging, setIsDragging] = useState(false);
+
+    const resetDragPosition = () => {
+        dragY.setValue(0);
+        setIsDragging(false);
+    }
+
+    const panResponder = useMemo(() => PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onMoveShouldSetPanResponder: (_, gestureState) => Math.abs(gestureState.dy) > 2,
+        onPanResponderGrant: () => setIsDragging(true),
+        onPanResponderMove: (_, gestureState) => dragY.setValue(gestureState.dy),
+        onPanResponderRelease: (_, gestureState) => {
+            const targetIndex = Math.max(
+                0,
+                Math.min(itemCount - 1, index + Math.round(gestureState.dy / EXERCISE_ROW_HEIGHT))
+            )
+            resetDragPosition();
+            if (targetIndex !== index) onMove(index, targetIndex);
+        },
+        onPanResponderTerminate: resetDragPosition
+    }), [dragY, index, itemCount, onMove])
+
+    return (
+        <Animated.View
+            style={[
+                styles.exerciseCard,
+                isDragging && styles.draggingCard,
+                { transform: [{ translateY: dragY }] }
+            ]}
+        >
+            <View style={styles.orderBadge}>
+                <Text style={styles.orderText}>{index + 1}</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+                <Text style={styles.exerciseName}>{exercise.name}</Text>
+                <Text style={styles.exerciseDetails}>{summary}</Text>
+            </View>
+            <View
+                style={styles.dragHandle}
+                accessibilityRole='adjustable'
+                {...panResponder.panHandlers}
+            >
+                <Icon name='drag-indicator' size={29} color={theme.primary} />
+            </View>
+            <TouchableOpacity style={styles.iconButton} onPress={() => onRemove(entry.entryId)}>
+                <Icon name='remove-circle-outline' size={25} color={Colors.red} />
+            </TouchableOpacity>
+        </Animated.View>
+    )
+}
+
 export default function TrainingsCreator({ route }) {
     const [exercises, setExercises] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [selectedExerciseIds, setSelectedExerciseIds] = useState([]);
+    const [selectedEntries, setSelectedEntries] = useState([]);
     const [name, setName] = useState(route.params?.name || '');
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [modalType, setModalType] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
     const initializedSelection = useRef(false);
 
@@ -36,13 +99,15 @@ export default function TrainingsCreator({ route }) {
 
                 setExercises(storedExercises);
                 setIsLoading(false);
-                setSelectedExerciseIds(currentIds => {
+                setSelectedEntries(currentEntries => {
                     const availableIds = new Set(storedExercises.map(exercise => exercise.id));
-                    const sourceIds = initializedSelection.current
-                        ? currentIds
-                        : (route.params?.data?.exerciseIds || []);
+                    const sourceEntries = initializedSelection.current
+                        ? currentEntries
+                        : (route.params?.data?.exerciseIds || []).map(createSelection);
                     initializedSelection.current = true;
-                    return sourceIds.filter(id => availableIds.has(id));
+                    return sourceEntries
+                        .filter(entry => availableIds.has(entry.exerciseId))
+                        .slice(0, MAX_EXERCISES);
                 })
             }
 
@@ -53,46 +118,62 @@ export default function TrainingsCreator({ route }) {
         }, [route.params])
     )
 
-    const selectedExercises = useMemo(
-        () => selectedExerciseIds
-            .map(id => exercises.find(exercise => exercise.id === id))
-            .filter(Boolean),
-        [exercises, selectedExerciseIds]
+    const exercisesById = useMemo(
+        () => new Map(exercises.map(exercise => [exercise.id, exercise])),
+        [exercises]
     )
-    const availableExercises = useMemo(
-        () => exercises.filter(exercise => !selectedExerciseIds.includes(exercise.id)),
-        [exercises, selectedExerciseIds]
+    const selectedExercises = useMemo(
+        () => selectedEntries
+            .map(entry => ({ entry, exercise: exercisesById.get(entry.exerciseId) }))
+            .filter(item => Boolean(item.exercise)),
+        [exercisesById, selectedEntries]
+    )
+    const selectionCounts = useMemo(
+        () => selectedEntries.reduce((counts, entry) => {
+            counts.set(entry.exerciseId, (counts.get(entry.exerciseId) || 0) + 1);
+            return counts;
+        }, new Map()),
+        [selectedEntries]
     )
 
     const provideHapticFeedback = () => {
         if (settings?.isHapticsOn) Haptics.selectionAsync().catch(console.error);
     }
 
-    const addExercise = (id) => {
+    const addExercise = (exerciseId) => {
+        if (selectedEntries.length >= MAX_EXERCISES) {
+            setModalType('limit');
+            return;
+        }
+
         provideHapticFeedback();
-        setSelectedExerciseIds(currentIds => [...currentIds, id]);
+        setSelectedEntries(currentEntries => [...currentEntries, createSelection(exerciseId)]);
     }
 
-    const removeExercise = (id) => {
+    const removeExercise = (entryId) => {
         provideHapticFeedback();
-        setSelectedExerciseIds(currentIds => currentIds.filter(exerciseId => exerciseId !== id));
+        setSelectedEntries(currentEntries => currentEntries.filter(entry => entry.entryId !== entryId));
     }
 
-    const moveExercise = (index, direction) => {
-        const targetIndex = index + direction;
-        if (targetIndex < 0 || targetIndex >= selectedExerciseIds.length) return;
+    const moveExercise = useCallback((fromIndex, targetIndex) => {
+        if (fromIndex === targetIndex) return;
 
         provideHapticFeedback();
-        setSelectedExerciseIds(currentIds => {
-            const reorderedIds = [...currentIds];
-            [reorderedIds[index], reorderedIds[targetIndex]] = [reorderedIds[targetIndex], reorderedIds[index]];
-            return reorderedIds;
+        setSelectedEntries(currentEntries => {
+            if (fromIndex < 0 || targetIndex < 0 || fromIndex >= currentEntries.length || targetIndex >= currentEntries.length) {
+                return currentEntries;
+            }
+
+            const reorderedEntries = [...currentEntries];
+            const [movedEntry] = reorderedEntries.splice(fromIndex, 1);
+            reorderedEntries.splice(targetIndex, 0, movedEntry);
+            return reorderedEntries;
         })
-    }
+    }, [settings?.isHapticsOn])
 
     const saveTraining = async () => {
-        if (!name.trim() || selectedExerciseIds.length === 0) {
-            setIsModalVisible(true);
+        if (!name.trim() || selectedEntries.length === 0) {
+            setModalType('validation');
             return;
         }
         if (isSaving) return;
@@ -105,7 +186,7 @@ export default function TrainingsCreator({ route }) {
             'trainings',
             navigation,
             'TrainingsScreen',
-            { exerciseIds: selectedExerciseIds }
+            { exerciseIds: selectedEntries.map(entry => entry.exerciseId) }
         )
         setIsSaving(false);
     }
@@ -115,6 +196,58 @@ export default function TrainingsCreator({ route }) {
     }
 
     const styles = {
+        exerciseCard: {
+            minHeight: 68,
+            borderRadius: 10,
+            backgroundColor: theme.background,
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingLeft: 14,
+            paddingRight: 6,
+            marginBottom: 7
+        },
+        draggingCard: {
+            zIndex: 10,
+            elevation: 8,
+            opacity: 0.94
+        },
+        orderBadge: {
+            width: 34,
+            height: 34,
+            borderRadius: 17,
+            backgroundColor: theme.primary,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: 12
+        },
+        orderText: {
+            fontFamily: 'Nexa',
+            fontSize: 15,
+            color: theme.textHeader
+        },
+        exerciseName: {
+            fontFamily: 'Nexa',
+            fontSize: 16,
+            color: theme.textPrimary
+        },
+        exerciseDetails: {
+            fontFamily: 'Nexa',
+            fontSize: 12,
+            color: theme.textSecondary,
+            marginTop: 4
+        },
+        dragHandle: {
+            width: 42,
+            minHeight: 58,
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        iconButton: {
+            width: 38,
+            height: 42,
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
         emptyContainer: {
             flex: 1,
             alignItems: 'center',
@@ -148,52 +281,37 @@ export default function TrainingsCreator({ route }) {
             fontSize: 16,
             marginBottom: 22
         },
-        sectionTitle: {
-            fontFamily: 'Nexa',
-            fontSize: 15,
-            color: theme.textSecondary,
+        sectionTitleRow: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
             marginHorizontal: 5,
             marginBottom: 10
         },
-        exerciseCard: {
-            minHeight: 68,
-            borderRadius: 10,
-            backgroundColor: theme.background,
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingHorizontal: 14,
-            marginBottom: 7
+        sectionTitle: {
+            flex: 1,
+            fontFamily: 'Nexa',
+            fontSize: 15,
+            color: theme.textSecondary
         },
-        orderBadge: {
-            width: 34,
-            height: 34,
-            borderRadius: 17,
+        selectionLimit: {
+            fontFamily: 'Nexa',
+            fontSize: 13,
+            color: selectedEntries.length >= MAX_EXERCISES ? Colors.red : theme.textSecondary
+        },
+        selectedCount: {
+            minWidth: 28,
+            height: 28,
+            borderRadius: 14,
             backgroundColor: theme.primary,
             alignItems: 'center',
             justifyContent: 'center',
             marginRight: 12
         },
-        orderText: {
-            fontFamily: 'Nexa',
-            fontSize: 15,
-            color: theme.textHeader
-        },
-        exerciseName: {
-            fontFamily: 'Nexa',
-            fontSize: 16,
-            color: theme.textPrimary
-        },
-        exerciseDetails: {
+        selectedCountText: {
             fontFamily: 'Nexa',
             fontSize: 12,
-            color: theme.textSecondary,
-            marginTop: 4
-        },
-        iconButton: {
-            width: 38,
-            height: 42,
-            alignItems: 'center',
-            justifyContent: 'center'
+            color: theme.textHeader
         },
         saveButton: {
             minHeight: 52,
@@ -241,7 +359,11 @@ export default function TrainingsCreator({ route }) {
 
     return (
         <Container gradient={0.75}>
-            <ScrollView contentContainerStyle={{ paddingBottom: 30 }} showsVerticalScrollIndicator={false}>
+            <ScrollView
+                contentContainerStyle={{ paddingBottom: 30 }}
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps='handled'
+            >
                 <TextInput
                     style={styles.input}
                     value={name}
@@ -251,57 +373,54 @@ export default function TrainingsCreator({ route }) {
                     placeholderTextColor={theme.textSecondary}
                 />
 
-                <Text style={styles.sectionTitle}>{translate('selectedExercises')}</Text>
+                <View style={styles.sectionTitleRow}>
+                    <Text style={styles.sectionTitle}>{translate('selectedExercises')}</Text>
+                    <Text style={styles.selectionLimit}>{selectedEntries.length}/{MAX_EXERCISES}</Text>
+                </View>
                 {selectedExercises.length === 0 ? (
                     <Text style={styles.emptyText}>{translate('selectAtLeastOneExercise')}</Text>
-                ) : selectedExercises.map((exercise, index) => (
-                    <View key={exercise.id} style={styles.exerciseCard}>
-                        <View style={styles.orderBadge}>
-                            <Text style={styles.orderText}>{index + 1}</Text>
-                        </View>
-                        <View style={{ flex: 1 }}>
-                            <Text style={styles.exerciseName}>{exercise.name}</Text>
-                            <Text style={styles.exerciseDetails}>{exerciseSummary(exercise)}</Text>
-                        </View>
-                        <TouchableOpacity
-                            style={styles.iconButton}
-                            disabled={index === 0}
-                            onPress={() => moveExercise(index, -1)}
-                        >
-                            <Icon name='arrow-upward' size={24} color={index === 0 ? theme.tertiary : theme.primary} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.iconButton}
-                            disabled={index === selectedExercises.length - 1}
-                            onPress={() => moveExercise(index, 1)}
-                        >
-                            <Icon name='arrow-downward' size={24} color={index === selectedExercises.length - 1 ? theme.tertiary : theme.primary} />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconButton} onPress={() => removeExercise(exercise.id)}>
-                            <Icon name='remove-circle-outline' size={25} color={Colors.red} />
-                        </TouchableOpacity>
-                    </View>
+                ) : selectedExercises.map(({ entry, exercise }, index) => (
+                    <DraggableExerciseCard
+                        key={entry.entryId}
+                        entry={entry}
+                        exercise={exercise}
+                        index={index}
+                        itemCount={selectedExercises.length}
+                        onMove={moveExercise}
+                        onRemove={removeExercise}
+                        styles={styles}
+                        theme={theme}
+                        summary={exerciseSummary(exercise)}
+                    />
                 ))}
 
-                {availableExercises.length > 0 ? (
-                    <>
-                        <Text style={[styles.sectionTitle, { marginTop: 18 }]}>{translate('availableExercises')}</Text>
-                        {availableExercises.map(exercise => (
-                            <TouchableOpacity
-                                key={exercise.id}
-                                style={styles.exerciseCard}
-                                activeOpacity={0.8}
-                                onPress={() => addExercise(exercise.id)}
-                            >
-                                <View style={{ flex: 1 }}>
-                                    <Text style={styles.exerciseName}>{exercise.name}</Text>
-                                    <Text style={styles.exerciseDetails}>{exerciseSummary(exercise)}</Text>
+                <View style={[styles.sectionTitleRow, { marginTop: 18 }]}>
+                    <Text style={styles.sectionTitle}>{translate('availableExercises')}</Text>
+                </View>
+                {exercises.map(exercise => {
+                    const selectedCount = selectionCounts.get(exercise.id) || 0;
+                    const limitReached = selectedEntries.length >= MAX_EXERCISES;
+
+                    return (
+                        <TouchableOpacity
+                            key={exercise.id}
+                            style={[styles.exerciseCard, limitReached && { opacity: 0.55 }]}
+                            activeOpacity={0.8}
+                            onPress={() => addExercise(exercise.id)}
+                        >
+                            <View style={{ flex: 1 }}>
+                                <Text style={styles.exerciseName}>{exercise.name}</Text>
+                                <Text style={styles.exerciseDetails}>{exerciseSummary(exercise)}</Text>
+                            </View>
+                            {selectedCount > 0 ? (
+                                <View style={styles.selectedCount}>
+                                    <Text style={styles.selectedCountText}>×{selectedCount}</Text>
                                 </View>
-                                <Icon name='add-circle-outline' size={28} color={Colors.green} />
-                            </TouchableOpacity>
-                        ))}
-                    </>
-                ) : null}
+                            ) : null}
+                            <Icon name='add-circle-outline' size={28} color={limitReached ? theme.tertiary : Colors.green} />
+                        </TouchableOpacity>
+                    )
+                })}
 
                 <TouchableOpacity
                     style={styles.saveButton}
@@ -313,11 +432,11 @@ export default function TrainingsCreator({ route }) {
                 </TouchableOpacity>
             </ScrollView>
             <Modal
-                isVisible={isModalVisible}
-                text={translate('trainingCreatorValidation')}
+                isVisible={Boolean(modalType)}
+                text={translate(modalType === 'limit' ? 'trainingExerciseLimitReached' : 'trainingCreatorValidation')}
                 twoButtons={false}
                 buttonOneText={translate('ok')}
-                buttonOneOnPress={() => setIsModalVisible(false)}
+                buttonOneOnPress={() => setModalType(null)}
             />
         </Container>
     )

@@ -90,7 +90,7 @@ export default function NavigationBar() {
                     ...customOptions,
                     headerStyle: {
                         backgroundColor: theme.primary,
-                        height: 100,
+                        height: 80,
                         elevation: 0,
                     },
                     title: '',

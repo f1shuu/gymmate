@@ -8,6 +8,7 @@ import Colors from '../../Colors';
 import Container from '../../components/Container';
 import DataController from '../../helpers/dataController';
 import Dropdown from '../../components/Dropdown';
+import MultiSelect from '../../components/MultiSelect';
 import Modal from '../../components/Modal';
 import SegmentedButton from '../../components/buttons/SegmentedButton';
 
@@ -20,13 +21,17 @@ import { times } from '../../constants/times';
 import { kgWeights } from '../../constants/kgWeights';
 import { lbsWeights } from '../../constants/lbsWeights';
 
-const isMissing = (value) => value === null || value === undefined || (typeof value === 'string' && value.trim() === '');
+const isMissing = (value) => value === null || value === undefined || (Array.isArray(value) && value.length === 0) || (typeof value === 'string' && value.trim() === '');
 
 export default function ExerciseCreator({ route }) {
     const { settings, theme, translate } = useSettings();
     const id = route.params?.id || null;
     const [activeStep, setActiveStep] = useState(0);
-    const [muscleGroup, setMuscleGroup] = useState(route.params?.data?.muscleGroup || null);
+    const [muscleGroupsSelected, setMuscleGroupsSelected] = useState(() => {
+        const storedGroups = route.params?.data?.muscleGroups;
+        if (Array.isArray(storedGroups)) return storedGroups;
+        return route.params?.data?.muscleGroup ? [route.params.data.muscleGroup] : [];
+    })
     const [type, setType] = useState(route.params?.data?.type || 'reps_based');
     const [setsAmount, setSetsAmount] = useState(route.params?.data?.setsAmount || null);
     const [repsAmount, setRepsAmount] = useState(route.params?.data?.repsAmount || null);
@@ -51,7 +56,7 @@ export default function ExerciseCreator({ route }) {
     }
 
     const goToDetails = () => {
-        if (!showValidationErrorIfNeeded(muscleGroup)) setActiveStep(1);
+        if (!showValidationErrorIfNeeded(muscleGroupsSelected)) setActiveStep(1);
     }
 
     const goToName = () => {
@@ -66,7 +71,7 @@ export default function ExerciseCreator({ route }) {
 
         const isRepsBased = type === 'reps_based';
         const exerciseData = {
-            muscleGroup,
+            muscleGroups: muscleGroupsSelected,
             type,
             setsAmount: isRepsBased ? setsAmount : null,
             repsAmount: isRepsBased ? repsAmount : null,
@@ -199,15 +204,14 @@ export default function ExerciseCreator({ route }) {
                 <ProgressStep label={translate('type')} {...progressStepProps}>
                     <>
                         <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('chooseMuscleGroup')}</Text>
-                        <Dropdown
+                        <MultiSelect
                             passedStyle={{ borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
                             data={muscleGroups[settings.language]}
-                            labelField='label'
                             placeholder={isFocus ? '...' : translate('chooseMuscleGroup') + '...'}
-                            value={muscleGroup}
+                            value={muscleGroupsSelected}
                             onFocus={() => setIsFocus(true)}
                             onBlur={() => setIsFocus(false)}
-                            onChange={(item) => onDropdownChange(setMuscleGroup, item.value)}
+                            onChange={setMuscleGroupsSelected}
                         />
                         <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('chooseExerciseType')}</Text>
                         <SegmentedButton

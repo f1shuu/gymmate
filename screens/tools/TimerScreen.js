@@ -171,7 +171,8 @@ export default function Timer() {
             flexDirection: 'row',
             justifyContent: 'space-between',
             marginVertical: 20,
-            alignItems: 'stretch'
+            alignItems: 'stretch',
+            gap: 15
         }
     }
 
@@ -254,8 +255,16 @@ export default function Timer() {
                 </>
             ) : (
                 <View style={styles.row}>
-                    <Button onPress={() => restart()} text={completed ? translate('reset') : translate('delete')} />
-                    <Button onPress={completed ? () => start(minutes, seconds) : () => playOrPause()} text={completed ? translate('restart') : (isPlaying ? translate('pause') : translate('resume'))} type='delete' />
+                    <Button
+                        onPress={() => restart()}
+                        text={completed ? translate('reset') : translate('delete')}
+                        type='delete'
+                    />
+                    <Button
+                        onPress={completed ? () => start(minutes, seconds) : () => playOrPause()}
+                        text={completed ? translate('restart') : (isPlaying ? translate('pause') : translate('resume'))}
+                        type={completed ? 'delete' : ''}
+                    />
                 </View>
             )}
         </Container>

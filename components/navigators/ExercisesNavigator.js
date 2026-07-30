@@ -15,6 +15,7 @@ export default function ExercisesNavigator() {
         headerTitle: translate('exercisesCreatorHeader'),
         headerStyle: {
             backgroundColor: theme.primary,
+            height: 80,
             elevation: 0
         },
         headerTitleStyle: {

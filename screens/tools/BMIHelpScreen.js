@@ -10,13 +10,17 @@ import { useSettings } from '../../helpers/SettingsProvider';
 const { width, height } = Dimensions.get('window');
 const expandedImageWidth = width * 0.96;
 const expandedImageHeight = height * 0.78;
-const chartSource = require('../../assets/images/tools/bmi/graph.png');
+const chartSources = {
+    pl: require('../../assets/images/tools/bmi/graph-pl.png'),
+    en: require('../../assets/images/tools/bmi/graph-en.png')
+}
 const clamp = (value, minimum, maximum) => Math.min(maximum, Math.max(minimum, value));
 
 export default function BMIHelpScreen() {
     const [isChartExpanded, setIsChartExpanded] = useState(false);
     const [zoomScale, setZoomScale] = useState(1);
-    const { theme, translate } = useSettings();
+    const { settings, theme, translate } = useSettings();
+    const chartSource = chartSources[settings.language] || chartSources.en;
     const pinchGestureRef = useRef(null);
     const panGestureRef = useRef(null);
     const baseScale = useRef(new Animated.Value(1)).current;

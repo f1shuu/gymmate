@@ -222,13 +222,13 @@ export default function ActiveTrainingScreen({ route }) {
             <Container gradient={0.75}>
                 <View style={styles.completedContainer}>
                     <View style={styles.trophy}>
-                        <Icon name='emoji-events' size={68} color={Colors.green} />
+                        <Icon name='trophy' size={50} color={Colors.green} />
                     </View>
                     <Text style={styles.congratulations}>{translate('congratulations')}</Text>
                     <Text style={styles.completedText}>
                         {translate('trainingCompleted')} „{training.name}”.
                     </Text>
-                    <Button onPress={goHome} text={translate('backToHome')} />
+                    <Button onPress={goHome} text={translate('backToHome')} type='small' />
                 </View>
             </Container>
         )
@@ -239,7 +239,7 @@ export default function ActiveTrainingScreen({ route }) {
             <Container>
                 <View style={styles.completedContainer}>
                     <Text style={styles.completedText}>{translate('trainingHasNoAvailableExercises')}</Text>
-                    <Button onPress={goHome} text={translate('backToHome')} />
+                    <Button onPress={goHome} text={translate('backToHome')} type='small' />
                 </View>
             </Container>
         )

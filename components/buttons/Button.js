@@ -15,6 +15,7 @@ export default function Button({ onPress, text, type }) {
             borderRadius: 10,
             justifyContent: 'center',
             alignItems: 'center',
+            paddingHorizontal: 15,
             flex: type === 'small' ? 0 : 1,
             alignSelf: type === 'small' ? 'center' : 'stretch',
             backgroundColor: type === 'delete' ? Colors.red : theme.primary,
@@ -22,7 +23,7 @@ export default function Button({ onPress, text, type }) {
         },
         text: {
             fontFamily: 'Nexa',
-            fontSize: 18,
+            fontSize: 16,
             color: theme.textHeader,
             textAlign: 'center',
             textAlignVertical: 'center'

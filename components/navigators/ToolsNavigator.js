@@ -22,6 +22,7 @@ export default function ToolsNavigator() {
         },
         headerStyle: {
             backgroundColor: theme.primary,
+            height: 80,
             elevation: 0
         }
     }
