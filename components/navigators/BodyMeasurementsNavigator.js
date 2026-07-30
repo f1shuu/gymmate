@@ -14,7 +14,7 @@ export default function BodyMeasurementsNavigator() {
         headerTintColor: theme.textHeader,
         headerStyle: {
             backgroundColor: theme.primary,
-            height: 80,
+            height: 60,
             elevation: 0
         },
         headerTitleStyle: {

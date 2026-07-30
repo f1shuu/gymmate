@@ -74,7 +74,11 @@ export default function NameScreen() {
                 value={nickname ? nickname : settings.nickname}
                 onChangeText={(text) => setNickname(text)}
             />
-            <Button onPress={() => saveAndReturn(firstName, lastName, nickname)} text={translate('save')} />
+            <Button
+                onPress={() => saveAndReturn(firstName, lastName, nickname)}
+                text={translate('save')}
+                type='small'
+            />
         </Container>
     )
 }
