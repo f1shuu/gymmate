@@ -3,11 +3,12 @@
 A mobile fitness companion for creating custom workouts, tracking progress, and staying consistent with training routines.
 
 ## Features
+
 - create custom exercises with multiple muscle groups and rep-based or time-based variants,
 - build workout plans, arrange exercise order, and follow guided set-by-set sessions,
 - save body measurements and track essential workout statistics,
 - use the BMI calculator with visual guidance, expression calculator, and unit converters,
-- use the timer and lap stopwatch with haptic feedback and an optional sound alarm,
+- use a haptic-enabled timer with an optional sound alarm and a stopwatch with lap tracking,
 - personalize the language, units, theme, sound, and vibration settings.
 
 ## Installation
@@ -44,10 +45,12 @@ You can download the latest Android APK from the [Releases](https://github.com/f
 
 ## Tech Stack
 
-- React Native
-- Expo
-- TypeScript
-- React Navigation
+- **React Native 0.81** and **React 19** for the mobile interface,
+- **Expo SDK 54** for development, native APIs, and application builds,
+- **React Navigation 7** for tab and stack navigation,
+- **AsyncStorage** for persistent local settings and domain data,
+- **Expo modules** for audio, fonts, haptics, localization, assets, and gradients,
+- **React Native Gesture Handler** and **React Native SVG** for gestures and visual components.
 
 ## License
 
