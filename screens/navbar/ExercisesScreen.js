@@ -55,20 +55,20 @@ export default function ExercisesScreen() {
         return (
             <TouchableOpacity onPress={() => setActiveId(activeId === item.id ? null : item.id)} activeOpacity={0.8}>
                 <View style={styles.header}>
-                    <Text style={styles.text}>{item.name}</Text>
+                    <Text style={styles.headerText}>{item.name}</Text>
                     <Icon name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={32} color={theme.textPrimary} />
                 </View>
                 {isActive ? (
                     <View style={styles.exercise}>
-                        {Object.entries(item.data).map(([key, value], id) => (
+                        {Object.entries(item.data).map(([key, value]) => (
                             hasDisplayValue(value) ? (
-                                <View key={key} style={styles.row}>
-                                    <Text style={styles.text}>{translate(key)}:</Text>
-                                    <Text style={styles.text}>{translateDomainValue(value)}</Text>
+                                <View key={key} style={styles.detailRow}>
+                                    <Text style={styles.detailLabel}>{translate(key)}:</Text>
+                                    <Text style={styles.detailValue}>{translateDomainValue(value)}</Text>
                                 </View>
                             ) : null
                         ))}
-                        <View style={[styles.row, { marginTop: 15 }]}>
+                        <View style={styles.actions}>
                             <Button onPress={async () => await DataController.update('exercises', item.id, navigation, 'ExerciseCreator')} text={translate('edit')}/>
                             <Button onPress={() => handleModal(item.id)} text={translate('delete')} type='delete' />
                         </View>
@@ -89,7 +89,9 @@ export default function ExercisesScreen() {
             paddingHorizontal: 20,
             marginBottom: 5
         },
-        text: {
+        headerText: {
+            flex: 1,
+            marginRight: 10,
             fontFamily: 'Nexa',
             fontSize: 16,
             color: theme.textPrimary
@@ -101,10 +103,33 @@ export default function ExercisesScreen() {
             padding: 15,
             borderRadius: 10
         },
-        row: {
+        detailRow: {
             flexDirection: 'row',
             justifyContent: 'space-between',
+            alignItems: 'flex-start',
             paddingVertical: 2,
+            gap: 15
+        },
+        detailLabel: {
+            maxWidth: '45%',
+            flexShrink: 0,
+            fontFamily: 'Nexa',
+            fontSize: 16,
+            color: theme.textPrimary
+        },
+        detailValue: {
+            flex: 1,
+            flexShrink: 1,
+            fontFamily: 'Nexa',
+            fontSize: 16,
+            lineHeight: 22,
+            color: theme.textPrimary,
+            textAlign: 'right'
+        },
+        actions: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: 15,
             gap: 15
         }
     }

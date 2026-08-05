@@ -7,6 +7,8 @@ import * as themes from '../Themes';
 import { translations } from '../constants/translations';
 
 const SettingsContext = createContext();
+const ONBOARDING_STORAGE_KEY = 'onboardingVersion';
+const CURRENT_ONBOARDING_VERSION = '1';
 
 const showSettingsError = () => {
     Alert.alert(
@@ -17,7 +19,6 @@ const showSettingsError = () => {
 
 export const SettingsProvider = ({ children }) => {
     const defaultSettings = {
-        firstLaunch: true,
         theme: 'GymMate',
         isHapticsOn: true,
         isSoundOn: true,
@@ -33,12 +34,14 @@ export const SettingsProvider = ({ children }) => {
 
     const [settings, setSettings] = useState(null);
     const [theme, setTheme] = useState(themes.GymMate);
+    const [shouldShowOnboarding, setShouldShowOnboarding] = useState(false);
 
     const loadSettings = async () => {
         try {
-            const [savedSettings, savedTheme] = await Promise.all([
+            const [savedSettings, savedTheme, savedOnboardingVersion] = await Promise.all([
                 AsyncStorage.getItem('settings'),
-                AsyncStorage.getItem('theme')
+                AsyncStorage.getItem('theme'),
+                AsyncStorage.getItem(ONBOARDING_STORAGE_KEY)
             ])
 
             let parsedSettings = {};
@@ -62,10 +65,12 @@ export const SettingsProvider = ({ children }) => {
 
             setSettings(loadedSettings);
             setTheme(themes[themeName] || themes.GymMate);
+            setShouldShowOnboarding(savedOnboardingVersion !== CURRENT_ONBOARDING_VERSION);
         } catch (error) {
             console.error(error);
             setSettings(defaultSettings);
             setTheme(themes.GymMate);
+            setShouldShowOnboarding(true);
             showSettingsError();
         }
     }
@@ -92,6 +97,30 @@ export const SettingsProvider = ({ children }) => {
         }
     }
 
+    const completeOnboarding = async () => {
+        try {
+            await AsyncStorage.setItem(ONBOARDING_STORAGE_KEY, CURRENT_ONBOARDING_VERSION);
+            setShouldShowOnboarding(false);
+            return true;
+        } catch (error) {
+            console.error(error);
+            showSettingsError();
+            return false;
+        }
+    }
+
+    const restartOnboarding = async () => {
+        try {
+            await AsyncStorage.removeItem(ONBOARDING_STORAGE_KEY);
+            setShouldShowOnboarding(true);
+            return true;
+        } catch (error) {
+            console.error(error);
+            showSettingsError();
+            return false;
+        }
+    }
+
     const translate = (key) => translations[settings?.language]?.[key] || translations.en[key] || key;
 
     const changeTheme = async (themeName) => {
@@ -107,7 +136,7 @@ export const SettingsProvider = ({ children }) => {
     }
 
     return (
-        <SettingsContext.Provider value={{ settings, theme, changeTheme, loadSettings, restoreDefault, translate, updateSettings }}>
+        <SettingsContext.Provider value={{ settings, theme, changeTheme, completeOnboarding, loadSettings, restartOnboarding, restoreDefault, shouldShowOnboarding, translate, updateSettings }}>
             {children}
         </SettingsContext.Provider>
     )

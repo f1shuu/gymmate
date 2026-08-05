@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, StatusBar } from 'react-native';
+import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -18,7 +19,12 @@ export default function Loader() {
             try {
                 await Promise.all([
                     Font.loadAsync({ Nexa: require('./assets/fonts/Nexa-Heavy.ttf') }),
-                    loadSettings()
+                    loadSettings(),
+                    Asset.loadAsync([
+                        require('./assets/images/intro/create-exercises.png'),
+                        require('./assets/images/intro/plan-trainings.png'),
+                        require('./assets/images/intro/use-tools.png')
+                    ])
                 ])
             } catch (error) {
                 console.error(error);
@@ -34,7 +40,7 @@ export default function Loader() {
         isLoading ? null : (
             <>
                 <StatusBar backgroundColor={theme.primary} />
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, backgroundColor: theme.secondary }}>
                     <IntroNavigator />
                 </View>
             </>

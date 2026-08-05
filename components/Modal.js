@@ -20,20 +20,21 @@ export default function CustomModal({ isVisible, text, twoButtons, buttonOneText
         modal: {
             backgroundColor: theme.background,
             width: '100%',
-            minHeight: twoButtons ? 220 : 190,
-            paddingHorizontal: 20,
-            paddingTop: 30,
-            paddingBottom: 24,
+            minHeight: 200,
+            paddingHorizontal: 25,
+            paddingTop: 15,
+            paddingBottom: 25,
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
-            justifyContent: 'center'
+            justifyContent: 'center',
+            gap: 15
         },
         text: {
             fontFamily: 'Nexa',
             fontSize: 18,
             color: theme.textPrimary,
             textAlign: 'center',
-            marginHorizontal: 20
+            marginHorizontal: 15
         },
         row: {
             flexDirection: 'row',

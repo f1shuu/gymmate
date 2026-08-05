@@ -13,13 +13,21 @@ import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function SettingsScreen() {
     const [isRestoreModalVisible, setIsRestoreModalVisible] = useState(false);
-    const { settings, restoreDefault, theme, translate } = useSettings();
+    const { settings, restartOnboarding, restoreDefault, theme, translate } = useSettings();
 
     const navigation = useNavigation();
 
     const confirmRestore = async () => {
         await restoreDefault();
         setIsRestoreModalVisible(false);
+    }
+
+    const showOnboarding = async () => {
+        let rootNavigation = navigation;
+        while (rootNavigation.getParent()) rootNavigation = rootNavigation.getParent();
+
+        if (!await restartOnboarding()) return;
+        rootNavigation.reset({ index: 0, routes: [{ name: 'ExerciseOnboardingScreen' }] });
     }
 
     const styles = {
@@ -87,6 +95,7 @@ export default function SettingsScreen() {
                 </View>
                 <View style={styles.container}>
                     <Text style={styles.sectionName}>{translate('help')}</Text>
+                    <Setting name={translate('showOnboarding')} icon={'slideshow'} color={theme.textPrimary} type='navigate' onPress={showOnboarding} />
                     <Setting name={translate('contact')} icon={'mail'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('ContactScreen')} />
                     <Setting name={translate('changelog')} icon={'list-alt'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('ChangelogScreen')} />
                 </View>

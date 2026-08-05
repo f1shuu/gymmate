@@ -10,18 +10,18 @@ import { useSettings } from '../../helpers/SettingsProvider';
 export default function NameScreen() {
     const { settings, theme, translate, updateSettings } = useSettings();
 
-    const [firstName, setFirstName] = useState(settings.firstName);
-    const [lastName, setLastName] = useState(settings.lastName);
-    const [nickname, setNickname] = useState(settings.nickname);
+    const [firstName, setFirstName] = useState(settings.firstName ?? '');
+    const [lastName, setLastName] = useState(settings.lastName ?? '');
+    const [nickname, setNickname] = useState(settings.nickname ?? '');
 
     const navigation = useNavigation();
 
-    const saveAndReturn = (firstName, lastName, nickname) => {
-        updateSettings({
-            'firstName': firstName,
-            'lastName': lastName,
-            'nickname': nickname
-        });
+    const saveAndReturn = async () => {
+        await updateSettings({
+            firstName: firstName.trim() || null,
+            lastName: lastName.trim() || null,
+            nickname: nickname.trim() || null
+        })
         navigation.navigate('SettingsScreen');
     }
 
@@ -53,7 +53,7 @@ export default function NameScreen() {
                 placeholderTextColor={theme.textSecondary}
                 maxLength={20}
                 placeholder={translate('firstNamePlaceholder')}
-                value={firstName ? firstName : settings.firstName}
+                value={firstName}
                 onChangeText={(text) => setFirstName(text)}
             />
             <Text style={styles.text}>{translate('lastName')}</Text>
@@ -62,7 +62,7 @@ export default function NameScreen() {
                 placeholderTextColor={theme.textSecondary}
                 maxLength={20}
                 placeholder={translate('lastNamePlaceholder')}
-                value={lastName ? lastName : settings.lastName}
+                value={lastName}
                 onChangeText={(text) => setLastName(text)}
             />
             <Text style={styles.text}>{translate('nickname')}</Text>
@@ -71,11 +71,11 @@ export default function NameScreen() {
                 placeholderTextColor={theme.textSecondary}
                 maxLength={20}
                 placeholder={translate('nicknamePlaceholder')}
-                value={nickname ? nickname : settings.nickname}
+                value={nickname}
                 onChangeText={(text) => setNickname(text)}
             />
             <Button
-                onPress={() => saveAndReturn(firstName, lastName, nickname)}
+                onPress={saveAndReturn}
                 text={translate('save')}
                 type='small'
             />

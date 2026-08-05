@@ -12,6 +12,13 @@ import Setting from '../../components/widgets/Setting';
 
 import { useSettings } from '../../helpers/SettingsProvider';
 
+const DELETION_SUCCESS_KEYS = {
+    all: 'dataDeletedSuccessfully',
+    bodyMeasurements: 'bodyMeasurementsDeletedSuccessfully',
+    exercises: 'exercisesDeletedSuccessfully',
+    trainings: 'trainingsDeletedSuccessfully'
+}
+
 export default function DataDeletionScreen() {
     const [exercisesCount, setExercisesCount] = useState(0);
     const [bodyMeasurementsCount, setBodyMeasurementsCount] = useState(0);
@@ -79,7 +86,7 @@ export default function DataDeletionScreen() {
             />
             <Modal
                 isVisible={isConfirmationModalVisible}
-                text={translate('deletedSuccessfully1') + text + (text === translate('data') ? ' has' : ' have') + translate('deletedSuccessfully2')}
+                text={translate(DELETION_SUCCESS_KEYS[dataSet] || 'dataDeletedSuccessfully')}
                 twoButtons={false}
                 buttonOneText={translate('ok')}
                 buttonOneOnPress={() => setIsConfirmationModalVisible(!isConfirmationModalVisible)}
