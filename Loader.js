@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, StatusBar } from 'react-native';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
+import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
 
 import IntroNavigator from './screens/intro/IntroNavigator';
@@ -9,6 +10,14 @@ import IntroNavigator from './screens/intro/IntroNavigator';
 import { useSettings } from './helpers/SettingsProvider';
 
 SplashScreen.preventAutoHideAsync();
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowBanner: true,
+        shouldShowList: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false
+    })
+})
 
 export default function Loader() {
     const [isLoading, setIsLoading] = useState(true);

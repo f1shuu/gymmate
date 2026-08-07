@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, FlatList } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { useState, useCallback } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/MaterialIcons';
@@ -17,6 +17,7 @@ import { muscleGroups } from '../../constants/muscleGroups';
 
 export default function ExercisesScreen() {
     const [exercises, setExercises] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const [isExercises, setIsExercises] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
@@ -33,6 +34,10 @@ export default function ExercisesScreen() {
     }
 
     const hasDisplayValue = (value) => Array.isArray(value) ? value.length > 0 : Boolean(value);
+    const normalizedQuery = searchQuery.trim().toLocaleLowerCase(settings.language);
+    const filteredExercises = exercises.filter(exercise =>
+        exercise.name?.toLocaleLowerCase(settings.language).includes(normalizedQuery)
+    )
 
     useFocusEffect(
         useCallback(() => {
@@ -69,7 +74,7 @@ export default function ExercisesScreen() {
                             ) : null
                         ))}
                         <View style={styles.actions}>
-                            <Button onPress={async () => await DataController.update('exercises', item.id, navigation, 'ExerciseCreator')} text={translate('edit')}/>
+                            <Button onPress={async () => await DataController.update('exercises', item.id, navigation, 'ExerciseCreator')} text={translate('edit')} />
                             <Button onPress={() => handleModal(item.id)} text={translate('delete')} type='delete' />
                         </View>
                     </View>
@@ -131,6 +136,32 @@ export default function ExercisesScreen() {
             justifyContent: 'space-between',
             marginTop: 15,
             gap: 15
+        },
+        searchContainer: {
+            height: 54,
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: theme.background,
+            borderRadius: 10,
+            paddingHorizontal: 16,
+            marginBottom: 12
+        },
+        searchInput: {
+            flex: 1,
+            height: '100%',
+            fontFamily: 'Nexa',
+            fontSize: 15,
+            color: theme.textPrimary,
+            marginLeft: 10
+        },
+        noResults: {
+            fontFamily: 'Nexa',
+            fontSize: 15,
+            lineHeight: 22,
+            color: theme.textSecondary,
+            textAlign: 'center',
+            marginTop: 30,
+            paddingHorizontal: 20
         }
     }
 
@@ -138,10 +169,29 @@ export default function ExercisesScreen() {
         <Container gradient={0.75}>
             {isExercises ? (
                 <>
+                    <View style={styles.searchContainer}>
+                        <Icon name='search' size={24} color={theme.textSecondary} />
+                        <TextInput
+                            style={styles.searchInput}
+                            value={searchQuery}
+                            onChangeText={setSearchQuery}
+                            placeholder={translate('searchExercises')}
+                            placeholderTextColor={theme.textSecondary}
+                            returnKeyType='search'
+                            autoCorrect={false}
+                        />
+                        {searchQuery ? (
+                            <TouchableOpacity onPress={() => setSearchQuery('')} activeOpacity={0.8}>
+                                <Icon name='close' size={22} color={theme.textSecondary} />
+                            </TouchableOpacity>
+                        ) : null}
+                    </View>
                     <FlatList
-                        data={exercises}
+                        data={filteredExercises}
                         renderItem={({ item }) => <Exercise item={item} />}
                         keyExtractor={item => item.id}
+                        keyboardShouldPersistTaps='handled'
+                        ListEmptyComponent={<Text style={styles.noResults}>{translate('noExercisesFound')}</Text>}
                     />
                 </>
             ) : (

@@ -7,6 +7,7 @@ import BodyMeasurementsNavigator from './BodyMeasurementsNavigator';
 import HomeNavigator from './HomeNavigator';
 import SettingsNavigator from './SettingsNavigator';
 import ToolsNavigator from './ToolsNavigator';
+import ProfileAvatar from '../ProfileAvatar';
 
 import { useSettings } from '../../helpers/SettingsProvider';
 
@@ -99,7 +100,7 @@ export default function NavigationBar() {
                     ),
                     headerRight: () => (
                         <TouchableOpacity onPress={() => navigation.navigate('SettingsNavigator', { screen: 'NameScreen' })}>
-                            <Icon name='user-circle' size={25} color={theme.textHeader} style={styles.avatar} />
+                            <ProfileAvatar size={34} style={styles.avatar} />
                         </TouchableOpacity>
                     ),
                     tabBarIcon: ({ focused }) => (

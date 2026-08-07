@@ -1,12 +1,15 @@
-Update 1.1.0
+Update 1.2.0
 
 ## Features
 
-- Added three one-time introduction screens covering exercise creation, workout planning, and app tools.
-- Added a settings option for reopening the introduction screens.
+- Added exercise search by name to the exercise list.
+- Added local workout reminders with selectable weekdays and delivery time.
+- Added the ability to set, change, and remove a custom profile photo.
+- The profile photo is displayed on the home screen, settings screen, and profile editing screen.
+- Tapping the first name, last name, or nickname in settings now opens profile editing.
+- Added a notice explaining that profile data and the photo are stored only locally and are not sent to a server.
 
 ## Fixes
 
-- Fixed first name, last name, and nickname fields not working properly.
-- Fixed the exercise details layout so multiple selected muscle groups no longer overflow the screen.
-- Fixed Polish and English confirmations shown after deleting exercises, workouts, measurements, or all data.
+- Restoring default settings now also removes the reminder schedule and locally stored profile photo.
+- Added handling for denied permissions and errors while saving photos or notification schedules.

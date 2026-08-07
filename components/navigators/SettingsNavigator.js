@@ -5,6 +5,7 @@ import ContactScreen from '../../screens/settings/ContactScreen';
 import DataDeletionScreen from '../../screens/settings/DataDeletionScreen';
 import LanguageSelectionScreen from '../../screens/settings/LanguageSelectionScreen';
 import NameScreen from '../../screens/settings/NameScreen';
+import NotificationSettingsScreen from '../../screens/settings/NotificationSettingsScreen';
 import SettingsScreen from '../../screens/navbar/SettingsScreen';
 import ThemeSelectionScreen from '../../screens/settings/ThemeSelectionScreen';
 import TrainingsSettingsScreen from '../../screens/settings/TrainingsSettingsScreen';
@@ -75,6 +76,14 @@ export default function SettingsNavigator() {
                 component={NameScreen}
                 options={{
                     headerTitle: translate('editYourData'),
+                    ...customOptions
+                }}
+            />
+            <Stack.Screen
+                name='NotificationSettingsScreen'
+                component={NotificationSettingsScreen}
+                options={{
+                    headerTitle: translate('notifications'),
                     ...customOptions
                 }}
             />

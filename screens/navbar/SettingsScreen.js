@@ -7,6 +7,7 @@ import Colors from '../../Colors';
 
 import Container from '../../components/Container';
 import Modal from '../../components/Modal';
+import ProfileAvatar from '../../components/ProfileAvatar';
 import Setting from '../../components/widgets/Setting';
 
 import { useSettings } from '../../helpers/SettingsProvider';
@@ -68,22 +69,23 @@ export default function SettingsScreen() {
     return (
         <Container gradient={0.5}>
             <ScrollView>
-                <View style={styles.avatar}>
-                    <Icon name={'account-circle'} size={100} color={theme.textHeader} />
-                </View>
-                <View style={styles.row}>
-                    <Text style={styles.name}>
-                        {settings.firstName ? (settings.lastName ? settings.firstName + ' ' + settings.lastName : settings.firstName) : (settings.lastName ? settings.lastName : translate('guest'))}
-                    </Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('NameScreen')}>
+                <TouchableOpacity onPress={() => navigation.navigate('NameScreen')} activeOpacity={0.8}>
+                    <View style={styles.avatar}>
+                        <ProfileAvatar size={100} />
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.name}>
+                            {settings.firstName ? (settings.lastName ? settings.firstName + ' ' + settings.lastName : settings.firstName) : (settings.lastName ? settings.lastName : translate('guest'))}
+                        </Text>
                         <Icon name={'edit-square'} size={16} color={theme.tertiary} />
-                    </TouchableOpacity>
-                </View>
-                <Text style={[styles.name, { fontSize: 16 }]}>
-                    {settings.nickname ? '@' + settings.nickname : null}
-                </Text>
+                    </View>
+                    <Text style={[styles.name, { fontSize: 16 }]}>
+                        {settings.nickname ? '@' + settings.nickname : null}
+                    </Text>
+                </TouchableOpacity>
                 <View style={styles.container}>
-                    <Text style={styles.sectionName}>{translate('settings')}</Text>
+                    <Text style={styles.sectionName}>{translate('mainSettings')}</Text>
+                    <Setting name={translate('notifications')} icon={'notifications'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('NotificationSettingsScreen')} />
                     <Setting name={translate('sound')} icon={'volume-up'} color={theme.textPrimary} onPress={() => { }} type='toggle' parameter='isSoundOn' />
                     <Setting name={translate('vibrations')} icon={'vibration'} color={theme.textPrimary} onPress={() => { }} type='toggle' parameter='isHapticsOn' />
                 </View>

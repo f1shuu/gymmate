@@ -5,6 +5,8 @@ import * as Localization from 'expo-localization';
 
 import * as themes from '../Themes';
 import { translations } from '../constants/translations';
+import { deleteProfileImage } from './profileImage';
+import { cancelTrainingReminders } from './trainingReminders';
 
 const SettingsContext = createContext();
 const ONBOARDING_STORAGE_KEY = 'onboardingVersion';
@@ -27,6 +29,11 @@ export const SettingsProvider = ({ children }) => {
         firstName: null,
         lastName: null,
         nickname: null,
+        profileImageUri: null,
+        trainingRemindersEnabled: false,
+        trainingReminderDays: [],
+        trainingReminderHour: 18,
+        trainingReminderMinute: 0,
         longestStreak: 0,
         trainingsTotal: 0,
         liftedKgsTotal: 0
@@ -80,14 +87,22 @@ export const SettingsProvider = ({ children }) => {
         try {
             await AsyncStorage.setItem('settings', JSON.stringify(updatedSettings));
             setSettings(updatedSettings);
+            return true;
         } catch (error) {
             console.error(error);
             showSettingsError();
+            return false;
         }
     }
 
     const restoreDefault = async () => {
         try {
+            const cleanupResults = await Promise.allSettled([
+                cancelTrainingReminders(),
+                deleteProfileImage(settings?.profileImageUri)
+            ])
+            cleanupResults.filter(result => result.status === 'rejected').forEach(result => console.error(result.reason));
+
             await AsyncStorage.multiRemove(['settings', 'theme']);
             setSettings(defaultSettings);
             setTheme(themes.GymMate);
