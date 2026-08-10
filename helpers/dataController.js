@@ -157,6 +157,27 @@ export default new class DataController {
         }
     }
 
+    async recordTrainingStart(training) {
+        try {
+            const history = await this.readDataSet('trainingHistory');
+            history.push({
+                id: uuidv4(),
+                createdAt: new Date().toISOString(),
+                name: training.name,
+                category: 'training_start',
+                data: {
+                    trainingId: training.id
+                }
+            })
+            await AsyncStorage.setItem('trainingHistory', JSON.stringify(history));
+            return true;
+        } catch (error) {
+            console.error(error);
+            showStorageError();
+            return false;
+        }
+    }
+
     async store(dataSet, id, name, category, navigation, navigator, data = {}) {
         try {
             const parsedData = await this.readDataSet(dataSet);
@@ -218,7 +239,7 @@ export default new class DataController {
 
     async clear(dataSet, isModalVisible, setIsModalVisible, fetchData, isConfirmationModalVisible, setIsConfirmationModalVisible) {
         try {
-            if (dataSet === 'all') await AsyncStorage.multiRemove(['exercises', 'bodyMeasurements', 'trainings']);
+            if (dataSet === 'all') await AsyncStorage.multiRemove(['exercises', 'bodyMeasurements', 'trainings', 'trainingHistory']);
             else await AsyncStorage.removeItem(dataSet);
             setIsModalVisible(!isModalVisible);
             await fetchData();

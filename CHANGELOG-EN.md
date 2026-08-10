@@ -1,15 +1,13 @@
-Update 1.2.0
+Update 1.3.0
 
 ## Features
 
-- Added exercise search by name to the exercise list.
-- Added local workout reminders with selectable weekdays and delivery time.
-- Added the ability to set, change, and remove a custom profile photo.
-- The profile photo is displayed on the home screen, settings screen, and profile editing screen.
-- Tapping the first name, last name, or nickname in settings now opens profile editing.
-- Added a notice explaining that profile data and the photo are stored only locally and are not sent to a server.
+- Added a workout calendar widget to the home screen.
+- Added a detailed monthly view with marked workout-start days, a session count, and navigation up to 12 months backward and forward.
+- Starting a workout is now stored locally in the activity history.
+- Added Playlist of the Day and Podcast of the Week widgets that open configured recommendations directly in Spotify.
+- Added separate, easy-to-edit Spotify playlist and podcast data files.
 
 ## Fixes
 
-- Restoring default settings now also removes the reminder schedule and locally stored profile photo.
-- Added handling for denied permissions and errors while saving photos or notification schedules.
+- Saving workout reminder settings now displays the app's consistent modal instead of the native Android alert.

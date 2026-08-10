@@ -1,5 +1,5 @@
 import { Text, View, TouchableOpacity, FlatList } from 'react-native';
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
@@ -22,6 +22,7 @@ export default function TrainingsScreen() {
     const [isTrainings, setIsTrainings] = useState(false);
     const [activeId, setActiveId] = useState(null);
     const [modalState, setModalState] = useState(null);
+    const isStartingTraining = useRef(false);
 
     const { settings, theme, translate } = useSettings();
     const navigation = useNavigation();
@@ -55,18 +56,25 @@ export default function TrainingsScreen() {
         .map(id => exercisesById.get(id))
         .filter(Boolean);
 
-    const startTraining = (training) => {
+    const startTraining = async (training) => {
         const resolvedExercises = resolveExercises(training);
         if (resolvedExercises.length === 0) {
             setModalState({ type: 'unavailable' });
             return;
         }
 
+        if (isStartingTraining.current) return;
+        isStartingTraining.current = true;
         provideHapticFeedback();
-        navigation.navigate('ActiveTrainingScreen', {
-            training: { id: training.id, name: training.name },
-            exercises: resolvedExercises
-        })
+
+        const historySaved = await DataController.recordTrainingStart(training);
+        if (historySaved) {
+            navigation.navigate('ActiveTrainingScreen', {
+                training: { id: training.id, name: training.name },
+                exercises: resolvedExercises
+            })
+        }
+        isStartingTraining.current = false;
     }
 
     const confirmDelete = (id) => {

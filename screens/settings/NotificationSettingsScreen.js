@@ -4,9 +4,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from '@expo/vector-icons/MaterialIcons';
 
 import Container from '../../components/Container';
+import Modal from '../../components/Modal';
 
-import { useSettings } from '../../helpers/SettingsProvider';
 import { cancelTrainingReminders, scheduleTrainingReminders } from '../../helpers/trainingReminders';
+import { useSettings } from '../../helpers/SettingsProvider';
 
 const DAYS = [
     { value: 1, key: 'mondayShort' },
@@ -34,6 +35,7 @@ export default function NotificationSettingsScreen() {
     ))
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
 
     const toggleDay = (day) => {
         setSelectedDays(currentDays => currentDays.includes(day)
@@ -79,7 +81,7 @@ export default function NotificationSettingsScreen() {
                 trainingReminderMinute: time.getMinutes()
             })
 
-            if (settingsSaved) Alert.alert(translate('notifications'), translate('reminderSaved'));
+            if (settingsSaved) setIsConfirmationModalVisible(true);
         } catch (error) {
             console.error(error);
             Alert.alert(translate('error'), translate('reminderSaveError'));
@@ -247,6 +249,13 @@ export default function NotificationSettingsScreen() {
                     <Text style={styles.saveText}>{isSaving ? translate('saving') : translate('save')}</Text>
                 </TouchableOpacity>
             </ScrollView>
+            <Modal
+                isVisible={isConfirmationModalVisible}
+                text={translate('reminderSaved')}
+                twoButtons={false}
+                buttonOneText={translate('ok')}
+                buttonOneOnPress={() => setIsConfirmationModalVisible(false)}
+            />
         </Container>
     )
 }

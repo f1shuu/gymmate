@@ -4,6 +4,8 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
 
+import { muscleGroups } from '../../constants/muscleGroups';
+
 import AddButton from '../../components/buttons/AddButton';
 import Background from '../../components/Background';
 import Button from '../../components/buttons/Button';
@@ -12,8 +14,6 @@ import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
 
 import { useSettings } from '../../helpers/SettingsProvider';
-
-import { muscleGroups } from '../../constants/muscleGroups';
 
 export default function ExercisesScreen() {
     const [exercises, setExercises] = useState([]);
@@ -166,7 +166,7 @@ export default function ExercisesScreen() {
     }
 
     return (
-        <Container gradient={0.75}>
+        <Container gradient={0.75} isMainScreen={true}>
             {isExercises ? (
                 <>
                     <View style={styles.searchContainer}>

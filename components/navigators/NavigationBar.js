@@ -25,7 +25,7 @@ export default function NavigationBar() {
         },
         headerStyle: {
             backgroundColor: theme.primary,
-            height: 80,
+            height: 100,
             elevation: 0
         },
         tabBarStyle: {
@@ -91,8 +91,8 @@ export default function NavigationBar() {
                     ...customOptions,
                     headerStyle: {
                         backgroundColor: theme.primary,
-                        height: 80,
-                        elevation: 0,
+                        height: 100,
+                        elevation: 0
                     },
                     title: '',
                     headerLeft: () => (

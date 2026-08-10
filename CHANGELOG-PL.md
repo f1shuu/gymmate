@@ -1,15 +1,13 @@
-Aktualizacja 1.2.0
+Aktualizacja 1.3.0
 
 ## Ulepszenia
 
-- Dodano wyszukiwanie ćwiczeń po nazwie na ekranie listy ćwiczeń.
-- Dodano lokalne przypomnienia o treningu z wyborem dni tygodnia i godziny.
-- Dodano możliwość ustawienia, zmiany i usunięcia własnego zdjęcia profilowego.
-- Zdjęcie profilowe jest widoczne na ekranie głównym, ekranie ustawień oraz podczas edycji danych.
-- Kliknięcie imienia, nazwiska lub pseudonimu w ustawieniach otwiera teraz ekran edycji danych.
-- Dodano informację, że dane profilu i zdjęcie są przechowywane wyłącznie lokalnie i nie są wysyłane na serwer.
+- Dodano widget kalendarza treningów na ekranie głównym.
+- Dodano szczegółowy widok miesiąca z oznaczeniem dni, w których uruchomiono trening, liczbą sesji oraz nawigacją do 12 miesięcy wstecz i do przodu.
+- Rozpoczęcie treningu jest teraz zapisywane lokalnie w historii aktywności.
+- Dodano widgety „Playlista Dnia” i „Podcast Tygodnia”, otwierające skonfigurowane rekomendacje bezpośrednio w Spotify.
+- Dodano osobne, łatwe do uzupełnienia pliki danych dla playlist i podcastów Spotify.
 
 ## Naprawy błędów
 
-- Przywracanie ustawień domyślnych usuwa teraz również harmonogram przypomnień i lokalne zdjęcie profilowe.
-- Dodano obsługę odmowy uprawnień oraz błędów zapisu zdjęć i harmonogramu powiadomień.
+- Potwierdzenie zapisania ustawień przypomnień o treningu korzysta teraz ze spójnego modala aplikacji zamiast systemowego alertu Androida.

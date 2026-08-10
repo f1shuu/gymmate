@@ -7,9 +7,12 @@ A mobile fitness companion for creating custom workouts, tracking progress, and 
 - create custom exercises with multiple muscle groups and rep-based or time-based variants,
 - build workout plans, arrange exercise order, and follow guided set-by-set sessions,
 - save body measurements and track essential workout statistics,
+- review workout activity in a monthly calendar stored entirely on the device,
+- open daily playlist and weekly podcast recommendations in Spotify,
+- search exercises by name and schedule local workout reminders,
 - use the BMI calculator with visual guidance, expression calculator, and unit converters,
 - use a haptic-enabled timer with an optional sound alarm and a stopwatch with lap tracking,
-- personalize the language, units, theme, sound, and vibration settings.
+- personalize the profile photo, language, units, theme, sound, and vibration settings.
 
 ## Installation
 
@@ -42,6 +45,10 @@ You can download the latest Android APK from the [Releases](https://github.com/f
     <img src="assets/images/readme/home-screen.jpg" alt="Home screen" width="250"/>
     <img src="assets/images/readme/settings.jpg" alt="Settings screen" width="250"/>
 </div>
+
+## Spotify recommendations
+
+Playlist and podcast suggestions are configured in `constants/spotifyPlaylists.js` and `constants/spotifyPodcasts.js`. Duplicate the provided object structure, give each entry a unique `id`, localized `title`, `author`, and a full `https://open.spotify.com/...` URL, then set `enabled` to `true`. Invalid, empty, or disabled entries are ignored. The app selects playlists once per local calendar day and podcasts once per local week.
 
 ## Tech Stack
 
