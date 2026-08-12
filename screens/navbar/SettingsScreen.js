@@ -12,6 +12,8 @@ import Setting from '../../components/widgets/Setting';
 
 import { useSettings } from '../../helpers/SettingsProvider';
 
+var pkg = require('../../package.json');
+
 export default function SettingsScreen() {
     const [isRestoreModalVisible, setIsRestoreModalVisible] = useState(false);
     const { settings, restartOnboarding, restoreDefault, theme, translate } = useSettings();
@@ -63,6 +65,13 @@ export default function SettingsScreen() {
             color: theme.textSecondary,
             marginLeft: 10,
             marginBottom: 10
+        },
+        text: {
+            fontFamily: 'Nexa',
+            fontSize: 12,
+            color: theme.textSecondary,
+            alignSelf: 'center',
+            marginVertical: 20
         }
     }
 
@@ -106,6 +115,7 @@ export default function SettingsScreen() {
                     <Setting name={translate('dataDeletion')} icon={'delete'} color={Colors.red} type='navigate' onPress={() => navigation.navigate('DataDeletionScreen')} />
                     <Setting name={translate('restoreDefaultSettings')} icon={'restart-alt'} color={Colors.red} type='navigate' onPress={() => setIsRestoreModalVisible(true)} />
                 </View>
+                <Text style={styles.text}>{translate('version')} {pkg.version}</Text>
             </ScrollView>
             <Modal
                 isVisible={isRestoreModalVisible}
