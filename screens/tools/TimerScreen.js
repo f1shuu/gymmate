@@ -27,8 +27,8 @@ export default function Timer() {
     const [isSoundPlaying, setIsSoundPlaying] = useState(false);
     const presetTimes = [
         { text: '01:00', minutes: 1, seconds: 0, id: 1 },
-        { text: '05:00', minutes: 5, seconds: 0, id: 2 },
-        { text: '10:00', minutes: 10, seconds: 0, id: 3 }
+        { text: '02:00', minutes: 2, seconds: 0, id: 2 },
+        { text: '05:00', minutes: 5, seconds: 0, id: 3 }
     ];
 
     const { settings, theme, translate } = useSettings();
@@ -196,7 +196,7 @@ export default function Timer() {
                                 pickerContainer: {
                                     backgroundColor: theme.secondary,
                                     justifyContent: 'center',
-                                    gap: 15
+                                    gap: 20
                                 },
                                 pickerColumnWidth: 100,
                                 pickerItem: {
@@ -207,7 +207,8 @@ export default function Timer() {
                                 pickerLabel: {
                                     fontFamily: 'Nexa',
                                     fontSize: 14,
-                                    color: theme.primary
+                                    color: theme.primary,
+                                    marginLeft: 5
                                 },
                                 pickerItemContainer: {
                                     width: 100,
@@ -215,7 +216,7 @@ export default function Timer() {
                                     backgroundColor: theme.secondary
                                 },
                                 pickerLabelContainer: {
-                                    top: -10
+                                    top: -12
                                 }
                             }}
                         />
