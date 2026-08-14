@@ -108,10 +108,11 @@ export default new class DataController {
             if (!Array.isArray(parsedData)) throw new Error('Stored data set is not an array');
 
             const migratedData = parsedData.map(migrateRecord);
-            if (JSON.stringify(parsedData) !== JSON.stringify(migratedData)) {
-                await AsyncStorage.setItem(dataSet, JSON.stringify(migratedData));
+            const normalizedData = dataSet === 'trainingHistory' ? migratedData.filter(record => record.category === 'training_completed') : migratedData;
+            if (JSON.stringify(parsedData) !== JSON.stringify(normalizedData)) {
+                await AsyncStorage.setItem(dataSet, JSON.stringify(normalizedData));
             }
-            return migratedData;
+            return normalizedData;
         } catch (error) {
             console.error(error);
             try {
@@ -157,19 +158,21 @@ export default new class DataController {
         }
     }
 
-    async recordTrainingStart(training) {
+    async recordTrainingCompletion(training, liftedKgs) {
         try {
-            const history = await this.readDataSet('trainingHistory');
-            history.push({
+            const storedHistory = await this.readDataSet('trainingHistory');
+            const completedHistory = storedHistory.filter(record => record.category === 'training_completed');
+            completedHistory.push({
                 id: uuidv4(),
                 createdAt: new Date().toISOString(),
                 name: training.name,
-                category: 'training_start',
+                category: 'training_completed',
                 data: {
-                    trainingId: training.id
+                    trainingId: training.id,
+                    liftedKgs: Number(liftedKgs) || 0
                 }
             })
-            await AsyncStorage.setItem('trainingHistory', JSON.stringify(history));
+            await AsyncStorage.setItem('trainingHistory', JSON.stringify(completedHistory));
             return true;
         } catch (error) {
             console.error(error);

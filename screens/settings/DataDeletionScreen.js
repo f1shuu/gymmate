@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { useCallback, useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 
@@ -16,6 +16,7 @@ const DELETION_SUCCESS_KEYS = {
     all: 'dataDeletedSuccessfully',
     bodyMeasurements: 'bodyMeasurementsDeletedSuccessfully',
     exercises: 'exercisesDeletedSuccessfully',
+    trainingHistory: 'trainingHistoryDeletedSuccessfully',
     trainings: 'trainingsDeletedSuccessfully'
 }
 
@@ -23,24 +24,30 @@ export default function DataDeletionScreen() {
     const [exercisesCount, setExercisesCount] = useState(0);
     const [bodyMeasurementsCount, setBodyMeasurementsCount] = useState(0);
     const [trainingsCount, setTrainingsCount] = useState(0);
+    const [trainingHistoryCount, setTrainingHistoryCount] = useState(0);
     const [dataCount, setDataCount] = useState(0);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
     const [text, setText] = useState(null);
     const [dataSet, setDataSet] = useState(null);
+    const [includeAllQualifier, setIncludeAllQualifier] = useState(true);
 
     const { settings, translate } = useSettings();
 
     const fetchData = async () => {
-        const exercises = await DataController.getCount('exercises');
-        const bodyMeasurements = await DataController.getCount('bodyMeasurements');
-        const trainings = await DataController.getCount('trainings');
+        const [exercises, bodyMeasurements, trainings, trainingHistory] = await Promise.all([
+            DataController.getCount('exercises'),
+            DataController.getCount('bodyMeasurements'),
+            DataController.getCount('trainings'),
+            DataController.getCount('trainingHistory')
+        ])
 
         setExercisesCount(exercises);
         setBodyMeasurementsCount(bodyMeasurements);
         setTrainingsCount(trainings);
-        setDataCount(exercises + bodyMeasurements + trainings);
-    };
+        setTrainingHistoryCount(trainingHistory);
+        setDataCount(exercises + bodyMeasurements + trainings + trainingHistory);
+    }
 
     useFocusEffect(
         useCallback(() => {
@@ -48,11 +55,12 @@ export default function DataDeletionScreen() {
         }, [])
     )
 
-    const showModal = (isModalVisible, dataSet, text) => {
+    const showModal = (selectedDataSet, selectedText, shouldIncludeAll = true) => {
         if (settings.isHapticsOn) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Error);
-        setIsModalVisible(!isModalVisible);
-        setDataSet(dataSet);
-        setText(text);
+        setDataSet(selectedDataSet);
+        setText(selectedText);
+        setIncludeAllQualifier(shouldIncludeAll);
+        setIsModalVisible(true);
     }
 
     const styles = {
@@ -67,29 +75,32 @@ export default function DataDeletionScreen() {
         }
     }
 
+    const qualifier = includeAllQualifier ? translate('all') : '';
+
     return (
         <Container>
             <View style={styles.container}>
-                <Setting active={exercisesCount > 0} name={translate('delete') + ' ' + translate('exercises')} icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'exercises', translate('exercises'))} />
-                <Setting active={bodyMeasurementsCount > 0} name={translate('delete') + ' ' + translate('bodyMeasurements')} icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'bodyMeasurements', translate('bodyMeasurements'))} />
-                <Setting active={trainingsCount > 0} name={translate('delete') + ' ' + translate('trainings')} icon={'delete'} color={Colors.red} onPress={() => showModal(isModalVisible, 'trainings', translate('trainings'))} />
-                <Setting active={dataCount > 0} name={translate('delete') + ' ' + translate('allData')} icon={'delete-forever'} color={Colors.red} onPress={() => showModal(isModalVisible, 'all', translate('data'))} style={styles.allDataButton} />
+                <Setting active={exercisesCount > 0} name={translate('delete') + ' ' + translate('exercises')} icon={'delete'} color={Colors.red} onPress={() => showModal('exercises', translate('exercises'))} />
+                <Setting active={bodyMeasurementsCount > 0} name={translate('delete') + ' ' + translate('bodyMeasurements')} icon={'delete'} color={Colors.red} onPress={() => showModal('bodyMeasurements', translate('bodyMeasurements'))} />
+                <Setting active={trainingsCount > 0} name={translate('delete') + ' ' + translate('trainings')} icon={'delete'} color={Colors.red} onPress={() => showModal('trainings', translate('trainings'))} />
+                <Setting active={trainingHistoryCount > 0} name={translate('deleteTrainingHistory')} icon={'delete'} color={Colors.red} onPress={() => showModal('trainingHistory', translate('trainingHistory'), false)} />
+                <Setting active={dataCount > 0} name={translate('delete') + ' ' + translate('allData')} icon={'delete-forever'} color={Colors.red} onPress={() => showModal('all', translate('data'))} style={styles.allDataButton} />
             </View>
             <Modal
                 isVisible={isModalVisible}
-                text={translate('areYouSure') + translate('all') + text + '? ' + translate('irreversible')}
+                text={translate('areYouSure') + qualifier + text + '? ' + translate('irreversible')}
                 twoButtons={true}
                 buttonOneText={translate('yes')}
                 buttonOneOnPress={async () => DataController.clear(dataSet, isModalVisible, setIsModalVisible, fetchData, isConfirmationModalVisible, setIsConfirmationModalVisible)}
                 buttonTwoText={translate('cancel')}
-                buttonTwoOnPress={() => setIsModalVisible(() => !isModalVisible)}
+                buttonTwoOnPress={() => setIsModalVisible(false)}
             />
             <Modal
                 isVisible={isConfirmationModalVisible}
                 text={translate(DELETION_SUCCESS_KEYS[dataSet] || 'dataDeletedSuccessfully')}
                 twoButtons={false}
                 buttonOneText={translate('ok')}
-                buttonOneOnPress={() => setIsConfirmationModalVisible(!isConfirmationModalVisible)}
+                buttonOneOnPress={() => setIsConfirmationModalVisible(false)}
             />
         </Container>
     )

@@ -38,6 +38,7 @@ export default function ExerciseCreator({ route }) {
     const [time, setTime] = useState(route.params?.data?.time || null);
     const [weight, setWeight] = useState(route.params?.data?.weight ?? null);
     const [name, setName] = useState(route.params?.name || '');
+    const [note, setNote] = useState(route.params?.data?.note || '');
     const [isFocus, setIsFocus] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -76,7 +77,8 @@ export default function ExerciseCreator({ route }) {
             setsAmount: isRepsBased ? setsAmount : null,
             repsAmount: isRepsBased ? repsAmount : null,
             time: isRepsBased ? null : time,
-            weight
+            weight,
+            note: note.trim() || null
         }
 
         setIsSaving(true);
@@ -93,6 +95,41 @@ export default function ExerciseCreator({ route }) {
     }
 
     const styles = {
+        navigationRow: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 'auto',
+            paddingTop: 20,
+            paddingBottom: 20,
+            marginHorizontal: 10
+        },
+        navigationButton: {
+            minWidth: 120,
+            height: 48,
+            borderRadius: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingHorizontal: 16
+        },
+        previousButton: {
+            borderWidth: 1,
+            borderColor: theme.primary
+        },
+        navigationButtonText: {
+            fontFamily: 'Nexa',
+            fontSize: 16,
+            color: theme.textHeader
+        },
+        previousButtonText: {
+            color: theme.primary
+        },
+        primaryButton: {
+            backgroundColor: theme.primary
+        },
+        disabledButton: {
+            opacity: 0.55
+        },
         stepContent: {
             flexGrow: 1
         },
@@ -120,40 +157,17 @@ export default function ExerciseCreator({ route }) {
             padding: 15,
             marginVertical: 10
         },
-        navigationRow: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 'auto',
-            paddingTop: 20,
-            paddingBottom: 20,
-            marginHorizontal: 10
+        noteInput: {
+            height: 100,
+            minHeight: 100,
+            textAlignVertical: 'top'
         },
-        navigationButton: {
-            minWidth: 120,
-            height: 48,
-            borderRadius: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingHorizontal: 16
-        },
-        primaryButton: {
-            backgroundColor: theme.primary
-        },
-        previousButton: {
-            borderWidth: 1,
-            borderColor: theme.primary
-        },
-        disabledButton: {
-            opacity: 0.55
-        },
-        navigationButtonText: {
+        characterCount: {
             fontFamily: 'Nexa',
-            fontSize: 16,
-            color: theme.textHeader
-        },
-        previousButtonText: {
-            color: theme.primary
+            fontSize: 12,
+            color: theme.textSecondary,
+            textAlign: 'right',
+            marginRight: 4
         }
     }
 
@@ -294,6 +308,17 @@ export default function ExerciseCreator({ route }) {
                             onChangeText={setName}
                             value={name}
                         />
+                        <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('noteOptional')}</Text>
+                        <TextInput
+                            style={[styles.input, styles.noteInput]}
+                            placeholder={translate('notePlaceholder')}
+                            placeholderTextColor={theme.textSecondary}
+                            maxLength={100}
+                            multiline={true}
+                            onChangeText={setNote}
+                            value={note}
+                        />
+                        <Text style={styles.characterCount}>{note.length}/100 {translate('characters')}</Text>
                         {navigationButtons(1, saveExercise, translate('save'), isSaving)}
                     </>
                 </ProgressStep>

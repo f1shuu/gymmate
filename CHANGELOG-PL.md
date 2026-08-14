@@ -1,13 +1,15 @@
-Aktualizacja 1.3.0
+Aktualizacja usprawnień treningów.
 
 ## Ulepszenia
 
-- Dodano widget kalendarza treningów na ekranie głównym.
-- Dodano szczegółowy widok miesiąca z oznaczeniem dni, w których uruchomiono trening, liczbą sesji oraz nawigacją do 12 miesięcy wstecz i do przodu.
-- Rozpoczęcie treningu jest teraz zapisywane lokalnie w historii aktywności.
-- Dodano widgety „Playlista Dnia” i „Podcast Tygodnia”, otwierające skonfigurowane rekomendacje bezpośrednio w Spotify.
-- Dodano osobne, łatwe do uzupełnienia pliki danych dla playlist i podcastów Spotify.
+- dodano opcjonalne notatki do ćwiczeń o długości do 100 znaków, widoczne na liście ćwiczeń i podczas treningu,
+- po ukończeniu treningu wyświetlane jest jednorazowe podsumowanie czasu sesji, wykonanych serii i powtórzeń,
+- dodano tygodniową passę: tydzień z co najmniej trzema ukończonymi treningami jest wyróżniany na pomarańczowo w kalendarzu,
+- kalendarz na ekranie głównym pozwala przełączać miesiące bez otwierania dodatkowego ekranu; pod kalendarzem wyświetlane są liczba treningów w miesiącu i aktualna liczba tygodni passy,
+- dodano osobną opcję usunięcia historii treningów wraz ze statystykami treningów i podniesionego ciężaru.
 
 ## Naprawy błędów
 
-- Potwierdzenie zapisania ustawień przypomnień o treningu korzysta teraz ze spójnego modala aplikacji zamiast systemowego alertu Androida.
+- kalendarz i panel statystyk korzystają teraz z jednego źródła danych i zapisują trening wyłącznie po jego pełnym ukończeniu,
+- wyjście z trwającego treningu wymaga teraz potwierdzenia i nie zapisuje niedokończonej sesji,
+- rozwinięty nagłówek ćwiczenia i jego szczegóły tworzą teraz jedną kartę bez przerwy i wewnętrznych zaokrągleń.

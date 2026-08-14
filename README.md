@@ -4,10 +4,10 @@ A mobile fitness companion for creating custom workouts, tracking progress, and 
 
 ## Features
 
-- create custom exercises with multiple muscle groups and rep-based or time-based variants,
+- create custom exercises with multiple muscle groups, optional notes, and rep-based or time-based variants,
 - build workout plans, arrange exercise order, and follow guided set-by-set sessions,
 - save body measurements and track essential workout statistics,
-- review workout activity in a monthly calendar stored entirely on the device,
+- review completed workout activity, monthly totals, and weekly streaks in a calendar stored entirely on the device,
 - open daily playlist and weekly podcast recommendations in Spotify,
 - search exercises by name and schedule local workout reminders,
 - use the BMI calculator with visual guidance, expression calculator, and unit converters,

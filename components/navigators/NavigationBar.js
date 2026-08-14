@@ -34,7 +34,8 @@ export default function NavigationBar() {
             paddingTop: 5,
             paddingHorizontal: 20,
             elevation: 0,
-            borderTopWidth: 0
+            borderTopWidth: 1,
+            borderTopColor: theme.background
         }
     }
 

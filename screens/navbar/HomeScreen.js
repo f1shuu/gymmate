@@ -1,5 +1,6 @@
 import { Text, View, ScrollView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { useState, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { spotifyPlaylists } from '../../constants/spotifyPlaylists';
 import { spotifyPodcasts } from '../../constants/spotifyPodcasts';
@@ -9,10 +10,24 @@ import HomeScreenWidget from '../../components/widgets/HomeScreenWidget';
 import SpotifyRecommendationWidget from '../../components/widgets/SpotifyRecommendationWidget';
 import TrainingCalendarWidget from '../../components/widgets/TrainingCalendarWidget';
 
+import DataController from '../../helpers/dataController';
+import { getTrainingTotals } from '../../helpers/trainingCalendar';
 import { useSettings } from '../../helpers/SettingsProvider';
 
 export default function HomeScreen() {
-    const { settings, theme, translate } = useSettings();
+    const { theme, translate } = useSettings();
+    const [trainingHistory, setTrainingHistory] = useState([]);
+    const { trainingsTotal, liftedKgsTotal } = getTrainingTotals(trainingHistory);
+
+    useFocusEffect(
+        useCallback(() => {
+            let isActive = true;
+            DataController.readDataSet('trainingHistory').then(history => {
+                if (isActive) setTrainingHistory(history);
+            })
+            return () => { isActive = false; };
+        }, [])
+    )
 
     const styles = {
         sectionName: {
@@ -42,8 +57,8 @@ export default function HomeScreen() {
                 <TrainingCalendarWidget />
 
                 <View style={styles.section}>
-                    <HomeScreenWidget width={'48.5%'} textRequired={'trainingsTotal'} textOptional={settings.trainingsTotal} graphics={'dumbbell'} />
-                    <HomeScreenWidget width={'48.5%'} textRequired={'liftedKgsTotal'} textOptional={settings.liftedKgsTotal} graphics={'weight-hanging'} />
+                    <HomeScreenWidget width={'48.5%'} textRequired={'trainingsTotal'} textOptional={trainingsTotal} graphics={'dumbbell'} />
+                    <HomeScreenWidget width={'48.5%'} textRequired={'liftedKgsTotal'} textOptional={liftedKgsTotal} graphics={'weight-hanging'} />
                 </View>
 
                 <Text style={styles.sectionName}>{translate('recommendations')}</Text>

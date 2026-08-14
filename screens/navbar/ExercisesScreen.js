@@ -59,7 +59,7 @@ export default function ExercisesScreen() {
 
         return (
             <TouchableOpacity onPress={() => setActiveId(activeId === item.id ? null : item.id)} activeOpacity={0.8}>
-                <View style={styles.header}>
+                <View style={[styles.header, isActive && styles.expandedHeader]}>
                     <Text style={styles.headerText}>{item.name}</Text>
                     <Icon name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={32} color={theme.textPrimary} />
                 </View>
@@ -94,6 +94,11 @@ export default function ExercisesScreen() {
             paddingHorizontal: 20,
             marginBottom: 5
         },
+        expandedHeader: {
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
+            marginBottom: 0
+        },
         headerText: {
             flex: 1,
             marginRight: 10,
@@ -106,7 +111,10 @@ export default function ExercisesScreen() {
             marginBottom: 5,
             backgroundColor: theme.background,
             padding: 15,
-            borderRadius: 10
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10
         },
         detailRow: {
             flexDirection: 'row',

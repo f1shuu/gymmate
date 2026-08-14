@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { createContext, useState, useContext } from 'react';
+import { useState, useContext, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Localization from 'expo-localization';
 
@@ -33,10 +33,7 @@ export const SettingsProvider = ({ children }) => {
         trainingRemindersEnabled: false,
         trainingReminderDays: [],
         trainingReminderHour: 18,
-        trainingReminderMinute: 0,
-        longestStreak: 0,
-        trainingsTotal: 0,
-        liftedKgsTotal: 0
+        trainingReminderMinute: 0
     };
 
     const [settings, setSettings] = useState(null);
@@ -66,8 +63,15 @@ export const SettingsProvider = ({ children }) => {
                 }
             }
 
+            const hasLegacyTrainingStats = Object.prototype.hasOwnProperty.call(parsedSettings, 'trainingsTotal')
+                || Object.prototype.hasOwnProperty.call(parsedSettings, 'liftedKgsTotal')
+                || Object.prototype.hasOwnProperty.call(parsedSettings, 'longestStreak');
+            delete parsedSettings.trainingsTotal;
+            delete parsedSettings.liftedKgsTotal;
+            delete parsedSettings.longestStreak;
             const loadedSettings = { ...defaultSettings, ...parsedSettings };
             if (!translations[loadedSettings.language]) loadedSettings.language = 'en';
+            if (hasLegacyTrainingStats) await AsyncStorage.setItem('settings', JSON.stringify(loadedSettings));
             const themeName = themes[savedTheme] ? savedTheme : loadedSettings.theme;
 
             setSettings(loadedSettings);
