@@ -43,10 +43,10 @@ export default function HomeScreen() {
             flexDirection: 'row',
             justifyContent: 'space-between',
         }
-    }
+}
 
     return (
-        <Container isMainScreen={true}>
+        <Container>
             <ScrollView>
                 <Text style={styles.sectionName}>{translate('quickStart')}</Text>
                 <View style={{ gap: 10 }}>

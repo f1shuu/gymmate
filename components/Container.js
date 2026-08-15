@@ -8,7 +8,7 @@ export default function Container({ gradient, isMainScreen, children }) {
     const styles = {
         container: {
             flex: 1,
-            padding: 15,
+            paddingHorizontal: 15,
             backgroundColor: theme.secondary
         }
     }

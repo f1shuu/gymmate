@@ -188,8 +188,8 @@ export default function ExercisesScreen() {
             alignItems: 'center',
             backgroundColor: theme.background,
             borderRadius: 10,
-            paddingHorizontal: 16,
-            marginBottom: 12
+            paddingHorizontal: 15,
+            marginVertical: 15
         },
         searchInput: {
             flex: 1,
@@ -211,7 +211,7 @@ export default function ExercisesScreen() {
     }
 
     return (
-        <Container isMainScreen={true}>
+        <Container>
             {isExercises ? (
                 <>
                     <View style={styles.searchContainer}>

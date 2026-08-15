@@ -29,8 +29,7 @@ export default function AchievementsWidget() {
         widget: {
             borderRadius: 10,
             backgroundColor: theme.background,
-            padding: 15,
-            marginBottom: 10
+            padding: 15
         },
         row: {
             flexDirection: 'row',
