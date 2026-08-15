@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, Linking, ScrollView } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 
 import Container from '../../components/Container';
@@ -37,14 +37,14 @@ export default function ContactScreen() {
             fontFamily: 'Nexa',
             fontSize: 24,
             lineHeight: 30,
-            color: theme.textHeader,
+            color: theme.textPrimary,
             textAlign: 'center'
         },
         description: {
             fontFamily: 'Nexa',
             fontSize: 16,
             lineHeight: 24,
-            color: theme.textHeader,
+            color: theme.textPrimary,
             textAlign: 'center',
             marginTop: 15
         },
@@ -98,7 +98,7 @@ export default function ContactScreen() {
     }
 
     return (
-        <Container gradient={0.65}>
+        <Container>
             <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
                 <View style={styles.hero}>
                     <View style={styles.iconCircle}>

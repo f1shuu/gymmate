@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 
-import Container from '../../components/Container';
 import Button from '../../components/buttons/Button';
+import Container from '../../components/Container';
 
 import { useSettings } from '../../helpers/SettingsProvider';
 
@@ -77,7 +77,7 @@ export default function BMICalculator() {
 
     const styles = {
         resultArea: {
-            height: 60,
+            height: 50,
             justifyContent: 'center',
             alignItems: 'center',
             marginVertical: 10
@@ -88,20 +88,20 @@ export default function BMICalculator() {
             color: theme.textSecondary,
             textAlign: 'center'
         },
-        inputRow: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            gap: 25
-        },
         input: {
             backgroundColor: theme.background,
-            height: 60,
+            height: 50,
             fontFamily: 'Nexa',
             fontSize: 16,
             color: theme.textPrimary,
             borderRadius: 10,
             padding: 15,
             marginVertical: 10
+        },
+        inputRow: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            gap: 25
         },
         help: {
             fontFamily: 'Nexa',
@@ -112,7 +112,7 @@ export default function BMICalculator() {
         buttonRow: {
             flexDirection: 'row',
             justifyContent: 'space-around',
-            marginTop: 15,
+            marginTop: 25,
             gap: 15
         }
     }

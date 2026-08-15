@@ -9,7 +9,9 @@ A mobile fitness companion for creating custom workouts, tracking progress, and 
 - save body measurements and track essential workout statistics,
 - review completed workout activity, monthly totals, and weekly streaks in a calendar stored entirely on the device,
 - open daily playlist and weekly podcast recommendations in Spotify,
-- search exercises by name and schedule local workout reminders,
+- browse alphabetically sorted exercises, search them by name, and keep favorites at the top,
+- unlock locally stored achievements with in-app and optional system notifications,
+- schedule weekly workout reminders and automatic reminders after a longer break,
 - use the BMI calculator with visual guidance, expression calculator, and unit converters,
 - use a haptic-enabled timer with an optional sound alarm and a stopwatch with lap tracking,
 - personalize the profile photo, language, units, theme, sound, and vibration settings.

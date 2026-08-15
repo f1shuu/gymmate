@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, ScrollView, Alert, Platform, Switch } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Alert, Platform, Switch } from 'react-native';
 import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from '@expo/vector-icons/MaterialIcons';
@@ -6,7 +6,9 @@ import Icon from '@expo/vector-icons/MaterialIcons';
 import Container from '../../components/Container';
 import Modal from '../../components/Modal';
 
+import { cancelInactivityReminder, scheduleInactivityReminder } from '../../helpers/inactivityReminders';
 import { cancelTrainingReminders, scheduleTrainingReminders } from '../../helpers/trainingReminders';
+import DataController from '../../helpers/dataController';
 import { useSettings } from '../../helpers/SettingsProvider';
 
 const DAYS = [
@@ -28,6 +30,8 @@ const createTime = (hour, minute) => {
 export default function NotificationSettingsScreen() {
     const { settings, theme, translate, updateSettings } = useSettings();
     const [enabled, setEnabled] = useState(settings.trainingRemindersEnabled ?? false);
+    const [achievementPushEnabled, setAchievementPushEnabled] = useState(settings.achievementPushNotificationsEnabled !== false);
+    const [inactivityEnabled, setInactivityEnabled] = useState(settings.inactivityRemindersEnabled ?? false);
     const [selectedDays, setSelectedDays] = useState(settings.trainingReminderDays ?? []);
     const [time, setTime] = useState(createTime(
         settings.trainingReminderHour ?? 18,
@@ -38,15 +42,29 @@ export default function NotificationSettingsScreen() {
     const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
 
     const toggleDay = (day) => {
-        setSelectedDays(currentDays => currentDays.includes(day)
-            ? currentDays.filter(item => item !== day)
-            : [...currentDays, day].sort((a, b) => a - b)
+        setSelectedDays(currentDays => currentDays.includes(day) ? currentDays.filter(item => item !== day) : [...currentDays, day].sort((a, b) => a - b)
         )
     }
 
     const handleTimeChange = (event, selectedTime) => {
         setShowTimePicker(false);
         if (event.type !== 'dismissed' && selectedTime) setTime(selectedTime);
+    }
+
+    const configureInactivityReminder = async () => {
+        if (!inactivityEnabled) {
+            await cancelInactivityReminder();
+            return true;
+        }
+
+        const history = await DataController.readDataSet('trainingHistory');
+        const lastWorkout = [...history].filter(record => record.category === 'training_completed').sort((first, second) => new Date(second.createdAt) - new Date(first.createdAt))[0];
+        return scheduleInactivityReminder({
+            channelName: translate('inactivityReminders'),
+            lastWorkoutAt: lastWorkout?.createdAt,
+            title: translate('inactivityReminderTitle'),
+            bodyTemplate: translate('inactivityReminderBody')
+        })
     }
 
     const saveReminders = async () => {
@@ -74,7 +92,14 @@ export default function NotificationSettingsScreen() {
                 await cancelTrainingReminders();
             }
 
+            if (!await configureInactivityReminder()) {
+                Alert.alert(translate('error'), translate('notificationPermissionDenied'));
+                return;
+            }
+
             const settingsSaved = await updateSettings({
+                achievementPushNotificationsEnabled: achievementPushEnabled,
+                inactivityRemindersEnabled: inactivityEnabled,
                 trainingRemindersEnabled: enabled,
                 trainingReminderDays: selectedDays,
                 trainingReminderHour: time.getHours(),
@@ -93,9 +118,6 @@ export default function NotificationSettingsScreen() {
     const formattedTime = `${String(time.getHours()).padStart(2, '0')}:${String(time.getMinutes()).padStart(2, '0')}`;
 
     const styles = {
-        scrollContent: {
-            paddingBottom: 30
-        },
         card: {
             backgroundColor: theme.background,
             borderRadius: 10,
@@ -151,9 +173,6 @@ export default function NotificationSettingsScreen() {
             fontSize: 13,
             color: theme.textSecondary
         },
-        selectedDayText: {
-            color: theme.textHeader
-        },
         timeButton: {
             height: 64,
             borderRadius: 10,
@@ -184,21 +203,25 @@ export default function NotificationSettingsScreen() {
         }
     }
 
+    const notificationToggle = (titleKey, descriptionKey, value, onValueChange) => (
+        <View style={styles.card}>
+            <View style={styles.toggleRow}>
+                <Text style={styles.title}>{translate(titleKey)}</Text>
+                <Switch
+                    trackColor={{ false: theme.tertiary, true: theme.tertiary }}
+                    thumbColor={value ? theme.primary : theme.textHeader}
+                    value={value}
+                    onValueChange={onValueChange}
+                />
+            </View>
+            <Text style={styles.description}>{translate(descriptionKey)}</Text>
+        </View>
+    )
+
     return (
         <Container>
-            <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-                <View style={styles.card}>
-                    <View style={styles.toggleRow}>
-                        <Text style={styles.title}>{translate('trainingReminders')}</Text>
-                        <Switch
-                            trackColor={{ false: theme.tertiary, true: theme.tertiary }}
-                            thumbColor={enabled ? theme.primary : theme.textHeader}
-                            value={enabled}
-                            onValueChange={setEnabled}
-                        />
-                    </View>
-                    <Text style={styles.description}>{translate('trainingRemindersDescription')}</Text>
-                </View>
+            <ScrollView contentContainerStyle={{ paddingBottom: 30 }} showsVerticalScrollIndicator={false}>
+                {notificationToggle('trainingReminders', 'trainingRemindersDescription', enabled, setEnabled)}
 
                 <View style={[styles.card, { opacity: enabled ? 1 : 0.45 }]} pointerEvents={enabled ? 'auto' : 'none'}>
                     <Text style={styles.sectionTitle}>{translate('reminderDays')}</Text>
@@ -212,7 +235,7 @@ export default function NotificationSettingsScreen() {
                                     activeOpacity={0.8}
                                     onPress={() => toggleDay(day.value)}
                                 >
-                                    <Text style={[styles.dayText, selected && styles.selectedDayText]}>{translate(day.key)}</Text>
+                                    <Text style={[styles.dayText, selected && { color: theme.textHeader }]}>{translate(day.key)}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -239,6 +262,19 @@ export default function NotificationSettingsScreen() {
                         onChange={handleTimeChange}
                     />
                 ) : null}
+
+                {notificationToggle(
+                    'achievementNotifications',
+                    'achievementNotificationsDescription',
+                    achievementPushEnabled,
+                    setAchievementPushEnabled
+                )}
+                {notificationToggle(
+                    'inactivityReminders',
+                    'inactivityRemindersDescription',
+                    inactivityEnabled,
+                    setInactivityEnabled
+                )}
 
                 <TouchableOpacity
                     style={styles.saveButton}

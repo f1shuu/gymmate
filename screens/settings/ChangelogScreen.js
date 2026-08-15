@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, Linking, ScrollView } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Asset } from 'expo-asset';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -8,12 +8,12 @@ import Container from '../../components/Container';
 import packageJson from '../../package.json';
 import { useSettings } from '../../helpers/SettingsProvider';
 
-const appVersion = packageJson?.version || '0.0.0';
+const appVersion = packageJson?.version || '1.0.0';
 const changelogAssets = {
     pl: require('../../CHANGELOG-PL.md'),
     en: require('../../CHANGELOG-EN.md')
 }
-const repoUrl = 'https://github.com/f1shuu/gymmate/releases';
+const repoUrl = 'https://github.com/f1shuu/gymmate/releases/latest';
 
 const readAssetText = async (assetModule) => {
     const asset = Asset.fromModule(assetModule);
@@ -25,9 +25,7 @@ const readAssetText = async (assetModule) => {
     for (const uri of candidateUris) {
         try {
             const response = await fetch(uri);
-            if (!response.ok && response.status !== 0) {
-                throw new Error(`Could not load changelog (${response.status})`);
-            }
+            if (!response.ok && response.status !== 0) throw new Error(`Could not load changelog (${response.status})`);
             return await response.text();
         } catch (error) {
             lastError = error;
@@ -96,35 +94,14 @@ export default function ChangelogScreen() {
     }, [language])
 
     const styles = {
-        content: {
-            flexGrow: 1,
-            paddingTop: 12,
-            paddingBottom: 24,
-            gap: 15
-        },
-        hero: {
-            backgroundColor: theme.background,
-            borderRadius: 10,
-            paddingHorizontal: 24,
-            paddingVertical: 30,
-            alignItems: 'center'
-        },
-        version: {
-            fontFamily: 'Nexa',
-            fontSize: 24,
-            lineHeight: 30,
-            color: theme.textHeader,
-            textAlign: 'center'
-        },
-        markdown: {
-            width: '100%',
-            marginTop: 15
+        markdownSpacer: {
+            height: 6
         },
         markdownTitle: {
             fontFamily: 'Nexa',
             fontSize: 21,
             lineHeight: 28,
-            color: theme.textHeader,
+            color: theme.textPrimary,
             marginTop: 8,
             marginBottom: 4
         },
@@ -135,15 +112,6 @@ export default function ChangelogScreen() {
             color: theme.primary,
             marginTop: 8,
             marginBottom: 4
-        },
-        markdownParagraph: {
-            fontFamily: 'Nexa',
-            fontSize: 15,
-            lineHeight: 23,
-            color: theme.textHeader
-        },
-        markdownSpacer: {
-            height: 6
         },
         bulletRow: {
             flexDirection: 'row',
@@ -162,7 +130,37 @@ export default function ChangelogScreen() {
             fontFamily: 'Nexa',
             fontSize: 14,
             lineHeight: 21,
-            color: theme.textHeader
+            color: theme.textPrimary
+        },
+        markdownParagraph: {
+            fontFamily: 'Nexa',
+            fontSize: 15,
+            lineHeight: 23,
+            color: theme.textPrimary
+        },
+        content: {
+            flexGrow: 1,
+            paddingTop: 12,
+            paddingBottom: 24,
+            gap: 15
+        },
+        hero: {
+            backgroundColor: theme.background,
+            borderRadius: 10,
+            paddingHorizontal: 24,
+            paddingVertical: 30,
+            alignItems: 'center'
+        },
+        version: {
+            fontFamily: 'Nexa',
+            fontSize: 24,
+            lineHeight: 30,
+            color: theme.textPrimary,
+            textAlign: 'center'
+        },
+        markdown: {
+            width: '100%',
+            marginTop: 15
         },
         loadingText: {
             fontFamily: 'Nexa',
@@ -205,7 +203,7 @@ export default function ChangelogScreen() {
     }
 
     return (
-        <Container gradient={0.65}>
+        <Container>
             <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
                 <View style={styles.hero}>
                     <Text style={styles.version}>{translate('version')} {appVersion}</Text>

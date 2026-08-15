@@ -8,6 +8,7 @@ import DataController from '../../helpers/dataController';
 import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
 
+import { useAchievements } from '../../helpers/AchievementProvider';
 import { useSettings } from '../../helpers/SettingsProvider';
 
 import { categories } from '../../constants/categories';
@@ -19,7 +20,9 @@ export default function BodyMeasurementsCreator() {
     const [isFocus, setIsFocus] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
+    const { evaluateAchievements } = useAchievements();
     const { settings, theme, translate } = useSettings();
+    const localizedCategories = categories[settings.language] || categories.en || [];
 
     const navigation = useNavigation();
 
@@ -36,6 +39,19 @@ export default function BodyMeasurementsCreator() {
         setIsFocus(false);
     }
 
+    const saveMeasurement = async () => {
+        const saved = await DataController.store(
+            'bodyMeasurements',
+            null,
+            null,
+            category,
+            navigation,
+            'BodyMeasurementsScreen',
+            { value, unit }
+        )
+        if (saved) await evaluateAchievements();
+    }
+
     const styles = {
         text: {
             fontFamily: 'Nexa',
@@ -46,7 +62,7 @@ export default function BodyMeasurementsCreator() {
         input: {
             width: '100%',
             backgroundColor: theme.background,
-            height: 60,
+            height: 50,
             fontFamily: 'Nexa',
             fontSize: 16,
             color: theme.textPrimary,
@@ -69,7 +85,7 @@ export default function BodyMeasurementsCreator() {
             <Text style={styles.text}>{translate('bodyMeasurementCategory')}</Text>
             <Dropdown
                 passedStyle={{ borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
-                data={categories[settings.language]}
+                data={localizedCategories}
                 labelField='label'
                 placeholder={isFocus ? '...' : translate('chooseCategory') + '...'}
                 value={category}
@@ -87,7 +103,7 @@ export default function BodyMeasurementsCreator() {
                 onChangeText={(text) => setValue(text)}
             />
             <Text style={styles.reminder}>{translate('unitsReminder')}</Text>
-            <Button onPress={category && value ? async () => await DataController.store('bodyMeasurements', null, null, category, navigation, 'BodyMeasurementsScreen', { value, unit }) : () => setIsModalVisible(() => !isModalVisible)} text={translate('save')} type='small' />
+            <Button onPress={category && value ? saveMeasurement : () => setIsModalVisible(() => !isModalVisible)} text={translate('save')} type='small' />
             <Modal
                 isVisible={isModalVisible}
                 text={translate('fillAllFields')}

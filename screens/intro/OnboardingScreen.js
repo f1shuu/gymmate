@@ -1,4 +1,4 @@
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSettings } from '../../helpers/SettingsProvider';
@@ -106,15 +106,6 @@ export default function OnboardingScreen({
             fontSize: 15,
             lineHeight: 20,
             textAlign: 'center'
-        },
-        secondaryButtonText: {
-            color: theme.primary
-        },
-        primaryButton: {
-            backgroundColor: theme.primary
-        },
-        primaryButtonText: {
-            color: theme.textHeader
         }
     }
 
@@ -149,14 +140,14 @@ export default function OnboardingScreen({
                         activeOpacity={0.8}
                         onPress={leftButtonOnPress}
                     >
-                        <Text style={[styles.buttonText, styles.secondaryButtonText]}>{leftButtonText}</Text>
+                        <Text style={[styles.buttonText, { color: theme.primary }]}>{leftButtonText}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={[styles.button, styles.primaryButton]}
+                        style={[styles.button, { backgroundColor: theme.primary }]}
                         activeOpacity={0.8}
                         onPress={rightButtonOnPress}
                     >
-                        <Text style={[styles.buttonText, styles.primaryButtonText]}>{rightButtonText}</Text>
+                        <Text style={[styles.buttonText, { color: theme.textHeader }]}>{rightButtonText}</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

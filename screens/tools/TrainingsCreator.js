@@ -1,5 +1,5 @@
-import { Animated, PanResponder, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { Text, View, TextInput, ScrollView, TouchableOpacity, Animated, PanResponder } from 'react-native';
+import { useState, useCallback, useMemo, useRef } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
@@ -37,10 +37,7 @@ function DraggableExerciseCard({ entry, exercise, index, itemCount, onMove, onRe
         onPanResponderGrant: () => setIsDragging(true),
         onPanResponderMove: (_, gestureState) => dragY.setValue(gestureState.dy),
         onPanResponderRelease: (_, gestureState) => {
-            const targetIndex = Math.max(
-                0,
-                Math.min(itemCount - 1, index + Math.round(gestureState.dy / EXERCISE_ROW_HEIGHT))
-            )
+            const targetIndex = Math.max(0, Math.min(itemCount - 1, index + Math.round(gestureState.dy / EXERCISE_ROW_HEIGHT)))
             resetDragPosition();
             if (targetIndex !== index) onMove(index, targetIndex);
         },
@@ -101,13 +98,9 @@ export default function TrainingsCreator({ route }) {
                 setIsLoading(false);
                 setSelectedEntries(currentEntries => {
                     const availableIds = new Set(storedExercises.map(exercise => exercise.id));
-                    const sourceEntries = initializedSelection.current
-                        ? currentEntries
-                        : (route.params?.data?.exerciseIds || []).map(createSelection);
+                    const sourceEntries = initializedSelection.current ? currentEntries : (route.params?.data?.exerciseIds || []).map(createSelection);
                     initializedSelection.current = true;
-                    return sourceEntries
-                        .filter(entry => availableIds.has(entry.exerciseId))
-                        .slice(0, MAX_EXERCISES);
+                    return sourceEntries.filter(entry => availableIds.has(entry.exerciseId)).slice(0, MAX_EXERCISES);
                 })
             }
 
@@ -123,9 +116,7 @@ export default function TrainingsCreator({ route }) {
         [exercises]
     )
     const selectedExercises = useMemo(
-        () => selectedEntries
-            .map(entry => ({ entry, exercise: exercisesById.get(entry.exerciseId) }))
-            .filter(item => Boolean(item.exercise)),
+        () => selectedEntries.map(entry => ({ entry, exercise: exercisesById.get(entry.exerciseId) })).filter(item => Boolean(item.exercise)),
         [exercisesById, selectedEntries]
     )
     const selectionCounts = useMemo(
@@ -272,7 +263,7 @@ export default function TrainingsCreator({ route }) {
             marginBottom: 22
         },
         input: {
-            height: 60,
+            height: 50,
             borderRadius: 10,
             paddingHorizontal: 16,
             backgroundColor: theme.background,
@@ -329,13 +320,11 @@ export default function TrainingsCreator({ route }) {
         }
     }
 
-    const exerciseSummary = (exercise) => exercise.data?.type === 'time_based'
-        ? exercise.data?.time
-        : `${exercise.data?.setsAmount || 0} × ${exercise.data?.repsAmount || 0}`
+    const exerciseSummary = (exercise) => exercise.data?.type === 'time_based' ? exercise.data?.time : `${exercise.data?.setsAmount || 0} × ${exercise.data?.repsAmount || 0}`
 
     if (isLoading) {
         return (
-            <Container gradient={0.75}>
+            <Container>
                 <View style={styles.emptyContainer}>
                     <Text style={styles.emptyText}>{translate('loading')}</Text>
                 </View>
@@ -345,7 +334,7 @@ export default function TrainingsCreator({ route }) {
 
     if (exercises.length === 0) {
         return (
-            <Container gradient={0.75}>
+            <Container>
                 <View style={styles.emptyContainer}>
                     <View style={styles.emptyIcon}>
                         <Icon name='fitness-center' size={46} color={theme.primary} />
@@ -358,7 +347,7 @@ export default function TrainingsCreator({ route }) {
     }
 
     return (
-        <Container gradient={0.75}>
+        <Container>
             <ScrollView
                 contentContainerStyle={{ paddingBottom: 30 }}
                 showsVerticalScrollIndicator={false}

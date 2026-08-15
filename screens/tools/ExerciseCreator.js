@@ -12,19 +12,22 @@ import MultiSelect from '../../components/MultiSelect';
 import Modal from '../../components/Modal';
 import SegmentedButton from '../../components/buttons/SegmentedButton';
 
+import { useAchievements } from '../../helpers/AchievementProvider';
 import { useSettings } from '../../helpers/SettingsProvider';
 
+import { kgWeights } from '../../constants/kgWeights';
+import { lbsWeights } from '../../constants/lbsWeights';
 import { muscleGroups } from '../../constants/muscleGroups';
 import { repsAmounts } from '../../constants/repsAmounts';
 import { setsAmounts } from '../../constants/setsAmounts';
 import { times } from '../../constants/times';
-import { kgWeights } from '../../constants/kgWeights';
-import { lbsWeights } from '../../constants/lbsWeights';
 
 const isMissing = (value) => value === null || value === undefined || (Array.isArray(value) && value.length === 0) || (typeof value === 'string' && value.trim() === '');
 
 export default function ExerciseCreator({ route }) {
+    const { evaluateAchievements } = useAchievements();
     const { settings, theme, translate } = useSettings();
+    const localizedMuscleGroups = muscleGroups[settings.language] || muscleGroups.en || [];
     const id = route.params?.id || null;
     const [activeStep, setActiveStep] = useState(0);
     const [muscleGroupsSelected, setMuscleGroupsSelected] = useState(() => {
@@ -39,7 +42,7 @@ export default function ExerciseCreator({ route }) {
     const [weight, setWeight] = useState(route.params?.data?.weight ?? null);
     const [name, setName] = useState(route.params?.name || '');
     const [note, setNote] = useState(route.params?.data?.note || '');
-    const [isFocus, setIsFocus] = useState(false);
+    const [activeDropdown, setActiveDropdown] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -47,8 +50,19 @@ export default function ExerciseCreator({ route }) {
 
     const onDropdownChange = (setData, value) => {
         setData(value);
-        setIsFocus(false);
+        setActiveDropdown(null);
     }
+
+    const dropdownHandlers = (name) => ({
+        onFocus: () => setActiveDropdown(name),
+        onBlur: () => setActiveDropdown(current => current === name ? null : current)
+    })
+
+    const dropdownStyle = (name) => ({
+        width: '50%',
+        borderBottomLeftRadius: activeDropdown === name ? 0 : 10,
+        borderBottomRightRadius: activeDropdown === name ? 0 : 10
+    })
 
     const showValidationErrorIfNeeded = (...values) => {
         const hasMissingValue = values.some(isMissing);
@@ -61,9 +75,7 @@ export default function ExerciseCreator({ route }) {
     }
 
     const goToName = () => {
-        const hasErrors = type === 'reps_based'
-            ? showValidationErrorIfNeeded(setsAmount, repsAmount)
-            : showValidationErrorIfNeeded(time);
+        const hasErrors = type === 'reps_based' ? showValidationErrorIfNeeded(setsAmount, repsAmount) : showValidationErrorIfNeeded(time);
         if (!hasErrors) setActiveStep(2);
     }
 
@@ -82,7 +94,7 @@ export default function ExerciseCreator({ route }) {
         }
 
         setIsSaving(true);
-        await DataController.store(
+        const saved = await DataController.store(
             'exercises',
             id,
             name.trim(),
@@ -90,7 +102,8 @@ export default function ExerciseCreator({ route }) {
             navigation,
             'ExercisesScreen',
             exerciseData
-        );
+        )
+        if (saved) await evaluateAchievements();
         setIsSaving(false);
     }
 
@@ -121,18 +134,6 @@ export default function ExerciseCreator({ route }) {
             fontSize: 16,
             color: theme.textHeader
         },
-        previousButtonText: {
-            color: theme.primary
-        },
-        primaryButton: {
-            backgroundColor: theme.primary
-        },
-        disabledButton: {
-            opacity: 0.55
-        },
-        stepContent: {
-            flexGrow: 1
-        },
         text: {
             fontFamily: 'Nexa',
             fontSize: 16,
@@ -149,7 +150,7 @@ export default function ExerciseCreator({ route }) {
         input: {
             width: '100%',
             backgroundColor: theme.background,
-            height: 60,
+            height: 50,
             fontFamily: 'Nexa',
             fontSize: 16,
             color: theme.textPrimary,
@@ -179,11 +180,11 @@ export default function ExerciseCreator({ route }) {
                     activeOpacity={0.8}
                     onPress={() => setActiveStep(previousStep)}
                 >
-                    <Text style={[styles.navigationButtonText, styles.previousButtonText]}>{translate('back')}</Text>
+                    <Text style={[styles.navigationButtonText, { color: theme.primary }]}>{translate('back')}</Text>
                 </TouchableOpacity>
             )}
             <TouchableOpacity
-                style={[styles.navigationButton, styles.primaryButton, disabled && styles.disabledButton]}
+                style={[styles.navigationButton, { backgroundColor: theme.primary }, disabled && { opacity: 0.55 }]}
                 activeOpacity={0.8}
                 onPress={onNext}
                 disabled={disabled}
@@ -195,7 +196,7 @@ export default function ExerciseCreator({ route }) {
 
     const progressStepProps = {
         removeBtnRow: true,
-        scrollViewProps: { contentContainerStyle: styles.stepContent }
+        scrollViewProps: { contentContainerStyle: { flexGrow: 1 } }
     }
 
     return (
@@ -219,12 +220,11 @@ export default function ExerciseCreator({ route }) {
                     <>
                         <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('chooseMuscleGroup')}</Text>
                         <MultiSelect
-                            passedStyle={{ borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
-                            data={muscleGroups[settings.language]}
-                            placeholder={isFocus ? '...' : translate('chooseMuscleGroup') + '...'}
+                            passedStyle={{ borderBottomLeftRadius: activeDropdown === 'muscleGroups' ? 0 : 10, borderBottomRightRadius: activeDropdown === 'muscleGroups' ? 0 : 10 }}
+                            data={localizedMuscleGroups}
+                            placeholder={activeDropdown === 'muscleGroups' ? '...' : translate('chooseMuscleGroup') + '...'}
                             value={muscleGroupsSelected}
-                            onFocus={() => setIsFocus(true)}
-                            onBlur={() => setIsFocus(false)}
+                            {...dropdownHandlers('muscleGroups')}
                             onChange={setMuscleGroupsSelected}
                         />
                         <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('chooseExerciseType')}</Text>
@@ -246,24 +246,22 @@ export default function ExerciseCreator({ route }) {
                                 <View style={styles.row}>
                                     <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('setsAmount')}</Text>
                                     <Dropdown
-                                        passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
+                                        passedStyle={dropdownStyle('sets')}
                                         data={setsAmounts}
                                         placeholder='...'
                                         value={setsAmount}
-                                        onFocus={() => setIsFocus(true)}
-                                        onBlur={() => setIsFocus(false)}
+                                        {...dropdownHandlers('sets')}
                                         onChange={(item) => onDropdownChange(setSetsAmount, item.value)}
                                     />
                                 </View>
                                 <View style={styles.row}>
                                     <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('repsAmount')}</Text>
                                     <Dropdown
-                                        passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
+                                        passedStyle={dropdownStyle('reps')}
                                         data={repsAmounts}
                                         placeholder='...'
                                         value={repsAmount}
-                                        onFocus={() => setIsFocus(true)}
-                                        onBlur={() => setIsFocus(false)}
+                                        {...dropdownHandlers('reps')}
                                         onChange={(item) => onDropdownChange(setRepsAmount, item.value)}
                                     />
                                 </View>
@@ -272,12 +270,11 @@ export default function ExerciseCreator({ route }) {
                             <View style={styles.row}>
                                 <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('time')}</Text>
                                 <Dropdown
-                                    passedStyle={{ width: '30%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
+                                    passedStyle={dropdownStyle('time')}
                                     data={times}
                                     placeholder='...'
                                     value={time}
-                                    onFocus={() => setIsFocus(true)}
-                                    onBlur={() => setIsFocus(false)}
+                                    {...dropdownHandlers('time')}
                                     onChange={(item) => onDropdownChange(setTime, item.value)}
                                 />
                             </View>
@@ -285,12 +282,11 @@ export default function ExerciseCreator({ route }) {
                         <View style={styles.row}>
                             <Text style={[styles.text, { color: theme.textPrimary }]}>{translate('weightOptional')}</Text>
                             <Dropdown
-                                passedStyle={{ width: '42%', borderBottomLeftRadius: isFocus ? 0 : 15, borderBottomRightRadius: isFocus ? 0 : 15 }}
+                                passedStyle={dropdownStyle('weight')}
                                 data={settings.units === 'metric' ? kgWeights : lbsWeights}
                                 placeholder='...'
                                 value={weight}
-                                onFocus={() => setIsFocus(true)}
-                                onBlur={() => setIsFocus(false)}
+                                {...dropdownHandlers('weight')}
                                 onChange={(item) => onDropdownChange(setWeight, item.value)}
                             />
                         </View>

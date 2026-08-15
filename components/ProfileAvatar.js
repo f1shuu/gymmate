@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 
@@ -22,7 +22,9 @@ export default function ProfileAvatar({ onPress, showEditBadge = false, size = 1
             width: size,
             height: size,
             borderRadius: size / 2,
-            backgroundColor: theme.background
+            backgroundColor: theme.background,
+            borderWidth: 2,
+            borderColor: theme.primary
         },
         editBadge: {
             position: 'absolute',

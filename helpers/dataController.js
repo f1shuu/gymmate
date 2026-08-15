@@ -72,18 +72,12 @@ const migrateRecord = (record) => {
         ...recordData,
         type: EXERCISE_TYPE_ALIASES[recordData.type] || recordData.type
     }
-    const hasMuscleGroupData = category === 'exercises'
-        || recordData.muscleGroup
-        || Array.isArray(recordData.muscleGroups)
+    const hasMuscleGroupData = category === 'exercises' || recordData.muscleGroup || Array.isArray(recordData.muscleGroups)
 
     if (hasMuscleGroupData) {
-        const sourceGroups = Array.isArray(recordData.muscleGroups)
-            ? recordData.muscleGroups
-            : (recordData.muscleGroup ? [recordData.muscleGroup] : [])
+        const sourceGroups = Array.isArray(recordData.muscleGroups) ? recordData.muscleGroups : (recordData.muscleGroup ? [recordData.muscleGroup] : [])
         data.muscleGroups = [...new Set(
-            sourceGroups
-                .map(group => MUSCLE_GROUP_ALIASES[group] || group)
-                .filter(Boolean)
+            sourceGroups.map(group => MUSCLE_GROUP_ALIASES[group] || group).filter(Boolean)
         )]
         delete data.muscleGroup;
     }
@@ -109,9 +103,7 @@ export default new class DataController {
 
             const migratedData = parsedData.map(migrateRecord);
             const normalizedData = dataSet === 'trainingHistory' ? migratedData.filter(record => record.category === 'training_completed') : migratedData;
-            if (JSON.stringify(parsedData) !== JSON.stringify(normalizedData)) {
-                await AsyncStorage.setItem(dataSet, JSON.stringify(normalizedData));
-            }
+            if (JSON.stringify(parsedData) !== JSON.stringify(normalizedData)) await AsyncStorage.setItem(dataSet, JSON.stringify(normalizedData));
             return normalizedData;
         } catch (error) {
             console.error(error);
@@ -208,9 +200,26 @@ export default new class DataController {
 
             await AsyncStorage.setItem(dataSet, JSON.stringify(parsedData));
             navigation.navigate(navigator);
+            return true;
         } catch (error) {
             console.error(error);
             showStorageError();
+            return false;
+        }
+    }
+
+    async setExerciseFavorite(id, isFavorite) {
+        try {
+            const exercises = await this.readDataSet('exercises');
+            const exerciseIndex = exercises.findIndex(exercise => exercise.id === id);
+            if (exerciseIndex === -1) throw new Error('Cannot favorite a missing exercise');
+            exercises[exerciseIndex] = { ...exercises[exerciseIndex], isFavorite };
+            await AsyncStorage.setItem('exercises', JSON.stringify(exercises));
+            return exercises;
+        } catch (error) {
+            console.error(error);
+            showStorageError();
+            return null;
         }
     }
 
@@ -247,9 +256,11 @@ export default new class DataController {
             setIsModalVisible(!isModalVisible);
             await fetchData();
             setIsConfirmationModalVisible(!isConfirmationModalVisible);
+            return true;
         } catch (error) {
             console.error(error);
             showStorageError();
+            return false;
         }
     }
 }

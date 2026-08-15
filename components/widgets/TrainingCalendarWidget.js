@@ -53,9 +53,6 @@ export default function TrainingCalendarWidget() {
             padding: 15,
             marginBottom: 10
         },
-        header: {
-            marginBottom: 10
-        },
         title: {
             fontFamily: 'Nexa',
             fontSize: 17,
@@ -95,7 +92,7 @@ export default function TrainingCalendarWidget() {
             flex: 1,
             backgroundColor: theme.secondary,
             fontFamily: 'Nexa',
-            fontSize: 11,
+            fontSize: 10,
             color: theme.textSecondary,
             textAlign: 'center',
             borderRadius: 10,
@@ -103,30 +100,24 @@ export default function TrainingCalendarWidget() {
             paddingVertical: 7.5
         },
         count: {
-            fontSize: 11,
+            fontSize: 10,
             color: theme.primary
         },
         streak: {
             flex: 1,
             backgroundColor: theme.secondary,
             fontFamily: 'Nexa',
-            fontSize: 11,
+            fontSize: 10,
             textAlign: 'center',
             borderRadius: 10,
             marginLeft: 2.5,
             paddingVertical: 7.5
-        },
-        activeStreak: {
-            color: Colors.orange
-        },
-        inactiveStreak: {
-            color: theme.textSecondary
         }
     }
 
     return (
         <View style={styles.widget} accessibilityLabel={translate('trainingCalendar')}>
-            <View style={styles.header}>
+            <View style={{ marginBottom: 10 }}>
                 <Text style={styles.title}>{translate('trainingCalendar')}</Text>
                 <View style={styles.monthNavigation}>
                     <TouchableOpacity
@@ -165,7 +156,7 @@ export default function TrainingCalendarWidget() {
                 </Text>
                 <Text style={[
                     styles.streak,
-                    weeklyStreak > 0 ? styles.activeStreak : styles.inactiveStreak
+                    weeklyStreak > 0 ? { color: Colors.orange } : { color: theme.textSecondary }
                 ]}>
                     {streakText}{weeklyStreak > 0 ? ' 🔥' : ''}
                 </Text>

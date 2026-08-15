@@ -7,6 +7,8 @@ export default function SegmentedButton({ option1, option2, option1Label = optio
 
     const styles = {
         container: {
+            height: 50,
+            alignItems: 'center',
             flexDirection: 'row',
             borderRadius: 10,
             overflow: 'hidden',
@@ -16,12 +18,6 @@ export default function SegmentedButton({ option1, option2, option1Label = optio
             flex: 1,
             paddingVertical: 15,
             alignItems: 'center'
-        },
-        activeSegment: {
-            backgroundColor: theme.primary
-        },
-        inactiveSegment: {
-            backgroundColor: theme.background
         },
         activeText: {
             fontFamily: 'Nexa',
@@ -39,7 +35,7 @@ export default function SegmentedButton({ option1, option2, option1Label = optio
         <View style={styles.container}>
             <TouchableOpacity
                 onPress={() => { if (onOptionChange) onOptionChange(option1) }}
-                style={[styles.segment, selectedOption === option1 ? styles.activeSegment : styles.inactiveSegment]}
+                style={[styles.segment, selectedOption === option1 ? { backgroundColor: theme.primary } : { backgroundColor: theme.background }]}
                 disabled={selectedOption === option1}
                 activeOpacity={0.8}
             >
@@ -47,7 +43,7 @@ export default function SegmentedButton({ option1, option2, option1Label = optio
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => { if (onOptionChange) onOptionChange(option2) }}
-                style={[styles.segment, selectedOption === option2 ? styles.activeSegment : styles.inactiveSegment]}
+                style={[styles.segment, selectedOption === option2 ? { backgroundColor: theme.primary } : { backgroundColor: theme.background }]}
                 disabled={selectedOption === option2}
                 activeOpacity={0.8}
             >

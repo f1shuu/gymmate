@@ -34,7 +34,7 @@ export default function TrainingsScreen() {
         const [storedTrainings, storedExercises] = await Promise.all([
             DataController.readDataSet('trainings'),
             DataController.readDataSet('exercises')
-        ]);
+        ])
         setTrainings(storedTrainings);
         setExercises(storedExercises);
         setIsTrainings(storedTrainings.length > 0);
@@ -51,9 +51,7 @@ export default function TrainingsScreen() {
         if (settings?.isHapticsOn) Haptics.impactAsync(style).catch(console.error);
     }
 
-    const resolveExercises = (training) => (training.data?.exerciseIds || [])
-        .map(id => exercisesById.get(id))
-        .filter(Boolean);
+    const resolveExercises = (training) => (training.data?.exerciseIds || []).map(id => exercisesById.get(id)).filter(Boolean);
 
     const startTraining = (training) => {
         const resolvedExercises = resolveExercises(training);
@@ -96,6 +94,11 @@ export default function TrainingsScreen() {
             paddingHorizontal: 18,
             marginBottom: 6
         },
+        expandedHeader: {
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
+            marginBottom: 0
+        },
         headerIcon: {
             width: 42,
             height: 42,
@@ -117,10 +120,13 @@ export default function TrainingsScreen() {
             marginTop: 4
         },
         details: {
-            borderRadius: 10,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
             backgroundColor: theme.background,
             padding: 15,
-            marginBottom: 7
+            marginBottom: 6
         },
         exerciseRow: {
             minHeight: 36,
@@ -162,7 +168,7 @@ export default function TrainingsScreen() {
         return (
             <View>
                 <TouchableOpacity
-                    style={styles.header}
+                    style={[styles.header, isActive && styles.expandedHeader]}
                     activeOpacity={0.8}
                     onPress={() => setActiveId(isActive ? null : item.id)}
                 >
@@ -216,7 +222,7 @@ export default function TrainingsScreen() {
     }
 
     return (
-        <Container gradient={0.75}>
+        <Container>
             {isLoading ? (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={styles.name}>{translate('loading')}</Text>

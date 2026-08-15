@@ -1,12 +1,14 @@
-import { Alert } from 'react-native';
 import { useState, useContext, createContext } from 'react';
+import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Localization from 'expo-localization';
 
-import * as themes from '../Themes';
-import { translations } from '../constants/translations';
-import { deleteProfileImage } from './profileImage';
+import { cancelInactivityReminder } from './inactivityReminders';
 import { cancelTrainingReminders } from './trainingReminders';
+import { deleteProfileImage } from './profileImage';
+import { translations } from '../constants/translations';
+
+import * as themes from '../Themes';
 
 const SettingsContext = createContext();
 const ONBOARDING_STORAGE_KEY = 'onboardingVersion';
@@ -30,6 +32,8 @@ export const SettingsProvider = ({ children }) => {
         lastName: null,
         nickname: null,
         profileImageUri: null,
+        achievementPushNotificationsEnabled: true,
+        inactivityRemindersEnabled: false,
         trainingRemindersEnabled: false,
         trainingReminderDays: [],
         trainingReminderHour: 18,
@@ -39,6 +43,7 @@ export const SettingsProvider = ({ children }) => {
     const [settings, setSettings] = useState(null);
     const [theme, setTheme] = useState(themes.GymMate);
     const [shouldShowOnboarding, setShouldShowOnboarding] = useState(false);
+    const [isTrainingActive, setIsTrainingActive] = useState(false);
 
     const loadSettings = async () => {
         try {
@@ -52,9 +57,7 @@ export const SettingsProvider = ({ children }) => {
             if (savedSettings) {
                 try {
                     parsedSettings = JSON.parse(savedSettings);
-                    if (!parsedSettings || typeof parsedSettings !== 'object' || Array.isArray(parsedSettings)) {
-                        throw new Error('Stored settings are not an object');
-                    }
+                    if (!parsedSettings || typeof parsedSettings !== 'object' || Array.isArray(parsedSettings)) throw new Error('Stored settings are not an object');
                 } catch (error) {
                     console.error(error);
                     await AsyncStorage.setItem('settings:corrupted-backup', savedSettings);
@@ -63,9 +66,7 @@ export const SettingsProvider = ({ children }) => {
                 }
             }
 
-            const hasLegacyTrainingStats = Object.prototype.hasOwnProperty.call(parsedSettings, 'trainingsTotal')
-                || Object.prototype.hasOwnProperty.call(parsedSettings, 'liftedKgsTotal')
-                || Object.prototype.hasOwnProperty.call(parsedSettings, 'longestStreak');
+            const hasLegacyTrainingStats = Object.prototype.hasOwnProperty.call(parsedSettings, 'trainingsTotal') || Object.prototype.hasOwnProperty.call(parsedSettings, 'liftedKgsTotal') || Object.prototype.hasOwnProperty.call(parsedSettings, 'longestStreak');
             delete parsedSettings.trainingsTotal;
             delete parsedSettings.liftedKgsTotal;
             delete parsedSettings.longestStreak;
@@ -103,6 +104,7 @@ export const SettingsProvider = ({ children }) => {
         try {
             const cleanupResults = await Promise.allSettled([
                 cancelTrainingReminders(),
+                cancelInactivityReminder(),
                 deleteProfileImage(settings?.profileImageUri)
             ])
             cleanupResults.filter(result => result.status === 'rejected').forEach(result => console.error(result.reason));
@@ -155,7 +157,7 @@ export const SettingsProvider = ({ children }) => {
     }
 
     return (
-        <SettingsContext.Provider value={{ settings, theme, changeTheme, completeOnboarding, loadSettings, restartOnboarding, restoreDefault, shouldShowOnboarding, translate, updateSettings }}>
+        <SettingsContext.Provider value={{ settings, theme, changeTheme, completeOnboarding, loadSettings, restartOnboarding, restoreDefault, shouldShowOnboarding, translate, updateSettings, isTrainingActive, setIsTrainingActive }}>
             {children}
         </SettingsContext.Provider>
     )

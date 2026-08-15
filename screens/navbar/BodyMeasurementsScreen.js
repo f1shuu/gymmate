@@ -73,7 +73,7 @@ export default function BodyMeasurementsScreen() {
                 </TouchableOpacity>
 
                 {expandedCategories[category] && (
-                    <View style={styles.itemsContainer}>
+                    <View>
                         {items.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((measurement, index) => (
                             <View key={measurement.id} style={[styles.measurement, index === 0 ? { backgroundColor: Colors.green } : null]}>
                                 <Text style={styles.text}>
@@ -128,7 +128,7 @@ export default function BodyMeasurementsScreen() {
     }
 
     return (
-        <Container gradient={0.75}>
+        <Container>
             {isBodyMeasurements ? (
                 <>
                     <FlatList

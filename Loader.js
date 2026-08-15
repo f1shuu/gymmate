@@ -7,6 +7,7 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import IntroNavigator from './screens/intro/IntroNavigator';
 
+import { AchievementProvider } from './helpers/AchievementProvider';
 import { useSettings } from './helpers/SettingsProvider';
 
 SplashScreen.preventAutoHideAsync();
@@ -48,9 +49,11 @@ export default function Loader() {
     return (
         isLoading ? null : (
             <>
-                <StatusBar backgroundColor={theme.primary} />
+                <StatusBar barStyle={theme.statusBarTheme === 'dark' ? 'dark-content' : 'light-content'} />
                 <View style={{ flex: 1, backgroundColor: theme.secondary }}>
-                    <IntroNavigator />
+                    <AchievementProvider>
+                        <IntroNavigator />
+                    </AchievementProvider>
                 </View>
             </>
         )

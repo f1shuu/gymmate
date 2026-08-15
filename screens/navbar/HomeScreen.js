@@ -5,6 +5,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { spotifyPlaylists } from '../../constants/spotifyPlaylists';
 import { spotifyPodcasts } from '../../constants/spotifyPodcasts';
 
+import AchievementsWidget from '../../components/widgets/AchievementsWidget';
 import Container from '../../components/Container';
 import HomeScreenWidget from '../../components/widgets/HomeScreenWidget';
 import SpotifyRecommendationWidget from '../../components/widgets/SpotifyRecommendationWidget';
@@ -60,6 +61,9 @@ export default function HomeScreen() {
                     <HomeScreenWidget width={'48.5%'} textRequired={'trainingsTotal'} textOptional={trainingsTotal} graphics={'dumbbell'} />
                     <HomeScreenWidget width={'48.5%'} textRequired={'liftedKgsTotal'} textOptional={liftedKgsTotal} graphics={'weight-hanging'} />
                 </View>
+
+                <Text style={styles.sectionName}>{translate('achievements')}</Text>
+                <AchievementsWidget />
 
                 <Text style={styles.sectionName}>{translate('recommendations')}</Text>
                 <View style={styles.section}>

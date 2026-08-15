@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 import { MultiSelect } from 'react-native-element-dropdown';
 
@@ -10,7 +10,7 @@ export default function CustomMultiSelect({ passedStyle, data, placeholder, valu
     const styles = {
         dropdown: {
             width: '100%',
-            minHeight: 60,
+            minHeight: 50,
             backgroundColor: theme.background,
             borderRadius: 10,
             paddingHorizontal: 15,
@@ -32,6 +32,12 @@ export default function CustomMultiSelect({ passedStyle, data, placeholder, valu
         placeholder: {
             fontFamily: 'Nexa',
             color: theme.textSecondary
+        },
+        item: {
+            padding: 17,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center'
         },
         selectedItem: {
             minHeight: 36,
@@ -61,7 +67,7 @@ export default function CustomMultiSelect({ passedStyle, data, placeholder, valu
             containerStyle={styles.container}
             itemTextStyle={styles.itemText}
             placeholderStyle={styles.placeholder}
-            selectedTextStyle={styles.itemText}
+            selectedTextStyle={{ ...styles.itemText, color: theme.textHeader }}
             activeColor={theme.primary}
             iconColor={theme.textSecondary}
             fontFamily='Nexa'
@@ -74,6 +80,13 @@ export default function CustomMultiSelect({ passedStyle, data, placeholder, valu
             onBlur={onBlur}
             onChange={onChange}
             alwaysRenderSelectedItem
+            renderItem={(item, selected) => (
+                <View style={styles.item}>
+                    <Text style={[styles.itemText, { color: selected ? theme.textHeader : theme.textPrimary }]}>
+                        {item.label}
+                    </Text>
+                </View>
+            )}
             renderSelectedItem={(item, unSelect) => (
                 <TouchableOpacity
                     style={styles.selectedItem}

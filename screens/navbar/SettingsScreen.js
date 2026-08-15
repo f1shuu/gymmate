@@ -49,7 +49,7 @@ export default function SettingsScreen() {
         name: {
             fontFamily: 'Nexa',
             fontSize: 28,
-            color: theme.textHeader,
+            color: theme.textPrimary,
             textAlign: 'center',
             alignSelf: 'center',
             justifyContent: 'center',
@@ -76,9 +76,9 @@ export default function SettingsScreen() {
     }
 
     return (
-        <Container gradient={0.5} isMainScreen={true}>
+        <Container isMainScreen={true}>
             <ScrollView>
-                <TouchableOpacity onPress={() => navigation.navigate('NameScreen')} activeOpacity={0.8}>
+                <TouchableOpacity onPress={() => navigation.navigate('NameScreen')} activeOpacity={0.8} style={{ marginVertical: 20 }}>
                     <View style={styles.avatar}>
                         <ProfileAvatar size={100} />
                     </View>
@@ -86,7 +86,7 @@ export default function SettingsScreen() {
                         <Text style={styles.name}>
                             {settings.firstName ? (settings.lastName ? settings.firstName + ' ' + settings.lastName : settings.firstName) : (settings.lastName ? settings.lastName : translate('guest'))}
                         </Text>
-                        <Icon name={'edit-square'} size={16} color={theme.tertiary} />
+                        <Icon name={'edit-square'} size={16} color={theme.textSecondary} />
                     </View>
                     <Text style={[styles.name, { fontSize: 16 }]}>
                         {settings.nickname ? '@' + settings.nickname : null}
@@ -106,7 +106,6 @@ export default function SettingsScreen() {
                 </View>
                 <View style={styles.container}>
                     <Text style={styles.sectionName}>{translate('help')}</Text>
-                    <Setting name={translate('showOnboarding')} icon={'slideshow'} color={theme.textPrimary} type='navigate' onPress={showOnboarding} />
                     <Setting name={translate('contact')} icon={'mail'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('ContactScreen')} />
                     <Setting name={translate('changelog')} icon={'list-alt'} color={theme.textPrimary} type='navigate' onPress={() => navigation.navigate('ChangelogScreen')} />
                 </View>

@@ -10,6 +10,7 @@ import DataController from '../../helpers/dataController';
 import Modal from '../../components/Modal';
 import Setting from '../../components/widgets/Setting';
 
+import { useAchievements } from '../../helpers/AchievementProvider';
 import { useSettings } from '../../helpers/SettingsProvider';
 
 const DELETION_SUCCESS_KEYS = {
@@ -32,6 +33,7 @@ export default function DataDeletionScreen() {
     const [dataSet, setDataSet] = useState(null);
     const [includeAllQualifier, setIncludeAllQualifier] = useState(true);
 
+    const { resetAchievements } = useAchievements();
     const { settings, translate } = useSettings();
 
     const fetchData = async () => {
@@ -63,6 +65,18 @@ export default function DataDeletionScreen() {
         setIsModalVisible(true);
     }
 
+    const clearSelectedData = async () => {
+        const cleared = await DataController.clear(
+            dataSet,
+            isModalVisible,
+            setIsModalVisible,
+            fetchData,
+            isConfirmationModalVisible,
+            setIsConfirmationModalVisible
+        )
+        if (cleared && dataSet === 'all') await resetAchievements();
+    }
+
     const styles = {
         container: {
             gap: 10,
@@ -91,7 +105,7 @@ export default function DataDeletionScreen() {
                 text={translate('areYouSure') + qualifier + text + '? ' + translate('irreversible')}
                 twoButtons={true}
                 buttonOneText={translate('yes')}
-                buttonOneOnPress={async () => DataController.clear(dataSet, isModalVisible, setIsModalVisible, fetchData, isConfirmationModalVisible, setIsConfirmationModalVisible)}
+                buttonOneOnPress={clearSelectedData}
                 buttonTwoText={translate('cancel')}
                 buttonTwoOnPress={() => setIsModalVisible(false)}
             />

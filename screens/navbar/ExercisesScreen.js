@@ -1,5 +1,5 @@
 import { Text, View, TextInput, TouchableOpacity, FlatList } from 'react-native';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
@@ -24,20 +24,32 @@ export default function ExercisesScreen() {
     const [activeId, setActiveId] = useState(null);
 
     const { settings, theme, translate } = useSettings();
-
     const navigation = useNavigation();
+    const language = settings.language || 'en';
+    const localizedMuscleGroups = muscleGroups[language] || muscleGroups.en || [];
+
     const translateDomainValue = (value) => {
         if (Array.isArray(value)) return value.map(translateDomainValue).join(', ');
         if (value === 'reps_based') return translate('repsBased');
         if (value === 'time_based') return translate('timeBased');
-        return muscleGroups[settings.language].find(group => group.value === value)?.label || translate(value);
+        return localizedMuscleGroups.find(group => group.value === value)?.label || translate(value);
     }
 
     const hasDisplayValue = (value) => Array.isArray(value) ? value.length > 0 : Boolean(value);
-    const normalizedQuery = searchQuery.trim().toLocaleLowerCase(settings.language);
-    const filteredExercises = exercises.filter(exercise =>
-        exercise.name?.toLocaleLowerCase(settings.language).includes(normalizedQuery)
-    )
+    const filteredExercises = useMemo(() => {
+        const normalizedQuery = searchQuery.trim().toLocaleLowerCase(language);
+        return exercises
+            .map((exercise, index) => ({ exercise, index }))
+            .filter(({ exercise }) => exercise.name?.toLocaleLowerCase(language).includes(normalizedQuery))
+            .sort((first, second) => {
+                const firstFavorite = Boolean(first.exercise.isFavorite);
+                const secondFavorite = Boolean(second.exercise.isFavorite);
+                if (firstFavorite !== secondFavorite) return firstFavorite ? -1 : 1;
+                if (firstFavorite) return first.index - second.index;
+                return (first.exercise.name || '').localeCompare(second.exercise.name || '', language, { sensitivity: 'base' });
+            })
+            .map(({ exercise }) => exercise)
+    }, [exercises, language, searchQuery])
 
     useFocusEffect(
         useCallback(() => {
@@ -54,14 +66,34 @@ export default function ExercisesScreen() {
         setIsModalVisible(!isModalVisible);
     }
 
+    const toggleFavorite = async (exercise) => {
+        if (settings.isHapticsOn) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(console.error);
+        const updatedExercises = await DataController.setExerciseFavorite(exercise.id, !exercise.isFavorite);
+        if (updatedExercises) setExercises(updatedExercises);
+    }
+
     const Exercise = ({ item }) => {
         const isActive = activeId === item.id;
 
         return (
-            <TouchableOpacity onPress={() => setActiveId(activeId === item.id ? null : item.id)} activeOpacity={0.8}>
+            <View>
                 <View style={[styles.header, isActive && styles.expandedHeader]}>
-                    <Text style={styles.headerText}>{item.name}</Text>
-                    <Icon name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={32} color={theme.textPrimary} />
+                    <TouchableOpacity
+                        activeOpacity={0.75}
+                        accessibilityRole='button'
+                        accessibilityLabel={item.isFavorite ? translate('removeFromFavorites') : translate('addToFavorites')}
+                        onPress={() => toggleFavorite(item)}
+                    >
+                        <Icon name={item.isFavorite ? 'star' : 'star-border'} size={26} color={item.isFavorite ? theme.primary : theme.tertiary} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.headerMain}
+                        onPress={() => setActiveId(activeId === item.id ? null : item.id)}
+                        activeOpacity={0.8}
+                    >
+                        <Text style={styles.headerText}>{item.name}</Text>
+                        <Icon name={isActive ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={32} color={theme.textPrimary} />
+                    </TouchableOpacity>
                 </View>
                 {isActive ? (
                     <View style={styles.exercise}>
@@ -79,7 +111,7 @@ export default function ExercisesScreen() {
                         </View>
                     </View>
                 ) : null}
-            </TouchableOpacity>
+            </View>
         )
     }
 
@@ -87,11 +119,10 @@ export default function ExercisesScreen() {
         header: {
             backgroundColor: theme.background,
             flexDirection: 'row',
-            justifyContent: 'space-between',
             alignItems: 'center',
             borderRadius: 10,
-            paddingVertical: 10,
-            paddingHorizontal: 20,
+            gap: 10,
+            paddingHorizontal: 10,
             marginBottom: 5
         },
         expandedHeader: {
@@ -99,9 +130,15 @@ export default function ExercisesScreen() {
             borderBottomRightRadius: 0,
             marginBottom: 0
         },
+        headerMain: {
+            flex: 1,
+            minHeight: 52,
+            flexDirection: 'row',
+            alignItems: 'center'
+        },
         headerText: {
             flex: 1,
-            marginRight: 10,
+            marginRight: 8,
             fontFamily: 'Nexa',
             fontSize: 16,
             color: theme.textPrimary
@@ -174,7 +211,7 @@ export default function ExercisesScreen() {
     }
 
     return (
-        <Container gradient={0.75} isMainScreen={true}>
+        <Container isMainScreen={true}>
             {isExercises ? (
                 <>
                     <View style={styles.searchContainer}>
@@ -214,8 +251,7 @@ export default function ExercisesScreen() {
                 buttonOneOnPress={async () => await DataController.delete('exercises', setExercises, setIsExercises, modalData, isModalVisible, setIsModalVisible)}
                 buttonTwoText={translate('no')}
                 buttonTwoOnPress={() => setIsModalVisible(!isModalVisible)}
-            >
-            </Modal>
+            />
         </Container>
     )
 }

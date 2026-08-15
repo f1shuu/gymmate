@@ -1,4 +1,4 @@
-import { Text, View, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Text, View, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/MaterialIcons';
@@ -34,10 +34,12 @@ export default function NameScreen() {
             aspect: [1, 1],
             quality: 0.8
         })
+
         if (result.canceled || !result.assets?.[0]) return;
 
         setIsChangingPhoto(true);
         let newImageUri = null;
+
         try {
             newImageUri = await saveProfileImage(result.assets[0]);
             const previousImageUri = settings.profileImageUri;
@@ -75,9 +77,6 @@ export default function NameScreen() {
     }
 
     const styles = {
-        content: {
-            paddingBottom: 25
-        },
         avatarSection: {
             alignItems: 'center',
             marginBottom: 22
@@ -103,7 +102,7 @@ export default function NameScreen() {
         input: {
             width: '100%',
             backgroundColor: theme.background,
-            height: 60,
+            height: 50,
             fontFamily: 'Nexa',
             fontSize: 16,
             color: theme.textPrimary,
@@ -129,7 +128,7 @@ export default function NameScreen() {
 
     return (
         <Container>
-            <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+            <ScrollView contentContainerStyle={{ paddingBottom: 25 }} showsVerticalScrollIndicator={false}>
                 <View style={styles.avatarSection}>
                     <ProfileAvatar size={112} showEditBadge onPress={isChangingPhoto ? undefined : chooseProfileImage} />
                     <TouchableOpacity disabled={isChangingPhoto} onPress={chooseProfileImage} activeOpacity={0.8}>
@@ -181,6 +180,6 @@ export default function NameScreen() {
 
                 <Button onPress={saveAndReturn} text={translate('save')} type='small' />
             </ScrollView>
-        </Container>
+        </Container >
     )
 }

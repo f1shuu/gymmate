@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -11,6 +11,8 @@ import Container from '../../components/Container';
 import Modal from '../../components/Modal';
 
 import DataController from '../../helpers/dataController';
+import { scheduleInactivityReminder } from '../../helpers/inactivityReminders';
+import { useAchievements } from '../../helpers/AchievementProvider';
 import { useSettings } from '../../helpers/SettingsProvider';
 
 const getRequiredSteps = (exercise) => {
@@ -32,9 +34,7 @@ const calculateExerciseVolume = (exercise) => {
 
 const calculateWorkoutStats = (exercises) => exercises.reduce((stats, exercise) => {
     const sets = getRequiredSteps(exercise);
-    const reps = exercise.data?.type === 'reps_based'
-        ? (Number.parseInt(exercise.data?.repsAmount, 10) || 0) * sets
-        : 0;
+    const reps = exercise.data?.type === 'reps_based' ? (Number.parseInt(exercise.data?.repsAmount, 10) || 0) * sets : 0;
     return {
         sets: stats.sets + sets,
         reps: stats.reps + reps
@@ -62,7 +62,8 @@ export default function ActiveTrainingScreen({ route }) {
     const allowExit = useRef(false);
     const completionLock = useRef(false);
 
-    const { settings, theme, translate } = useSettings();
+    const { evaluateAchievements } = useAchievements();
+    const { settings, theme, translate, setIsTrainingActive } = useSettings();
     const navigation = useNavigation();
     const currentExercise = exercises[exerciseIndex];
     const isLastExercise = exerciseIndex === exercises.length - 1;
@@ -75,6 +76,13 @@ export default function ActiveTrainingScreen({ route }) {
     const workoutStats = useMemo(() => calculateWorkoutStats(exercises), [exercises]);
 
     useEffect(() => {
+        setIsTrainingActive(true);
+        return () => {
+            setIsTrainingActive(false);
+        }
+    }, [setIsTrainingActive])
+
+    useEffect(() => {
         const removeListener = navigation.addListener('beforeRemove', event => {
             if (isCompleted || allowExit.current || !currentExercise) return;
             event.preventDefault();
@@ -84,21 +92,8 @@ export default function ActiveTrainingScreen({ route }) {
             })
         })
 
-        const tabNavigation = navigation.getParent()?.getParent();
-        const tabListener = tabNavigation?.addListener('tabPress', event => {
-            if (isCompleted || allowExit.current || !currentExercise) return;
-            const targetRoute = tabNavigation.getState().routes.find(routeItem => routeItem.key === event.target);
-            if (!targetRoute) return;
-            event.preventDefault();
-            setPendingExitAction(currentAction => currentAction || {
-                type: 'tab',
-                routeName: targetRoute.name
-            })
-        })
-
         return () => {
             removeListener();
-            tabListener?.();
         }
     }, [currentExercise, isCompleted, navigation])
 
@@ -126,14 +121,23 @@ export default function ActiveTrainingScreen({ route }) {
             return;
         }
 
+        await evaluateAchievements();
+        if (settings.inactivityRemindersEnabled) {
+            scheduleInactivityReminder({
+                channelName: translate('inactivityReminders'),
+                lastWorkoutAt: new Date(completedAt).toISOString(),
+                title: translate('inactivityReminderTitle'),
+                bodyTemplate: translate('inactivityReminderBody')
+            }).catch(console.error)
+        }
+
         setSessionStats({
             duration: Math.max(0, Math.floor((completedAt - startedAt.current) / 1000)),
             sets: workoutStats.sets,
             reps: workoutStats.reps
         })
-        if (settings?.isHapticsOn) {
-            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(console.error);
-        }
+        if (settings?.isHapticsOn) Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(console.error);
+        setIsTrainingActive(false);
         setIsCompleted(true);
         setIsCompleting(false);
     }
@@ -154,27 +158,21 @@ export default function ActiveTrainingScreen({ route }) {
 
     const confirmExit = () => {
         if (!pendingExitAction) return;
+        setIsTrainingActive(false);
         allowExit.current = true;
         const exitAction = pendingExitAction;
         setPendingExitAction(null);
 
-        if (exitAction.type === 'navigation') {
-            navigation.dispatch(exitAction.action);
-            return;
-        }
-
-        navigation.popToTop();
-        const homeNavigation = navigation.getParent();
-        const tabNavigation = homeNavigation?.getParent();
-        if (exitAction.routeName === 'HomeNavigator') homeNavigation?.navigate('HomeScreen');
-        tabNavigation?.navigate(exitAction.routeName);
+        if (exitAction.type === 'navigation') navigation.dispatch(exitAction.action);
     }
 
     const goHome = () => {
+        setIsTrainingActive(false);
         allowExit.current = true;
-        const parentNavigation = navigation.getParent();
-        navigation.popToTop();
-        parentNavigation?.navigate('HomeScreen');
+        const trainingsNav = navigation.getParent?.();
+        const homeNav = trainingsNav?.getParent?.();
+        trainingsNav?.reset?.({ index: 0, routes: [{ name: 'TrainingsScreen' }] });
+        homeNav?.reset?.({ index: 0, routes: [{ name: 'HomeScreen' }] });
     }
 
     const styles = {
@@ -204,7 +202,7 @@ export default function ActiveTrainingScreen({ route }) {
             fontFamily: 'Nexa',
             fontSize: 16,
             lineHeight: 24,
-            color: theme.textSecondary,
+            color: theme.textPrimary,
             textAlign: 'center',
             marginVertical: 14
         },
@@ -250,7 +248,7 @@ export default function ActiveTrainingScreen({ route }) {
         trainingName: {
             fontFamily: 'Nexa',
             fontSize: 22,
-            color: theme.textPrimary,
+            color: theme.textHeader,
             textAlign: 'center',
             marginTop: 8
         },
@@ -351,7 +349,7 @@ export default function ActiveTrainingScreen({ route }) {
 
     if (isCompleted) {
         return (
-            <Container gradient={0.75}>
+            <Container>
                 <ScrollView contentContainerStyle={styles.completedContent} showsVerticalScrollIndicator={false}>
                     <View style={styles.trophy}>
                         <Icon name='trophy' size={48} color={Colors.green} />
@@ -392,15 +390,10 @@ export default function ActiveTrainingScreen({ route }) {
     }
 
     const isTimeBased = currentExercise.data?.type === 'time_based';
-    const detailParts = isTimeBased
-        ? [currentExercise.data?.time]
-        : [
-            `${currentExercise.data?.setsAmount || 0} × ${currentExercise.data?.repsAmount || 0}`,
-            currentExercise.data?.weight
-        ]
+    const detailParts = isTimeBased ? [currentExercise.data?.time] : [`${currentExercise.data?.setsAmount || 0} × ${currentExercise.data?.repsAmount || 0}`, currentExercise.data?.weight]
 
     return (
-        <Container gradient={0.75}>
+        <Container>
             <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
                 <Text style={styles.trainingName}>{training.name}</Text>
                 <Text style={styles.progress}>
