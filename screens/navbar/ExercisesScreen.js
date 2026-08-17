@@ -211,7 +211,7 @@ export default function ExercisesScreen() {
     }
 
     return (
-        <Container>
+        <Container isMainScreen={true}>
             {isExercises ? (
                 <>
                     <View style={styles.searchContainer}>

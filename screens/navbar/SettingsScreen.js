@@ -76,7 +76,7 @@ export default function SettingsScreen() {
     }
 
     return (
-        <Container>
+        <Container isMainScreen={true}>
             <ScrollView>
                 <TouchableOpacity onPress={() => navigation.navigate('NameScreen')} activeOpacity={0.8} style={{ marginTop: 40 }}>
                     <View style={styles.avatar}>

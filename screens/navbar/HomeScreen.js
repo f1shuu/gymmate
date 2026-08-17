@@ -46,7 +46,7 @@ export default function HomeScreen() {
 }
 
     return (
-        <Container>
+    <Container isMainScreen={true}>
             <ScrollView>
                 <Text style={styles.sectionName}>{translate('quickStart')}</Text>
                 <View style={{ gap: 10 }}>
