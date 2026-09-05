@@ -1,9 +1,12 @@
 import { Platform } from 'react-native';
-import * as Notifications from 'expo-notifications';
+import { getNotifications } from './notifications';
 
 const CHANNEL_ID = 'achievement-unlocks';
 
 export const sendAchievementNotification = async ({ channelName, title, body }) => {
+    const Notifications = await getNotifications();
+    if (!Notifications) return false;
+
     if (Platform.OS === 'android') {
         await Notifications.setNotificationChannelAsync(CHANNEL_ID, {
             name: channelName,

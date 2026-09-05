@@ -169,10 +169,10 @@ export default function ActiveTrainingScreen({ route }) {
     const goHome = () => {
         setIsTrainingActive(false);
         allowExit.current = true;
-        const trainingsNav = navigation.getParent?.();
-        const homeNav = trainingsNav?.getParent?.();
-        trainingsNav?.reset?.({ index: 0, routes: [{ name: 'TrainingsScreen' }] });
-        homeNav?.reset?.({ index: 0, routes: [{ name: 'HomeScreen' }] });
+        navigation.getParent()?.reset({
+            index: 0,
+            routes: [{ name: 'HomeScreen' }],
+        })
     }
 
     const styles = {

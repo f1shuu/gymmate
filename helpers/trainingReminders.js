@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Notifications from 'expo-notifications';
+import { getNotifications } from './notifications';
 
 const NOTIFICATION_IDS_KEY = 'trainingReminderNotificationIds';
 const CHANNEL_ID = 'training-reminders';
@@ -19,12 +19,13 @@ const readNotificationIds = async () => {
 }
 
 export const cancelTrainingReminders = async () => {
+    const Notifications = await getNotifications();
     const notificationIds = await readNotificationIds();
-    await Promise.all(notificationIds.map(id => Notifications.cancelScheduledNotificationAsync(id)));
+    if (Notifications) await Promise.all(notificationIds.map(id => Notifications.cancelScheduledNotificationAsync(id)));
     await AsyncStorage.removeItem(NOTIFICATION_IDS_KEY);
 }
 
-const requestNotificationPermission = async (channelName) => {
+const requestNotificationPermission = async (Notifications, channelName) => {
     if (Platform.OS === 'android') {
         await Notifications.setNotificationChannelAsync(CHANNEL_ID, {
             name: channelName,
@@ -46,7 +47,9 @@ const requestNotificationPermission = async (channelName) => {
 const toExpoWeekday = (day) => day === 7 ? 1 : day + 1;
 
 export const scheduleTrainingReminders = async ({ channelName, days, hour, minute, title, body }) => {
-    if (!await requestNotificationPermission(channelName)) return false;
+    const Notifications = await getNotifications();
+    if (!Notifications) return false;
+    if (!await requestNotificationPermission(Notifications, channelName)) return false;
 
     const previousNotificationIds = await readNotificationIds();
     const notificationIds = [];
@@ -67,9 +70,9 @@ export const scheduleTrainingReminders = async ({ channelName, days, hour, minut
         }
         await Promise.all(previousNotificationIds.map(id => Notifications.cancelScheduledNotificationAsync(id)));
         await AsyncStorage.setItem(NOTIFICATION_IDS_KEY, JSON.stringify(notificationIds));
-        return true;
     } catch (error) {
         await Promise.all(notificationIds.map(id => Notifications.cancelScheduledNotificationAsync(id)));
         throw error;
     }
+    return true;
 }

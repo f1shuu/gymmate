@@ -39,16 +39,13 @@ export default function ExercisesScreen() {
     const filteredExercises = useMemo(() => {
         const normalizedQuery = searchQuery.trim().toLocaleLowerCase(language);
         return exercises
-            .map((exercise, index) => ({ exercise, index }))
-            .filter(({ exercise }) => exercise.name?.toLocaleLowerCase(language).includes(normalizedQuery))
+            .filter((exercise) => exercise.name?.toLocaleLowerCase(language).includes(normalizedQuery))
             .sort((first, second) => {
-                const firstFavorite = Boolean(first.exercise.isFavorite);
-                const secondFavorite = Boolean(second.exercise.isFavorite);
+                const firstFavorite = Boolean(first.isFavorite);
+                const secondFavorite = Boolean(second.isFavorite);
                 if (firstFavorite !== secondFavorite) return firstFavorite ? -1 : 1;
-                if (firstFavorite) return first.index - second.index;
-                return (first.exercise.name || '').localeCompare(second.exercise.name || '', language, { sensitivity: 'base' });
+                return (first.name || '').localeCompare(second.name || '', language, { sensitivity: 'base' });
             })
-            .map(({ exercise }) => exercise)
     }, [exercises, language, searchQuery])
 
     useFocusEffect(

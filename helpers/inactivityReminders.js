@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Notifications from 'expo-notifications';
+import { getNotifications } from './notifications';
 
 const NOTIFICATION_ID_KEY = 'inactivityReminderNotificationId';
 const CHANNEL_ID = 'inactivity-reminders';
@@ -8,12 +8,13 @@ const INACTIVITY_DAYS = 5;
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 
 export const cancelInactivityReminder = async () => {
+    const Notifications = await getNotifications();
     const notificationId = await AsyncStorage.getItem(NOTIFICATION_ID_KEY);
-    if (notificationId) await Notifications.cancelScheduledNotificationAsync(notificationId);
+    if (Notifications && notificationId) await Notifications.cancelScheduledNotificationAsync(notificationId);
     await AsyncStorage.removeItem(NOTIFICATION_ID_KEY);
 }
 
-const requestPermission = async (channelName) => {
+const requestPermission = async (Notifications, channelName) => {
     if (Platform.OS === 'android') {
         await Notifications.setNotificationChannelAsync(CHANNEL_ID, {
             name: channelName,
@@ -33,7 +34,9 @@ const requestPermission = async (channelName) => {
 }
 
 export const scheduleInactivityReminder = async ({ channelName, lastWorkoutAt, title, bodyTemplate }) => {
-    if (!await requestPermission(channelName)) return false;
+    const Notifications = await getNotifications();
+    if (!Notifications) return false;
+    if (!await requestPermission(Notifications, channelName)) return false;
 
     const previousId = await AsyncStorage.getItem(NOTIFICATION_ID_KEY);
     const baseline = new Date(lastWorkoutAt || Date.now());
