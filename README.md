@@ -1,24 +1,16 @@
 <div align="center">
-<img src="assets/images/icon.png" alt="GymMate logo" width="80" style="border-radius: 12px;">
-<h1 align="center">GymMate</h1>
+   <img src="assets/images/icon.png" alt="GymMate logo" width="80">
+   <h1 align="center">GymMate</h1>
 
-**A mobile fitness companion for creating custom workouts, tracking progress, and staying consistent with training routines.**
+   **A mobile fitness companion for creating custom workouts, tracking progress, and staying consistent with training routines.**
 
-<p align="center">
-   <a href="https://github.com/f1shuu/gymmate/releases">
-      <img alt="GitHub Release" src="https://img.shields.io/github/v/release/f1shuu/gymmate">
-   </a>
-   &nbsp;
-   <a href="LICENSE">
-      <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg">
-   </a>
-</p>
+   <p align="center"><a href="https://github.com/f1shuu/gymmate/releases"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/f1shuu/gymmate"></a>&nbsp;<a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg"></a></p>
 </div>
 
 <div align="center" style="display:flex;justify-content:center;gap:10px;flex-wrap:nowrap;">
-    <img src="assets/images/readme/mockup-1.jpg" alt="Exercises screen" width="250" style="border-radius: 12px;"/>
-    <img src="assets/images/readme/mockup-2.jpg" alt="Home screen" width="250" style="border-radius: 12px;"/>
-    <img src="assets/images/readme/mockup-3.jpg" alt="Settings screen" width="250" style="border-radius: 12px;"/>
+    <img src="assets/images/readme/mockup-1.jpg" alt="Exercises screen" width="250"/>
+    <img src="assets/images/readme/mockup-2.jpg" alt="Home screen" width="250"/>
+    <img src="assets/images/readme/mockup-3.jpg" alt="Settings screen" width="250"/>
 </div>
 
 ## Features
